@@ -7,226 +7,4212 @@
   <link rel="stylesheet" href="{% static 'landing.css' %}">
   <script src="{% static 'landing.js' %}"></script>
 
+
+
 <meta name="theme-color" content="#1885ed">
-  <title>Bricks.io - Homepage</title>
+  <title>Deepfake-Detector</title>
+
+  <style>
+    .logo {
+    width: 44px; /* Adjust size */
+    height: 44px;
+    margin-right: 8px; /* Space between icon and text */
+    vertical-align: middle;
+}
+
+    .deepfake-section-container {
+  max-width: 1260px;
+  margin: 30px auto;
+  padding: 30px;
+<!--  border: 2px solid #CECECE;-->
+  border-radius: 20px;
+  background-color: transparent;
+  display: flex;
+  gap: 40px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+/* Create pseudo-element for the animated border */
+.deepfake-section-container::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background: linear-gradient(90deg, transparent, transparent, #3498db, transparent, transparent) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background-size: 200% 100%;
+  animation: borderAnimation 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes borderAnimation {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+    .deepfake-video-box {
+      flex: 1;
+      background-color: #FEFEFE;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.6); /* Blue glow */
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0px;
+    }
+
+    .deepfake-video-box video {
+      height: auto;
+      border-radius: 12px;
+      width:100%;
+    }
+
+    .deepfake-upload-box {
+      flex: 0.8;
+      background-color: #f9fafb;
+      border: 2px dashed #3b82f6;
+      border-radius: 16px;
+      padding: 30px 20px;
+      text-align: center;
+      width:100%;
+    }
+
+    .deepfake-upload-box h3 {
+      color: #6b7280;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+
+    .deepfake-upload-box input[type="file"] {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 100%;
+    }
+
+    .deepfake-upload-btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #1e40af;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .deepfake-upload-btn:hover {
+      background-color: #1e3a8a;
+    }
+
+    @media (max-width: 768px) {
+      .deepfake-section-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .deepfake-upload-box, .deepfake-video-box {
+        width: 100%;
+      }
+    }
+    .video-wrapper {
+  position: relative;
+  width: 100%;
+  height:100%;
+}
+
+.video-wrapper video {
+  width: 100%;
+  height:100%;
+  display: block;
+  border-radius: 12px;
+}
+
+.custom-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  background-color: red;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.custom-play-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid white;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+}
+
+
+    .header {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* greyish shadow */
+    padding: 0px 40px; /* reduced height via less padding */
+}
+
+
+
+  </style>
+  <style>
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 60%;
+            height: 56%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hidden {
+            display: none;
+        }
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4299e1;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+      .aivs2025_header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1000;
+      margin-top:-80px;
+    }
+
+    .aivs2025_logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .aivs2025_logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .aivs2025_navItems {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .aivs2025_navItem {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .aivs2025_navItem:hover {
+      color: #4a6fa5;
+    }
+
+    .aivs2025_subscribe {
+
+      color: #4a6fa5;
+      padding: 0.5rem 1.25rem;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+
+    .aivs2025_subscribe:hover {
+      color:black;
+
+    }
+
+    /* Hamburger menu styles */
+    .aivs2025_hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .aivs2025_hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: #333;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile nav container */
+    .aivs2025_mobileNav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background-color: #ffffff;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      padding: 5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: right 0.3s ease;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .aivs2025_mobileNav.aivs2025_active {
+      right: 0;
+    }
+
+    .aivs2025_backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 998;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .aivs2025_backdrop.aivs2025_active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Animation for hamburger to X */
+    .aivs2025_hamburger.aivs2025_active span:first-child {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .aivs2025_hamburger.aivs2025_active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .aivs2025_hamburger.aivs2025_active span:last-child {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Mobile styles */
+    @media screen and (max-width: 1024px) {
+      .aivs2025_navItems {
+        display: none;
+      }
+
+      .aivs2025_hamburger {
+        display: flex;
+      }
+    }
+      .dfdetect2025_reviewSection {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8faff;
+      padding: 5rem 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dfdetect2025_blob1 {
+      position: absolute;
+      top: -150px;
+      left: -150px;
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(45deg, rgba(74, 111, 165, 0.1), rgba(156, 136, 255, 0.1));
+      border-radius: 50%;
+      filter: blur(70px);
+      z-index: 1;
+    }
+
+    .dfdetect2025_blob2 {
+      position: absolute;
+      bottom: -100px;
+      right: -100px;
+      width: 350px;
+      height: 350px;
+      background: linear-gradient(45deg, rgba(255, 156, 238, 0.1), rgba(116, 182, 247, 0.1));
+      border-radius: 50%;
+      filter: blur(70px);
+      z-index: 1;
+    }
+
+    .dfdetect2025_container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .dfdetect2025_header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .dfdetect2025_title {
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .dfdetect2025_subtitle {
+      font-size: 1.1rem;
+      color: #4a5568;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .dfdetect2025_cardGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .dfdetect2025_card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .dfdetect2025_card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .dfdetect2025_cardGradient1 {
+      background: linear-gradient(135deg, #ffffff 0%, #a0c4ff 100%);
+    }
+
+    .dfdetect2025_cardGradient2 {
+      background: linear-gradient(135deg, #ffffff 0%, #ff9cee 100%);
+    }
+
+    .dfdetect2025_cardGradient3 {
+      background: linear-gradient(135deg, #ffffff 0%, #9896f1 100%);
+    }
+
+    .dfdetect2025_cardHeader {
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dfdetect2025_cardHeader::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #4a6fa5, #9896f1, #ff9cee);
+    }
+
+    .dfdetect2025_stars {
+      display: flex;
+      margin-bottom: 1rem;
+      color: #ffc107;
+    }
+
+    .dfdetect2025_star {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      margin-right: 2px;
+    }
+
+    .dfdetect2025_quote {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #2d3748;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .dfdetect2025_cardBody {
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    .dfdetect2025_review {
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .dfdetect2025_user {
+      display: flex;
+      align-items: center;
+    }
+
+    .dfdetect2025_avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: #4a6fa5;
+    }
+
+    .dfdetect2025_userInfo h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 0 0 0.25rem;
+    }
+
+    .dfdetect2025_userInfo p {
+      font-size: 0.875rem;
+      color: #718096;
+      margin: 0;
+    }
+
+    .dfdetect2025_verifiedBadge {
+      display: inline-flex;
+      align-items: center;
+      background: #ebf5ff;
+      color: #3182ce;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 20px;
+      margin-top: 0.5rem;
+    }
+
+    .dfdetect2025_verifiedIcon {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+      fill: currentColor;
+    }
+
+    @media (max-width: 768px) {
+      .dfdetect2025_cardGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
-<header id="header" class="header">
-  <img src="https://res.cloudinary.com/alexandracaulea/image/upload/v1583497208/logo_i5t9wh.svg" class="logo" alt="Learn English" id="header-img" />
-  <nav id="nav-bar" class="nav">
-    <ul class="nav-list">
-      <li class="nav-item">
-        <a class="nav-link" href="#features">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#how-it-works">How It Works</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#get-started">Get Started</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link nav-link-cta" href="#subscribe">Subscribe</a>
-      </li>
-    </ul>
-  </nav>
-  <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-    <span class="visuallyhidden">Menu</span>
-    <span class="hamburger"></span>
-  </button>
-</header>
-<main>
-  <section class="intro">
-    <h1 class="intro__title">
-      DeepFake Detector
-    </h1>
-    <p class="intro__subtitle">
-    Safeguard your identity against AI-driven deception. As AI revolutionizes countless industries, it also brings unprecedented risks—DeepFake technology can be used to manipulate reality. Stay protected with our cutting-edge detection system.
-</p>
 
-    <a href="#" class="button">Get Started</a>
-    <img class="intro__illustration" src="https://cdn.hyperverge.co/wp-content/uploads/2023/12/DeepFake-detection-by-HyperVerge.png" alt="" />
-  </section>
+
+<header class="aivs2025_header">
+    <div class="aivs2025_logo">
+      <img src="https://th.bing.com/th/id/OLC.6OrC7383AoACbQ480x360?&rs=1&pid=ImgDetMain" alt="AI Video Studios Logo">
+    </div>
+
+    <nav class="aivs2025_navItems">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="/blogs/" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="/use-case/" class="aivs2025_navItem">Uses</a>
+      <a href="/pricing" class="aivs2025_navItem">Pricing</a>
+      <a href="/register" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#c7e5ef;border:2px solid #b8c0ee; ">Get Started</a>
+                <a href="/login" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#e3ebef;border:3px solid #a4d2ec;">signin</a>
+
+    </nav>
+
+    <!-- Hamburger Menu Button -->
+    <div class="aivs2025_hamburger" id="hamburgerBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="aivs2025_mobileNav" id="mobileNav">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="#" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="#" class="aivs2025_navItem">Uses</a>
+      <a href="/pricing" class="aivs2025_navItem">Pricing</a>
+      <a href="#" class="aivs2025_navItem aivs2025_subscribe">Get Started</a>
+    </nav>
+
+    <!-- Backdrop for closing mobile menu when clicking outside -->
+    <div class="aivs2025_backdrop" id="backdrop"></div>
+  </header>
+
+  <script>
+    // Get DOM elements
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const backdrop = document.getElementById('backdrop');
+
+    // Toggle mobile nav menu
+    hamburgerBtn.addEventListener('click', function() {
+      hamburgerBtn.classList.toggle('aivs2025_active');
+      mobileNav.classList.toggle('aivs2025_active');
+      backdrop.classList.toggle('aivs2025_active');
+      document.body.style.overflow = mobileNav.classList.contains('aivs2025_active') ? 'hidden' : '';
+    });
+
+    // Close menu when clicking the backdrop
+    backdrop.addEventListener('click', function() {
+      hamburgerBtn.classList.remove('aivs2025_active');
+      mobileNav.classList.remove('aivs2025_active');
+      backdrop.classList.remove('aivs2025_active');
+      document.body.style.overflow = '';
+    });
+
+    // Close menu when clicking a nav item (for better UX)
+    const mobileNavItems = mobileNav.querySelectorAll('.aivs2025_navItem');
+    mobileNavItems.forEach(item => {
+      item.addEventListener('click', function() {
+        hamburgerBtn.classList.remove('aivs2025_active');
+        mobileNav.classList.remove('aivs2025_active');
+        backdrop.classList.remove('aivs2025_active');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Handle window resize to reset state when switching from mobile to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 1024 && mobileNav.classList.contains('aivs2025_active')) {
+        hamburgerBtn.classList.remove('aivs2025_active');
+        mobileNav.classList.remove('aivs2025_active');
+        backdrop.classList.remove('aivs2025_active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+
+<!-- Add this above the video and uploader section -->
+<div class="deepfake-header">
+  <h1 class="main-title">Deepfake Detection Technology</h1>
+  <div class="subtitle-container">
+    <p class="subtitle">Protect yourself against AI-generated fake videos with our advanced detection system</p>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-number">99.7%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">5M+</span>
+        <span class="stat-label">Videos Analyzed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">3s</span>
+        <span class="stat-label">Average Detection Time</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS for the header section -->
+<style>
+.deepfake-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 0 20px;
+  background-color: var(--gray-light);
+    background-image: url('https://www.10kx.com/images/bg-3.png');
+    background-position: right center;  /* Align image to the left */
+    background-repeat: no-repeat;      /* Prevent image from repeating */
+    background-size: 35%;            /* Cover the section, adjust as needed */
+}
+
+.main-title {
+  font-size: 4.8rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 800;
+background: linear-gradient(90deg, #2563EB, #6EE7B7, #C084FC);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #5033FF;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2.2rem;
+  }
+
+  .stats-bar {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+</style>
+
+<!-- Animation for the how-it-works sections -->
+<style>
+/* Base styles for animated sections */
+#how-it-works, .get-feedback, .learning {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.8s ease-out;
+}
+
+.get-feedback {
+  transform: translateX(50px); /* Coming from right */
+}
+
+/* Animation classes */
+.animate-from-left {
+  animation: slideFromLeft 1s forwards;
+}
+
+.animate-from-right {
+  animation: slideFromRight 1s forwards;
+}
+
+/* Keyframes */
+@keyframes slideFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation for arrows */
+.arrow-1, .arrow-2 {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.arrow-visible {
+  opacity: 1;
+}
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Main heading styles with gradient */
+    .main-heading {
+      text-align: center;
+      margin: 80px 0 60px;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2d3748;
+      position: relative;
+
+    }
+
+    .main-heading::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #3a7bd5, #00d2ff);
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+
+    /* Process section styles */
+    .process-section {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+      position: relative;
+      padding: 20px 0;
+    }
+
+    /* Individual section styles */
+    .process-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 40px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+
+    .process-block.reverse {
+      flex-direction: row-reverse;
+      transform: translateX(100px);
+    }
+
+    .process-block.from-right {
+      animation: slideInRight 0.8s ease-out forwards;
+    }
+
+    .process-block.from-left {
+      animation: slideInLeft 0.8s ease-out forwards;
+    }
+
+    .process-block.keep-as-is {
+      opacity: 1;
+      transform: translateX(0);
+      animation: pulse 2s infinite alternate;
+    }
+
+    /* Section content styles */
+    .process-content {
+      flex: 1;
+      z-index: 2;
+    }
+
+    .process-content h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #2d3748;
+      position: relative;
+    }
+
+    .process-content h2::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #3a7bd5, #00d2ff);
+    }
+
+    .process-content p {
+      font-size: 1.1rem;
+      color: #4a5568;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    /* Image container styles */
+    .img-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .img-container svg {
+      max-width: 100%;
+      height: auto;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+    }
+
+    /* Blob background */
+    .blob-bg {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    #upload-blob {
+      background: radial-gradient(circle, #3a7bd5 0%, transparent 70%);
+      top: -50px;
+      right: -50px;
+    }
+
+    #detection-blob {
+      background: radial-gradient(circle, #00d2ff 0%, transparent 70%);
+      bottom: -50px;
+      left: -50px;
+    }
+
+    #analysis-blob {
+      background: radial-gradient(circle, #7f449d 0%, transparent 70%);
+      top: -50px;
+      left: -50px;
+    }
+
+    /* Step indicators */
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: 40px;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 50%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 3;
+    }
+
+    /* Connection arrows */
+    .connection-arrow {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 60px;
+      background: linear-gradient(to bottom, #3a7bd5, #00d2ff);
+      z-index: 1;
+    }
+
+    .connection-arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #00d2ff;
+    }
+
+    /* Additional features */
+    .feature-tag {
+      display: inline-block;
+      padding: 5px 12px;
+      background: rgba(58, 123, 213, 0.1);
+      color: #3a7bd5;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Animation keyframes */
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      from {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      to {
+        box-shadow: 0 15px 35px rgba(58, 123, 213, 0.25);
+      }
+    }
+
+    /* SVG animation */
+    .svg-element {
+      opacity: 0;
+    }
+
+    .animate-svg .svg-element {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+      .process-block, .process-block.reverse {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .process-content h2::before {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .step-number {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    .news-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+      margin: 0 auto;
+      margin-top:30px;
+    }
+
+    .news-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 30px;
+      width: 300px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .news-tag {
+      display: inline-flex;
+      align-items: center;
+      background-color: #f0f4ff;
+      color: #4a55a2;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .news-tag svg {
+      margin-right: 8px;
+    }
+
+    .news-title {
+      font-size: 20px;
+      color: #1a1a4b;
+      margin-bottom: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .news-source {
+      color: #4361ee;
+      font-size: 16px;
+      margin-bottom: 20px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .news-source:hover {
+      text-decoration: underline;
+    }
+
+    .read-button {
+      display: inline-flex;
+      align-items: center;
+      color: #1a1a4b;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .read-button svg {
+      margin-left: 5px;
+      transition: transform 0.2s;
+    }
+
+    .read-button:hover svg {
+      transform: translateX(3px);
+    }
+
+    .featured-section {
+    padding: 3rem 1rem;
+    background-color: var(--gray-light);
+    text-align: center;
+    background-image: url('https://cfcdn.apowersoft.info/astro/picwish/_astro/main-bg-3.d2b6afa6.png');
+    background-position: right center;  /* Align image to the left */
+    background-repeat: no-repeat;      /* Prevent image from repeating */
+    background-size: 30%;            /* Cover the section, adjust as needed */
+    margin-top:80px;
+}
+
+
+
+
+.featured-section h2 {
+    font-size: 1.5rem;
+    color: var(--accent-1);
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.featured-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.featured-logo {
+    height: 40px;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+}
+
+.featured-logo:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+</style>
+
+
+
+<!-- JavaScript to trigger the animations on scroll -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get all sections
+  const sections = [
+    document.getElementById('how-it-works'),
+    document.querySelector('.get-feedback'),
+    document.querySelector('.learning')
+  ];
+
+  const arrows = [
+    document.querySelector('.arrow-1'),
+    document.querySelector('.arrow-2')
+  ];
+
+  // Function to check if element is in viewport
+  function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.75 &&
+      rect.bottom >= 0
+    );
+  }
+
+  // Function to handle scroll
+  function handleScroll() {
+    // Animate sections
+    if (isInViewport(sections[0]) && !sections[0].classList.contains('animate-from-left')) {
+      sections[0].classList.add('animate-from-left');
+      setTimeout(() => { if (arrows[0]) arrows[0].classList.add('arrow-visible'); }, 500);
+    }
+
+    if (isInViewport(sections[1]) && !sections[1].classList.contains('animate-from-right')) {
+      sections[1].classList.add('animate-from-right');
+      setTimeout(() => { if (arrows[1]) arrows[1].classList.add('arrow-visible'); }, 500);
+    }
+
+    if (isInViewport(sections[2]) && !sections[2].classList.contains('animate-from-left')) {
+      sections[2].classList.add('animate-from-left');
+    }
+  }
+
+  // Initial check in case elements are already in viewport
+  handleScroll();
+
+  // Listen for scroll events
+  window.addEventListener('scroll', handleScroll);
+});
+</script>
+
+<div class="deepfake-section-container">
+  {% load static %}
+
+  <!-- Left: Video -->
+  <div class="deepfake-video-box">
+    <div class="video-wrapper">
+      <video id="deepfakeVideo" controls poster="https://image-optimizer.cyberriskalliance.com/unsafe/1920x0/https://files.scmagazine.com/wp-content/uploads/2024/02/AdobeStock_533870346.jpg">
+        <source src="{% static 'realdeepfake.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="custom-play-btn" onclick="playDefaultVideo()"></div>
+    </div>
+  </div>
+
+
+
+  <!-- Right: Upload -->
+  <div class="container mx-auto px-4 py-8">
+        <!-- Your existing upload box -->
+        <div class="deepfake-upload-box text-center">
+            <h3 class="text-xl font-semibold text-blue-900 mb-4">Upload Video for Analysis</h3>
+            <p class="text-gray-700">Still unsure? Watch the deepfake demo to see the danger.</p>
+
+            <!-- Hidden file input -->
+            <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleFileSelect(this)">
+
+            <!-- Clickable upload icon -->
+            <label for="videoInput" class="block cursor-pointer border-2 border-dashed border-gray-300 bg-gray-50 p-8 rounded-lg transition hover:bg-gray-100">
+              <img src="{% static 'icons8-upload-80.png' %}" alt="Upload Icon" class="mx-auto mb-2 w-12 h-12 text-blue-700">
+              <p class="text-gray-700">Drag & drop video file here or click to browse</p>
+            </label>
+
+            <!-- Display selected file name -->
+            <p id="fileName" class="mt-2 text-sm text-gray-600"></p>
+
+            <!-- Upload button -->
+            <button class="deepfake-upload-btn mt-4 bg-blue-700 text-white py-2 px-6 rounded hover:bg-blue-800" onclick="uploadVideo()">Upload</button>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="modal">
+    <div class="modal-content flex flex-col md:flex-row p-0 max-w-5xl overflow-hidden bg-white" >
+        <!-- Left side with professional image -->
+        <div class="hidden md:block w-2/5 relative">
+            <img src="{% static 'cdi-removebg-preview.png' %}" alt="Video Security Analysis" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-blue-900 bg-opacity-60"></div>
+            <div class="absolute inset-0 flex flex-col justify-between p-8 text-white">
+                <div>
+                    <img src="{% static 'cdi-removebg-preview.png' %}" alt="DeepGuard Logo" class="h-10 mb-4">
+                    <h3 class="text-2xl font-bold">Video Security</h3>
+                    <p class="text-sm mt-2 text-blue-100">Professional deepfake detection and analysis platform</p>
+                </div>
+
+                <div class="space-y-6 mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="rounded-full bg-blue-500 bg-opacity-30 p-2">
+                            <i class="fas fa-check text-white"></i>
+                        </div>
+                        <p class="text-sm">Industry-leading accuracy rates</p>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <div class="rounded-full bg-blue-500 bg-opacity-30 p-2">
+                            <i class="fas fa-check text-white"></i>
+                        </div>
+                        <p class="text-sm">Enterprise-grade security protocols</p>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <div class="rounded-full bg-blue-500 bg-opacity-30 p-2">
+                            <i class="fas fa-check text-white"></i>
+                        </div>
+                        <p class="text-sm">Detailed forensic reports</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side with form -->
+        <div class="w-full md:w-3/5 p-8">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center">
+                    <img src="{% static 'cdi-removebg-preview.png' %}" alt="DeepGuard Logo" class="h-2 mr-3" style="width:100px; height:80px;">
+                    <h3 class="text-xl font-bold text-blue-800">Complete Registration</h3>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mb-6">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-blue-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-blue-700">
+                            You're about to analyze: <span id="videoName" class="font-semibold"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="registrationStatus" class="mb-6 p-4 rounded hidden"></div>
+
+            <form id="registrationForm" class="space-y-5">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-blue-500"></i>
+                        </div>
+                        <input type="text" id="username" name="username" required
+                               class="pl-10 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Enter your username">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-blue-500"></i>
+                        </div>
+                        <input type="email" id="email" name="email" required
+                               class="pl-10 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-phone text-blue-500"></i>
+                        </div>
+                        <input type="tel" id="phone" name="phone" required
+                               class="pl-10 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="(123) 456-7890">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <div class="mt-1 relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-blue-500"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required
+                               class="pl-10 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Create a secure password">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                            <button type="button" onclick="togglePasswordVisibility()" class="focus:outline-none">
+                                <i class="fas fa-eye text-gray-400 hover:text-blue-500"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">Must be at least 8 characters</p>
+                </div>
+
+                <div id="uploadProgress" class="hidden mt-6">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium text-blue-700 flex items-center">
+                            <i class="fas fa-spinner fa-spin mr-2"></i> Processing video
+                        </span>
+                        <span id="progressPercent" class="text-sm font-medium text-blue-700">0%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button id="registerBtn" type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg flex items-center justify-center transition-colors duration-300 shadow-md">
+                        <i class="fas fa-user-plus mr-2"></i>Complete Registration & Analyze Video
+                    </button>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <p class="text-xs text-gray-500">
+                        By clicking "Complete Registration", you agree to our
+                        <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and
+                        <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
+                    </p>
+                </div>
+
+                <div class="relative mt-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">Already registered?</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <a href="{% url 'login' %}" class="text-blue-600 hover:text-blue-800 font-medium">
+                        Sign in to your account
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.querySelector('.fa-eye, .fa-eye-slash');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+  // Function to preload images
+  function preloadImages(sources, callback) {
+    let counter = 0;
+
+    function onLoad() {
+      counter++;
+      if (counter === sources.length) {
+        callback();
+      }
+    }
+
+    for (let i = 0; i < sources.length; i++) {
+      const img = new Image();
+      img.onload = onLoad;
+      img.onerror = onLoad; // Handle error case too
+      img.src = sources[i];
+    }
+  }
+
+  // Get all image elements
+  const images = document.querySelectorAll('img');
+  const imageSources = [];
+
+  // Collect image sources
+  images.forEach(img => {
+    // Check if src is not empty and doesn't contain Django template tags
+    const src = img.getAttribute('src');
+    if (src && !src.includes('{%') && !src.includes('{{')) {
+      imageSources.push(src);
+    }
+  });
+
+  // Add placeholder images if actual images are not loading
+  const logoPlaceholders = document.querySelectorAll('img[alt*="Logo"]');
+  logoPlaceholders.forEach(logo => {
+    logo.onerror = function() {
+      // Replace with a data URI for a simple blue placeholder logo
+      this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNTAiIGZpbGw9IiMzYjgyZjYiIHJ4PSI4IiByeT0iOCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjE4IiBmaWxsPSJ3aGl0ZSI+RGVlcEd1YXJkPC90ZXh0Pjwvc3ZnPg==';
+      this.style.objectFit = 'contain';
+    };
+  });
+
+  // Add placeholder for background image
+  const coverImages = document.querySelectorAll('img.cover-image');
+  coverImages.forEach(img => {
+    img.onerror = function() {
+      // Replace with a data URI for a blue gradient
+      this.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxZTQwYWYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzYjgyZjYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg==';
+    };
+  });
+
+  // Preload images
+  preloadImages(imageSources, function() {
+    console.log('All images preloaded successfully');
+  });
+
+  // Fix Django template tags in image src attributes
+  function fixDjangoImageSrcs() {
+    // This is a workaround for development environments
+    // In production, Django would have already processed these templates
+    const djangoImageElements = document.querySelectorAll('img[src*="{%"]');
+
+    djangoImageElements.forEach(img => {
+      // Replace with a base64 placeholder
+      img.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiMzYjgyZjYiIHJ4PSI4IiByeT0iOCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjE2IiBmaWxsPSJ3aGl0ZSI+RGVlcEd1YXJkPC90ZXh0Pjwvc3ZnPg==';
+      img.setAttribute('data-original-src', img.getAttribute('src'));
+    });
+  }
+
+  // Run the fix
+  fixDjangoImageSrcs();
+});
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+  // Get the modal element
+  const modal = document.getElementById("registrationModal");
+  if (!modal) return;
+
+  // Apply styles to modal
+  applyStyles(modal, {
+    display: "none",
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    zIndex: "1000",
+    justifyContent: "center",
+    alignItems: "center"
+  });
+
+  // Get the modal content
+  const modalContent = modal.querySelector(".modal-content");
+  if (modalContent) {
+    applyStyles(modalContent, {
+      backgroundColor: "white",
+      borderRadius: "12px",
+      maxWidth: "804px",
+  width: "40%",  // change from 60% to 40%
+  maxHeight: "700px",
+  height: "100%",  // change from 60% to 40%
+      overflow: "hidden",
+      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+    });
+  }
+
+  // Style the left side with the image
+  const leftSide = modal.querySelector(".modal-content > div:first-child");
+  if (leftSide) {
+    applyStyles(leftSide, {
+      position: "relative",
+      backgroundColor: "#1e40af", // Dark blue background as fallback
+      color: "white"
+    });
+
+    // Create gradient overlay
+    const overlay = document.createElement("div");
+    applyStyles(overlay, {
+      position: "absolute",
+      top: "0",
+      left: "0",
+      right: "0",
+      bottom: "0",
+      background: "linear-gradient(135deg, rgba(30, 64, 175, 0.85), rgba(37, 99, 235, 0.7))",
+      zIndex: "1"
+    });
+    leftSide.appendChild(overlay);
+
+    // Style content in the left side
+    const contentContainer = leftSide.querySelector(".absolute");
+    if (contentContainer) {
+      applyStyles(contentContainer, {
+        zIndex: "2",
+        padding: "1rem"
+      });
+    }
+
+    // Style the logo
+    const logo = leftSide.querySelector("img");
+    if (logo) {
+      applyStyles(logo, {
+        height: "3rem",
+        filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))"
+      });
+    }
+
+    // Style the feature points
+    const featurePoints = leftSide.querySelectorAll(".flex.items-center.space-x-3");
+    featurePoints.forEach(point => {
+      const iconContainer = point.querySelector("div:first-child");
+      if (iconContainer) {
+        applyStyles(iconContainer, {
+          backgroundColor: "rgba(59, 130, 246, 0.3)",
+          borderRadius: "9999px",
+          padding: "0.3rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "2rem",
+          height: "2rem"
+        });
+      }
+    });
+  }
+
+  // Style the right side with the form
+  const rightSide = modal.querySelector(".modal-content > div:last-child");
+  if (rightSide) {
+    applyStyles(rightSide, {
+      padding: "1.5rem"
+    });
+
+    // Style the form header
+    const formHeader = rightSide.querySelector("div:first-child");
+    if (formHeader) {
+      applyStyles(formHeader, {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "1.5rem"
+      });
+
+      // Style the logo in the header
+      const headerLogo = formHeader.querySelector("img");
+      if (headerLogo) {
+        applyStyles(headerLogo, {
+          height: "0rem",
+          display: "none"
+        });
+      }
+
+      // Style the title
+      const title = formHeader.querySelector("h3");
+      if (title) {
+        applyStyles(title, {
+          color: "#1e40af",
+          fontWeight: "bold",
+    fontSize: "1rem",  // change from 1.25rem to 1rem
+        });
+      }
+
+      // Style the close button
+      const closeButton = formHeader.querySelector("button");
+      if (closeButton) {
+        applyStyles(closeButton, {
+          background: "none",
+          border: "none",
+          color: "#9ca3af",
+          fontSize: "1.25rem",
+          cursor: "pointer"
+        });
+
+        // Add hover effect
+        closeButton.addEventListener("mouseover", function() {
+          this.style.color = "#4b5563";
+        });
+
+        closeButton.addEventListener("mouseout", function() {
+          this.style.color = "#9ca3af";
+        });
+      }
+    }
+
+    // Style the info alert
+    const infoAlert = rightSide.querySelector(".bg-blue-50");
+    if (infoAlert) {
+      applyStyles(infoAlert, {
+        backgroundColor: "#eff6ff",
+        borderLeft: "4px solid #3b82f6",
+        padding: "1rem",
+        borderRadius: "0.5rem",
+        marginBottom: "1.5rem",
+        display: "flex",
+        alignItems: "flex-start"
+      });
+
+      // Style the icon
+      const alertIcon = infoAlert.querySelector("i");
+      if (alertIcon) {
+        applyStyles(alertIcon, {
+          color: "#3b82f6",
+          marginRight: "0.75rem",
+          marginTop: "0.125rem"
+        });
+      }
+    }
+
+    // Style form inputs
+    const inputGroups = rightSide.querySelectorAll("[class*='mt-1']");
+    inputGroups.forEach(group => {
+      applyStyles(group, {
+        marginTop: "0.5rem",
+        position: "relative"
+      });
+
+      // Style the icon container
+      const iconContainer = group.querySelector("div.absolute");
+      if (iconContainer) {
+        applyStyles(iconContainer, {
+          position: "absolute",
+          left: "1rem",
+          top: "50%",
+          transform: "translateY(-50%)",
+          pointerEvents: "none"
+        });
+
+        // Style the icon
+        const icon = iconContainer.querySelector("i");
+        if (icon) {
+          applyStyles(icon, {
+            color: "#3b82f6"
+          });
+        }
+      }
+
+      // Style the input
+      const input = group.querySelector("input");
+      if (input) {
+        applyStyles(input, {
+          width: "100%",
+          padding: "0.75rem 1rem 0.75rem 2.75rem",
+          border: "1px solid #d1d5db",
+          borderRadius: "0.5rem",
+          fontSize: "0.95rem",
+          transition: "all 0.2s",
+          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)"
+        });
+
+        // Add focus event
+        input.addEventListener("focus", function() {
+          this.style.outline = "none";
+          this.style.borderColor = "#3b82f6";
+          this.style.boxShadow = "0 0 0 3px rgba(59, 130, 246, 0.25)";
+        });
+
+        input.addEventListener("blur", function() {
+          this.style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.05)";
+          this.style.borderColor = "#d1d5db";
+        });
+      }
+
+      // Style password eye icon
+      const passwordToggle = group.querySelector("button");
+      if (passwordToggle) {
+        applyStyles(passwordToggle, {
+          position: "absolute",
+          right: "1rem",
+          top: "50%",
+          transform: "translateY(-50%)",
+          background: "none",
+          border: "none",
+          color: "#9ca3af",
+          cursor: "pointer"
+        });
+
+        // Add hover effect
+        passwordToggle.addEventListener("mouseover", function() {
+          this.style.color = "#3b82f6";
+        });
+
+        passwordToggle.addEventListener("mouseout", function() {
+          this.style.color = "#9ca3af";
+        });
+      }
+    });
+
+    // Style help text
+    const helpText = rightSide.querySelector(".text-xs.text-gray-500");
+    if (helpText) {
+      applyStyles(helpText, {
+        fontSize: "0.75rem",
+        color: "#6b7280",
+        marginTop: "0.25rem"
+      });
+    }
+
+    // Style progress container
+    const progressContainer = rightSide.querySelector("#uploadProgress");
+    if (progressContainer) {
+      applyStyles(progressContainer, {
+        marginTop: "1.5rem",
+        marginBottom: "1.5rem"
+      });
+
+      // Style the progress header
+      const progressHeader = progressContainer.querySelector(".flex.justify-between");
+      if (progressHeader) {
+        applyStyles(progressHeader, {
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "0.5rem"
+        });
+      }
+
+      // Style the progress bar container
+      const barContainer = progressContainer.querySelector(".progress-container");
+      if (barContainer) {
+        applyStyles(barContainer, {
+          width: "100%",
+          height: "0.5rem",
+          backgroundColor: "#e5e7eb",
+          borderRadius: "9999px",
+          overflow: "hidden"
+        });
+
+        // Style the progress bar
+        const bar = barContainer.querySelector(".progress-bar");
+        if (bar) {
+          applyStyles(bar, {
+            height: "100%",
+            background: "linear-gradient(90deg, #3b82f6, #2563eb)",
+            borderRadius: "9999px",
+            transition: "width 0.5s ease"
+          });
+        }
+      }
+    }
+
+    // Style submit button
+    const submitButton = rightSide.querySelector("#registerBtn");
+    if (submitButton) {
+      applyStyles(submitButton, {
+        width: "100%",
+        background: "linear-gradient(to right, #2563eb, #3b82f6)",
+        color: "white",
+        fontWeight: "500",
+        padding: "0.875rem",
+        borderRadius: "0.5rem",
+        border: "none",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: "pointer",
+        transition: "all 0.3s",
+        boxShadow: "0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1)",
+        marginTop: "1.1rem"
+      });
+
+      // Add hover effect
+      submitButton.addEventListener("mouseover", function() {
+        this.style.background = "linear-gradient(to right, #1d4ed8, #2563eb)";
+        this.style.boxShadow = "0 10px 15px -3px rgba(37, 99, 235, 0.2), 0 4px 6px -2px rgba(37, 99, 235, 0.1)";
+        this.style.transform = "translateY(-1px)";
+      });
+
+      submitButton.addEventListener("mouseout", function() {
+        this.style.background = "linear-gradient(to right, #2563eb, #3b82f6)";
+        this.style.boxShadow = "0 4px 6px -1px rgba(37, 99, 235, 0.2), 0 2px 4px -1px rgba(37, 99, 235, 0.1)";
+        this.style.transform = "translateY(0)";
+      });
+
+      submitButton.addEventListener("mousedown", function() {
+        this.style.transform = "translateY(1px)";
+        this.style.boxShadow = "0 2px 4px -1px rgba(37, 99, 235, 0.2)";
+      });
+
+      submitButton.addEventListener("mouseup", function() {
+        this.style.transform = "translateY(-1px)";
+        this.style.boxShadow = "0 10px 15px -3px rgba(37, 99, 235, 0.2), 0 4px 6px -2px rgba(37, 99, 235, 0.1)";
+      });
+
+      // Style the icon in the button
+      const buttonIcon = submitButton.querySelector("i");
+      if (buttonIcon) {
+        applyStyles(buttonIcon, {
+          marginRight: "0.5rem"
+        });
+      }
+    }
+
+    // Style terms text
+    const termsText = rightSide.querySelector(".text-xs.text-gray-500:not(:first-child)");
+    if (termsText) {
+      applyStyles(termsText, {
+        fontSize: "0.75rem",
+        color: "#6b7280",
+        marginTop: "1rem",
+        textAlign: "center"
+      });
+
+      // Style the links
+      const links = termsText.querySelectorAll("a");
+      links.forEach(link => {
+        applyStyles(link, {
+          color: "#3b82f6",
+          textDecoration: "none"
+        });
+
+        // Add hover effect
+        link.addEventListener("mouseover", function() {
+          this.style.color = "#2563eb";
+          this.style.textDecoration = "underline";
+        });
+
+        link.addEventListener("mouseout", function() {
+          this.style.color = "#3b82f6";
+          this.style.textDecoration = "none";
+        });
+      });
+    }
+
+    // Style the divider
+    const divider = rightSide.querySelector(".relative.mt-6");
+    if (divider) {
+      applyStyles(divider, {
+        position: "relative",
+        marginTop: "1rem",
+        marginBottom: "1rem",
+        textAlign: "center"
+      });
+
+      // Style the line
+      const line = divider.querySelector(".w-full.border-t");
+      if (line) {
+        applyStyles(line, {
+          borderTop: "1px solid #e5e7eb",
+          position: "absolute",
+          top: "20%",
+          left: "0",
+          right: "0"
+        });
+      }
+
+      // Style the text in the divider
+      const dividerText = divider.querySelector("span");
+      if (dividerText) {
+        applyStyles(dividerText, {
+          position: "relative",
+          backgroundColor: "white",
+          padding: "0 0.75rem",
+          color: "#6b7280",
+          fontSize: "0.875rem"
+        });
+      }
+    }
+
+    // Style the sign in link
+    const signInLink = rightSide.querySelector(".mt-4.text-center a");
+    if (signInLink) {
+      applyStyles(signInLink, {
+        color: "#3b82f6",
+        fontWeight: "500",
+        textDecoration: "none"
+      });
+
+      // Add hover effect
+      signInLink.addEventListener("mouseover", function() {
+        this.style.color = "#1d4ed8";
+        this.style.textDecoration = "underline";
+      });
+
+      signInLink.addEventListener("mouseout", function() {
+        this.style.color = "#3b82f6";
+        this.style.textDecoration = "none";
+      });
+    }
+  }
+
+  // Function to apply styles to element
+  function applyStyles(element, styles) {
+    for (const property in styles) {
+      element.style[property] = styles[property];
+    }
+  }
+
+  // Modal functionality
+  window.openModal = function(videoName = "Video Analysis") {
+    // Set the video name in the info alert
+    const videoNameElement = document.getElementById("videoName");
+    if (videoNameElement) {
+      videoNameElement.textContent = videoName;
+    }
+
+    // Show modal
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden"; // Prevent background scrolling
+  };
+
+  window.closeModal = function() {
+    modal.style.display = "none";
+    document.body.style.overflow = ""; // Re-enable scrolling
+
+    // Reset form
+    const registrationForm = document.getElementById("registrationForm");
+    if (registrationForm) registrationForm.reset();
+
+    const uploadProgress = document.getElementById("uploadProgress");
+    if (uploadProgress) uploadProgress.style.display = "none";
+
+    const registrationStatus = document.getElementById("registrationStatus");
+    if (registrationStatus) registrationStatus.style.display = "none";
+
+    const progressBar = document.getElementById("progressBar");
+    if (progressBar) progressBar.style.width = "0%";
+
+    const progressPercent = document.getElementById("progressPercent");
+    if (progressPercent) progressPercent.textContent = "0%";
+  };
+
+  // Close modal when clicking outside the content
+  modal.addEventListener("click", function(event) {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Password visibility toggle
+  window.togglePasswordVisibility = function() {
+    const passwordInput = document.getElementById("password");
+    const eyeIcon = document.querySelector("button[onclick='togglePasswordVisibility()'] i");
+
+    if (passwordInput && eyeIcon) {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.className = eyeIcon.className.replace("fa-eye", "fa-eye-slash");
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.className = eyeIcon.className.replace("fa-eye-slash", "fa-eye");
+      }
+    }
+  };
+
+  // Form submission
+  const registrationForm = document.getElementById("registrationForm");
+  if (registrationForm) {
+    registrationForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      // Show progress bar
+      const uploadProgress = document.getElementById("uploadProgress");
+      if (uploadProgress) {
+        uploadProgress.style.display = "block";
+      }
+
+      // Disable the submit button
+      const submitButton = document.getElementById("registerBtn");
+      if (!submitButton) return;
+
+      const originalButtonText = submitButton.innerHTML;
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+
+      // Simulate progress (in a real application, this would be actual upload progress)
+      let progress = 0;
+      const progressBar = document.getElementById("progressBar");
+      const progressPercent = document.getElementById("progressPercent");
+
+      const progressInterval = setInterval(function() {
+        if (progress >= 100) {
+          clearInterval(progressInterval);
+
+          // Show success message
+          const statusDiv = document.getElementById("registrationStatus");
+          if (statusDiv) {
+            statusDiv.style.display = "block";
+            statusDiv.style.backgroundColor = "#ecfdf5";
+            statusDiv.style.borderLeft = "4px solid #10b981";
+            statusDiv.style.color = "#065f46";
+            statusDiv.style.padding = "1rem";
+            statusDiv.style.borderRadius = "0.5rem";
+            statusDiv.style.marginBottom = "1.5rem";
+            statusDiv.innerHTML = '<div class="flex"><div class="flex-shrink-0"><i class="fas fa-check-circle mr-2"></i></div><div><p>Registration successful! Redirecting to analysis...</p></div></div>';
+          }
+
+          // Reset button
+          setTimeout(function() {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+
+            // In a real application, you would redirect here
+            // window.location.href = "/analysis";
+
+            // For demo purposes, just close modal after delay
+            setTimeout(closeModal, 2000);
+          }, 1500);
+        } else {
+          progress += Math.random() * 10;
+          if (progress > 100) progress = 100;
+
+          if (progressBar) progressBar.style.width = progress + "%";
+          if (progressPercent) progressPercent.textContent = Math.round(progress) + "%";
+        }
+      }, 200);
+    });
+  }
+
+  // Optionally auto-open the modal for testing
+  // setTimeout(function() {
+  //   openModal("Sample_Video.mp4");
+  // }, 1000);
+});
+</script>
+</div>
+
+<main>
+
   <section id="features" class="features">
+      <h2 class="section__title" style="margin-top:80px;">
+      Our Platform Features
+    </h2>
     <h2 class="visuallyhidden">Features</h2>
     <ul class="features__list">
       <li>
         <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <use xlink:href="#headphones-icon"></use>
         </svg>
-        <p><strong>Engaging audio content</strong> on a wide range on topics.</p>
+        <p><strong>Protect you from </strong> fake voice threats.</p>
       </li>
       <li>
         <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <use xlink:href="#video-icon"></use>
         </svg>
-        <p><strong>400+ video lessons</strong> from professional teachers.</p>
+        <p><strong>Support DeepFake detection </strong> that protect you and your family from deepfake threats.</p>
       </li>
       <li>
         <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <use xlink:href="#email-icon"></use>
         </svg>
-        <p><strong>Weekly tips and advice</strong> to help you improve your English level.</p>
+        <p><strong>Mail Support and Indepth </strong> Report analysis provide to the users.</p>
       </li>
     </ul>
   </section>
-  <section id="how-it-works" class="grow">
-    <h2 class="section__title grow__title">Grow Together</h2>
-    <p>
-      Start a meaningful conversation in our community platform, ask questions when you’re stuck and get help from a
-      real person. Get answers fast, no matter your question.
-    </p>
-    <svg width="174" height="341" viewBox="0 0 174 341" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <use xlink:href="#grow-illustration"></use>
-    </svg>
-    <svg width="898" height="500" viewBox="0 0 898 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="blob">
-      <use xlink:href="#grow-blob"></use>
-    </svg>
-  </section>
-  <div class="arrow-1"></div>
-  <section class="get-feedback">
-    <h2 class="section__title get-feedback__title">
-      Get quality feedback
-    </h2>
-    <p>
-      We are here for you. Participate in the weekly live events, get the tools and resources you need, and find
-      friendships with people that have the same goal as you.
-    </p>
-    <svg width="519" height="366" viewBox="0 0 519 366" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-      <use xlink:href="#feedback"></use>
-    </svg>
-  </section>
-  <div class="arrow-2"></div>
-  <section class="learning">
-    <h2 class="section__title learning__title">
-      Start learning immediately
-    </h2>
-    <p>
-      It takes no time to start learning with us, This means, once you sign up for an account, you can start
-      learning immediately and get access to our community.
-    </p>
-    <svg width="598" height="323" viewBox="0 0 598 323" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-      <use xlink:href="#learning"></use>
-    </svg>
-  </section>
-  <div id="get-started" class="get-started">
-    <ul>
-      <li>
-        <svg width="80" height="56" viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <use xlink:href="#user"></use>
-        </svg>
-        <p><strong class="counter community-members">1.2</strong><strong>K+</strong></p>
-        <p>Community Members</p>
-      </li>
-      <li>
-        <svg width="56" height="65" viewBox="0 0 56 65" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <use xlink:href="#article"></use>
-        </svg>
-        <p><strong class="counter number-of-pages">1.9</strong><strong>K+</strong></p>
-        <p>Pages with content for you to learn</p>
-      </li>
-    </ul>
-  </div>
-  <section class="start-learning">
-    <h2 class="section__title">
-      Ready To Start Learning English?
-    </h2>
-    <a href="#" class="button">Get Started</a>
-    <div class="video-learning">
-      <video muted id="video" class="video" poster="https://res.cloudinary.com/alexandracaulea/image/upload/v1583497256/video-poster_lkwsdg.jpg">
-        <!--  The video was removed. You can add your own video using the tag below and the functionality will work as expected -->
-        <!--  <source src="" type="video/mp4" /> -->
-      </video>
-      <div class="video-controls">
-        <div class="progress">
-          <div class="progress-fill"></div>
+
+
+
+
+<!--  <div class="deepfake-section-container">-->
+<!--  {% load static %}-->
+
+<!--  &lt;!&ndash; Left: Video &ndash;&gt;-->
+<!--  <div class="deepfake-video-box">-->
+<!--    <div class="video-wrapper">-->
+<!--      <video id="deepfakeVideo" controls poster="https://image-optimizer.cyberriskalliance.com/unsafe/1920x0/https://files.scmagazine.com/wp-content/uploads/2024/02/AdobeStock_533870346.jpg">-->
+<!--        <source src="{% static 'realdeepfake.mp4' %}" type="video/mp4">-->
+<!--        Your browser does not support the video tag.-->
+<!--      </video>-->
+<!--      <div class="custom-play-btn" onclick="playDefaultVideo()"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+<!--  &lt;!&ndash; Right: Upload &ndash;&gt;-->
+<!--  <div class="deepfake-upload-box text-center">-->
+<!--    <h3 class="text-xl font-semibold text-blue-900 mb-4">Upload Video for Analysis</h3>-->
+<!--    <p class="text-gray-700">Still unsure? Watch the deepfake demo to see the danger.</p>-->
+
+<!--    &lt;!&ndash; Hidden file input &ndash;&gt;-->
+<!--    <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleFileSelect(this)">-->
+
+<!--    &lt;!&ndash; Clickable upload icon &ndash;&gt;-->
+<!--    <label for="videoInput" class="block cursor-pointer border-2 border-dashed border-gray-300 bg-gray-50 p-8 rounded-lg transition hover:bg-gray-100">-->
+<!--      <img src="{% static 'icons8-upload-80.png' %}" alt="Upload Icon" class="mx-auto mb-2 w-12 h-12 text-blue-700">-->
+<!--      <p class="text-gray-700">Drag & drop video file here or click to browse</p>-->
+<!--    </label>-->
+
+<!--    &lt;!&ndash; Display selected file name &ndash;&gt;-->
+<!--    <p id="fileName" class="mt-2 text-sm text-gray-600"></p>-->
+
+<!--    &lt;!&ndash; Upload button &ndash;&gt;-->
+<!--    <button class="deepfake-upload-btn mt-4 bg-blue-700 text-white py-2 px-6 rounded hover:bg-blue-800" onclick="uploadVideo()">Upload</button>-->
+<!--</div>-->
+<!--</div>-->
+
+
+
+
+<style>
+    .dfdetect-container {
+      max-width: 1200px;
+      margin: -30px auto;
+      padding: 20px;
+    }
+
+    /* Main heading styles with gradient */
+    .dfdetect-main-heading {
+      text-align: center;
+      margin: 80px 0 60px;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2d3748;
+      position: relative;
+    }
+
+    .dfdetect-main-heading::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, #3a7bd5, #00d2ff);
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+
+    /* Process section styles */
+    .dfdetect-process-section {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+      position: relative;
+      padding: 20px 0;
+    }
+
+    /* Individual section styles */
+    .dfdetect-process-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 40px;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .dfdetect-process-block.dfdetect-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .dfdetect-process-block.dfdetect-from-left {
+      transform: translateX(-100px);
+    }
+
+    .dfdetect-process-block.dfdetect-from-right {
+      transform: translateX(100px);
+    }
+
+    .dfdetect-process-block.dfdetect-from-left.dfdetect-visible,
+    .dfdetect-process-block.dfdetect-from-right.dfdetect-visible {
+      transform: translateX(0);
+    }
+
+    .dfdetect-process-block.dfdetect-reverse {
+      flex-direction: row-reverse;
+    }
+
+    /* Section content styles */
+    .dfdetect-process-content {
+      flex: 1;
+      z-index: 2;
+    }
+
+    .dfdetect-process-content h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #2d3748;
+      position: relative;
+    }
+
+    .dfdetect-process-content h2::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #3a7bd5, #00d2ff);
+    }
+
+    .dfdetect-process-content p {
+      font-size: 1.1rem;
+      color: #4a5568;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    /* Image container styles */
+    .dfdetect-img-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .dfdetect-img-container .dfdetect-gif {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .dfdetect-process-block.dfdetect-visible .dfdetect-gif {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Blob background */
+    .dfdetect-blob-bg {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    .dfdetect-upload-blob {
+      background: radial-gradient(circle, #3a7bd5 0%, transparent 70%);
+      top: -50px;
+      right: -50px;
+    }
+
+    .dfdetect-detection-blob {
+      background: radial-gradient(circle, #00d2ff 0%, transparent 70%);
+      bottom: -50px;
+      left: -50px;
+    }
+
+    .dfdetect-analysis-blob {
+      background: radial-gradient(circle, #7f449d 0%, transparent 70%);
+      top: -50px;
+      left: -50px;
+    }
+
+    /* Step indicators */
+    .dfdetect-step-number {
+      position: absolute;
+      top: -15px;
+      left: 40px;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 50%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 3;
+    }
+
+    /* Connection arrows */
+    .dfdetect-connection-arrow {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 60px;
+      background: linear-gradient(to bottom, #3a7bd5, #00d2ff);
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.8s ease-out;
+    }
+
+    .dfdetect-connection-arrow.dfdetect-visible {
+      opacity: 1;
+    }
+
+    .dfdetect-connection-arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #00d2ff;
+    }
+
+    /* Additional features */
+    .dfdetect-feature-tag {
+      display: inline-block;
+      padding: 5px 12px;
+      background: rgba(58, 123, 213, 0.1);
+      color: #3a7bd5;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .dfdetect-cta-button {
+      display: inline-block;
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+    }
+
+    .dfdetect-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* GIF Hover Effect */
+    .dfdetect-gif {
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+
+    .dfdetect-img-container:hover .dfdetect-gif {
+      transform: scale(1.03);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+      .dfdetect-process-block, .dfdetect-process-block.dfdetect-reverse {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .dfdetect-process-content h2::before {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .dfdetect-step-number {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0px 20px;
+        }
+
+        .developers-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top:50px;
+        }
+
+        .image-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .content-container {
+            flex: 1;
+            padding: 40px 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .api-features {
+            margin: 25px 0;
+        }
+
+        .feature {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .feature-icon {
+            background-color: #4285f4;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #4285f4;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #3367d6;
+        }
+
+        @media (max-width: 768px) {
+            .developers-section {
+                flex-direction: column;
+            }
+
+            .image-container {
+                order: -1;
+            }
+        }
+    .raven2025_contact_container {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 1rem auto;
+      margin-top:-40px;
+      padding: 0 1rem;
+    }
+
+    .raven2025_contact_heading {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 3rem;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .raven2025_contact_heading:after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: #4a6fa5;
+      margin: 0.8rem auto 0;
+    }
+
+    .raven2025_contact_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .raven2025_contact_imageContainer {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+      background: linear-gradient(135deg, #4a6fa5 0%, #2d3748 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .raven2025_contact_image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .raven2025_contact_overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+      color: white;
+    }
+
+    .raven2025_contact_overlayTitle {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .raven2025_contact_overlayText {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .raven2025_contact_formContainer {
+      padding: 3rem 2rem;
+    }
+
+    .raven2025_contact_formTitle {
+      font-size: 1.75rem;
+      color: #2d3748;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .raven2025_contact_form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .raven2025_contact_inputGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .raven2025_contact_label {
+      font-weight: 500;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    .raven2025_contact_input,
+    .raven2025_contact_textarea {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .raven2025_contact_input:focus,
+    .raven2025_contact_textarea:focus {
+      outline: none;
+      border-color: #4a6fa5;
+      box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+    }
+
+    .raven2025_contact_textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .raven2025_contact_button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      align-self: flex-start;
+    }
+
+    .raven2025_contact_button:hover {
+      background: #3a5a84;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .raven2025_contact_grid {
+        grid-template-columns: 1fr;
+      }
+
+      .raven2025_contact_imageContainer {
+        min-height: 300px;
+      }
+    }
+    .competitors-section {
+            padding: 80px 20px;
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top-left gradient */
+        .competitors-section::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(156,132,255,0.4) 0%, rgba(111,168,255,0.2) 50%, rgba(255,255,255,0) 70%);
+            z-index: 1;
+        }
+
+        /* Bottom-right gradient */
+        .competitors-section::after {
+            content: "";
+            position: absolute;
+            bottom: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,131,231,0.4) 0%, rgba(99,171,255,0.2) 50%, rgba(255,255,255,0) 70%);
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            font-weight: 700;
+            color: #162056;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #5e7eff, #3a56e4);
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #5b6a92;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .competitors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .competitor-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(111, 136, 219, 0.1);
+            border: 1px solid rgba(226, 232, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .competitor-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #4f68e9, #6e96ff);
+        }
+
+        .competitor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(111, 136, 219, 0.15);
+        }
+
+        .competitor-logo {
+            width: 80px;
+            height: 80px;
+            background: #f0f4ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .competitor-logo svg {
+            width: 40px;
+            height: 40px;
+            fill: #3a56e4;
+        }
+
+        .competitor-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #162056;
+            margin-bottom: 15px;
+        }
+
+        .competitor-description {
+            font-size: 16px;
+            color: #5b6a92;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .competitor-strengths {
+            margin-top: 20px;
+        }
+
+        .strength-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .checkmark {
+            color: #3a56e4;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .strength-text {
+            font-size: 15px;
+            color: #5b6a92;
+        }
+
+        @media (max-width: 768px) {
+            .competitors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header h2 {
+                font-size: 32px;
+            }
+        }
+
+    .features-section {
+
+            padding: 60px 0;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .features-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .features-header h2 span {
+            background: linear-gradient(90deg, #7c5dfa, #4ac3e3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .features-header p {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .features-header .subtitle {
+            font-size: 18px;
+            max-width: 900px;
+            margin: 0 auto;
+            color: #555;
+        }
+
+        .features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: start; /* Optional: aligns items to the top */
+    gap: 40px;
+    margin-top:-70px;
+    padding: 150px;      /* Optional: for spacing around the grid */
+    box-sizing: border-box; /* Ensures padding doesn’t overflow */
+}
+
+
+        .features-column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .feature-category {
+            margin-bottom: 30px;
+        }
+
+        .feature-category h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .purple-icon {
+            color: #7c5dfa;
+        }
+
+        .orange-icon {
+            color: #e67e22;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: #7c5dfa;
+            margin-bottom: 10px;
+        }
+
+        .ai-badge .star-icon {
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .features-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+  </style>
+</head>
+<body>
+  <div class="dfdetect-container">
+    <h2 class="dfdetect-main-heading">How It Works?</h2>
+
+    <div class="dfdetect-process-section">
+      <!-- Upload Video Section -->
+      <div id="dfdetect-upload-section" class="dfdetect-process-block dfdetect-from-left">
+        <div class="dfdetect-blob-bg dfdetect-upload-blob"></div>
+
+        <div class="dfdetect-process-content">
+          <span class="dfdetect-feature-tag">Step 1</span>
+          <h2>Upload Video</h2>
+          <p>Simply upload your video to our secure platform with just a few clicks. Our advanced system stores your data efficiently using embeddings and vectors, ensuring maximum security and privacy while maintaining high-speed processing capabilities.</p>
+          <p>We accept all popular video formats and support files up to 500MB in size for comprehensive analysis.</p>
+          <a href="/login/" class="dfdetect-cta-button">Start Upload</a>
         </div>
-        <button class="video-button toggle" title="Play">►</button>
-        <button data-skip="-5" class="video-button" aria-label="Skip backward 5 seconds">« 5s</button>
-        <button data-skip="5" class="video-button" aria-label="Skip forward 5 seconds">5s »</button>
+
+        <div class="dfdetect-img-container">
+          <img src="https://airfp.fr/_next/image?url=%2Fassets%2FuploadFile.gif&w=1920&q=100" alt="Video Upload Process" class="dfdetect-gif" />
+        </div>
+      </div>
+
+      <div class="dfdetect-connection-arrow"></div>
+
+      <!-- Deepfake Detection Section -->
+      <div id="dfdetect-detection-section" class="dfdetect-process-block dfdetect-from-right dfdetect-reverse">
+        <div class="dfdetect-blob-bg dfdetect-detection-blob"></div>
+
+        <div class="dfdetect-img-container">
+          <img src="https://rshaojimmy.github.io/Projects/assets/SeqDeepFake/images/problem_definition.gif" alt="AI Deepfake Detection" class="dfdetect-gif" />
+        </div>
+
+        <div class="dfdetect-process-content">
+          <span class="dfdetect-feature-tag">Step 2</span>
+          <h2>Deepfake Detection</h2>
+          <p>Our AI models will capture all information and tell your uploaded video is Real or Fake.</p>
+          <p>Using state-of-the-art machine learning algorithms, our system scans every frame to identify inconsistencies, artifacts, and manipulation markers that are invisible to the human eye.</p>
+          <a href="#" class="dfdetect-cta-button">Learn More</a>
+        </div>
+      </div>
+
+      <div class="dfdetect-connection-arrow"></div>
+
+      <!-- In-depth Analysis Section -->
+      <div id="dfdetect-analysis-section" class="dfdetect-process-block dfdetect-from-left">
+        <div class="dfdetect-blob-bg dfdetect-analysis-blob"></div>
+
+        <div class="dfdetect-process-content">
+          <span class="dfdetect-feature-tag">Step 3</span>
+          <h2>In-depth Analysis</h2>
+          <p>Our comprehensive analysis breaks down every aspect of your video with frame-by-frame examination. We provide detailed visualizations through interactive graphs and percentage metrics that highlight potential manipulations.</p>
+          <p>Our reports include confidence scores, manipulation hotspots, and technical explanations that help you make informed decisions about content authenticity.</p>
+            <a href="{% static 'deepfake.pdf' %}" class="dfdetect-cta-button" download>View Sample Report</a>
+        </div>
+
+        <div class="dfdetect-img-container">
+          <img src="https://cdn.dribbble.com/users/8619169/screenshots/16116886/media/a63d64bcccad878cb9dfdb9a9f6b6416.gif" alt="Video Analysis Visualization" class="dfdetect-gif" />
+        </div>
       </div>
     </div>
-    <svg width="1440" height="892" viewBox="0 0 1440 892" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="blob-learning" style="overflow: visible;">
-      <use xlink:href="#blob-learning"></use>
-    </svg>
+  </div>
+
+  <script>
+    // Scroll animation functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const processBlocks = document.querySelectorAll('.dfdetect-process-block');
+      const connectionArrows = document.querySelectorAll('.dfdetect-connection-arrow');
+
+      // Function to check if elements are in viewport
+      function checkVisibility() {
+        processBlocks.forEach((block, index) => {
+          const rect = block.getBoundingClientRect();
+          const isVisible = (
+            rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.75 &&
+            rect.bottom >= 0
+          );
+
+          if (isVisible) {
+            block.classList.add('dfdetect-visible');
+
+            // Make the connection arrow above visible when a block becomes visible
+            if (index > 0) {
+              connectionArrows[index - 1].classList.add('dfdetect-visible');
+            }
+          }
+        });
+      }
+
+      // Add event listeners
+      window.addEventListener('scroll', checkVisibility);
+      window.addEventListener('resize', checkVisibility);
+
+      // Initial check
+      checkVisibility();
+    });
+  </script>
+
+  <div class="container">
+        <div class="developers-section">
+            <div class="image-container">
+                <img src="https://img.freepik.com/premium-photo/developer-using-digital-api-office_194498-29730.jpg" alt="Developer API Integration">
+            </div>
+            <div class="content-container">
+                <h2 style="font-size:3.37em;">For Developers</h2>
+                <p>We provide robust API support to help developers integrate our services seamlessly into their applications. Our comprehensive API documentation and developer tools make implementation simple and efficient.</p>
+
+                <div class="api-features">
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div>
+                            <strong>RESTful API</strong>: Access our services through standard HTTP requests with JSON responses.
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div>
+                            <strong>Secure Authentication</strong>: OAuth 2.0 and API key authentication options available.
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div>
+                            <strong>SDKs Available</strong>: Official libraries for JavaScript, Python, Java, and more.
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✓</div>
+                        <div>
+                            <strong>Webhooks</strong>: Real-time notifications for important events.
+                        </div>
+                    </div>
+                </div>
+
+                <p>Our developer-friendly approach ensures you can build powerful applications with minimal friction. Join thousands of developers already using our API to create innovative solutions.</p>
+
+                <a href="#" class="btn">Explore API Documentation</a>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="section__title" style="text-align:center;">Blogs</h2>
+
+<div class="news-container">
+
+    <!-- News Card 1 -->
+    <div class="news-card">
+      <div class="news-tag">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        News
+      </div>
+      <h3 class="news-title">How 'Deepfake Elon Musk' Became the Internet's Biggest Scammer</h3>
+      <a href="#" class="news-source">www.nytimes.com</a>
+      <a href="#" class="read-button">
+        Read
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- News Card 2 -->
+    <div class="news-card">
+      <div class="news-tag">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        News
+      </div>
+      <h3 class="news-title">Liveness tests used by banks to verify ID are 'extremely vulnerable' to deepfake attacks</h3>
+      <a href="#" class="news-source">www.theverge.com</a>
+      <a href="#" class="read-button">
+        Read
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- News Card 3 -->
+    <div class="news-card">
+      <div class="news-tag">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        News
+      </div>
+      <h3 class="news-title">Nine of the Top 10 Liveness Detection Systems are Vulnerable to Deepfakes: Report</h3>
+      <a href="#" class="news-source">findbiometrics.com</a>
+      <a href="#" class="read-button">
+        Read
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+
+
+
+    <div class="news-card">
+      <div class="news-tag">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        News
+      </div>
+      <h3 class="news-title">Nine of the Top 10 Liveness Detection Systems are Vulnerable to Deepfakes: Report</h3>
+      <a href="#" class="news-source">findbiometrics.com</a>
+      <a href="#" class="read-button">
+        Read
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+
+    <section class="featured-section">
+        <h2 style="font-size:1.7em;">Featured On</h2>
+        <div class="featured-logos">
+            <img src="https://i0.wp.com/examtipsindia.com/wp-content/uploads/2022/10/download-3.png" alt="India Security Press" class="featured-logo" style="animation-delay: 0.1s; height:120px; width:120px;">
+            <img src="https://th.bing.com/th/id/OIP.Ytfx67njQG-oRJQMYIYYMAHaEH?rs=1&pid=ImgDetMain" alt="Electronic Security" class="featured-logo" style="animation-delay: 0.2s; height:120px; width:120px;">
+            <img src="https://th.bing.com/th/id/OIP.A6vhRTYHodCLA9BTeM55TAHaH_?rs=1&pid=ImgDetMain" alt="Indian Intelligence" class="featured-logo" style="animation-delay: 0.3s; height:120px; width:120px;">
+            <img src="https://th.bing.com/th/id/OLC.6OrC7383AoACbQ480x360?&rs=1&pid=ImgDetMain" alt="CDI" class="featured-logo" style="animation-delay: 0.4s; height:120px; width:120px;" >
+            <img src="https://www.clipartmax.com/png/middle/156-1562350_central-security-service-wikipedia-national-emblem-of-india.png" alt="IIB" class="featured-logo" style="animation-delay: 0.5s; height:120px; width:120px;">
+        </div>
+    </section>
+
+
+  <section class="dfdetect2025_reviewSection">
+    <div class="dfdetect2025_blob1"></div>
+    <div class="dfdetect2025_blob2"></div>
+
+    <div class="dfdetect2025_container">
+      <div class="dfdetect2025_header">
+        <h2 class="dfdetect2025_title">What Our Clients Say</h2>
+        <p class="dfdetect2025_subtitle">See how our advanced deepfake detection technology is helping organizations across various sectors verify content authenticity and maintain digital trust.</p>
+      </div>
+
+      <div class="dfdetect2025_cardGrid">
+        <!-- Review Card 1 -->
+        <div class="dfdetect2025_card dfdetect2025_cardGradient1">
+          <div class="dfdetect2025_cardHeader">
+            <div class="dfdetect2025_stars">
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+            </div>
+            <h3 class="dfdetect2025_quote">"Game-changing technology for our media verification process."</h3>
+          </div>
+
+          <div class="dfdetect2025_cardBody">
+            <p class="dfdetect2025_review">As a news agency, we deal with thousands of videos daily. This deepfake detection platform has become an essential part of our verification workflow. It's incredibly accurate and helps us maintain our journalistic integrity in an era where synthetic media is becoming increasingly sophisticated.</p>
+
+            <div class="dfdetect2025_user">
+              <div class="dfdetect2025_avatar">JD</div>
+              <div class="dfdetect2025_userInfo">
+                <h4>James Donovan</h4>
+                <p>Digital Content Director, Global News Network</p>
+                <div class="dfdetect2025_verifiedBadge">
+                  <svg class="dfdetect2025_verifiedIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Verified Customer
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review Card 2 -->
+        <div class="dfdetect2025_card dfdetect2025_cardGradient2">
+          <div class="dfdetect2025_cardHeader">
+            <div class="dfdetect2025_stars">
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+            </div>
+            <h3 class="dfdetect2025_quote">"Essential tool for protecting our brand reputation."</h3>
+          </div>
+
+          <div class="dfdetect2025_cardBody">
+            <p class="dfdetect2025_review">After experiencing a deepfake incident that threatened our CEO's reputation, we implemented this solution across all our digital channels. The AI technology is remarkable at distinguishing between real and manipulated content, and the real-time alerts have helped us respond to threats before they go viral.</p>
+
+            <div class="dfdetect2025_user">
+              <div class="dfdetect2025_avatar">SW</div>
+              <div class="dfdetect2025_userInfo">
+                <h4>Sarah Wilson</h4>
+                <p>Chief Security Officer, Tech Innovations Inc.</p>
+                <div class="dfdetect2025_verifiedBadge">
+                  <svg class="dfdetect2025_verifiedIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Verified Customer
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review Card 3 -->
+        <div class="dfdetect2025_card dfdetect2025_cardGradient3">
+          <div class="dfdetect2025_cardHeader">
+            <div class="dfdetect2025_stars">
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+              <svg class="dfdetect2025_star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+              </svg>
+            </div>
+            <h3 class="dfdetect2025_quote">"The most accurate deepfake detection we've tested."</h3>
+          </div>
+
+          <div class="dfdetect2025_cardBody">
+            <p class="dfdetect2025_review">Our law enforcement agency has evaluated numerous detection solutions, and this one stands out for its precision and low false-positive rate. The detailed analysis reports provide crucial evidence for investigations, and the continuous learning system keeps up with even the most sophisticated deepfake techniques.</p>
+
+            <div class="dfdetect2025_user">
+              <div class="dfdetect2025_avatar">MR</div>
+              <div class="dfdetect2025_userInfo">
+                <h4>Michael Rodriguez</h4>
+                <p>Digital Forensics Specialist, Security Department</p>
+                <div class="dfdetect2025_verifiedBadge">
+                  <svg class="dfdetect2025_verifiedIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  Verified Customer
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
+
+  <section class="competitors-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Competitors</h2>
+                <p>Understanding the competitive landscape helps us position our products and services more effectively. Here's how we compare to key players in the market.</p>
+            </div>
+
+            <div class="competitors-grid">
+                <!-- Competitor 1 -->
+                <div class="competitor-card">
+                    <div class="competitor-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2zm0 2.5L18.5 11H17v9h-2v-6H9v6H7v-9H5.5L12 4.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="competitor-name">Company Alpha</h3>
+                    <p class="competitor-description">Market leader with significant resources and wide reach. Their primary focus is on enterprise solutions with premium pricing.</p>
+                    <div class="competitor-strengths">
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Strong brand recognition</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Extensive feature set</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Global support infrastructure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitor 2 -->
+                <div class="competitor-card">
+                    <div class="competitor-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                    </div>
+                    <h3 class="competitor-name">Company Beta</h3>
+                    <p class="competitor-description">Fast-growing challenger known for innovative approaches and competitive pricing models targeting mid-market clients.</p>
+                    <div class="competitor-strengths">
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Cutting-edge technology</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Agile development cycle</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Responsive customer service</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitor 3 -->
+                <div class="competitor-card">
+                    <div class="competitor-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.21v6.7zm14 0v-6.7l-6 3.37v6.71l6-3.38z"/>
+                        </svg>
+                    </div>
+                    <h3 class="competitor-name">Company Gamma</h3>
+                    <p class="competitor-description">Specialized provider focusing on niche markets with tailored solutions and industry-specific expertise.</p>
+                    <div class="competitor-strengths">
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Deep industry knowledge</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Customized solutions</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="checkmark">✓</span>
+                            <span class="strength-text">Loyal customer base</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+  <script>
+    // Intersection Observer to trigger animations when sections come into view
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Add animation classes
+            if (entry.target.classList.contains('from-right')) {
+              entry.target.style.animation = 'slideInRight 0.8s ease-out forwards';
+            } else if (entry.target.classList.contains('from-left')) {
+              entry.target.style.animation = 'slideInLeft 0.8s ease-out forwards';
+            }
+
+            // Animate SVG elements
+            const svgContainer = entry.target.querySelector('.animate-svg');
+            if (svgContainer) {
+              setTimeout(() => {
+                const svgElements = entry.target.querySelectorAll('.svg-element');
+                svgElements.forEach((el, index) => {
+                  setTimeout(() => {
+                    el.style.animation = 'fadeInUp 0.5s ease-out forwards';
+                  }, index * 100);
+                });
+              }, 300);
+            }
+
+            // Stop observing after animation
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.2
+      });
+
+      // Observe all process blocks
+      document.querySelectorAll('.process-block').forEach(block => {
+        observer.observe(block);
+      });
+
+      // Add a small animation to the blob backgrounds
+      document.querySelectorAll('.blob-bg').forEach(blob => {
+        setInterval(() => {
+          const randomScale = 0.9 + Math.random() * 0.2;
+          blob.style.transform = `scale(${randomScale})`;
+          blob.style.transition = 'transform 3s ease-in-out';
+        }, 3000);
+      });
+    });
+  </script>
+
+
+<section class="features-section">
+            <div class="features-header">
+                <h2>Explore our Powerful <span>Features</span>.</h2>
+                <p>Workforce Productivity Intelligence Transform Performance. Empower Your Team.</p>
+                <p class="subtitle">Unlock unprecedented insights into your organization's productivity with AI-driven analytics that drive strategic decision-making and organizational excellence.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="features-column">
+                    <div class="feature-category">
+                        <h3>Intelligent Productivity Tracking</h3>
+                        <div class="ai-badge">
+                            <span class="star-icon">✦</span>
+                            AI Powered Agentic Insights
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon orange-icon">●</div>
+                            <div class="feature-text">Real-time performance insights</div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon orange-icon">●</div>
+                            <div class="feature-text">Personalized productivity metrics</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-category">
+                        <h3>Proactive Engagement Monitoring</h3>
+
+                        <div class="feature-item">
+                            <div class="feature-icon orange-icon">●</div>
+                            <div class="feature-text">Early burnout detection</div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon orange-icon">●</div>
+                            <div class="feature-text">Employee Engagement Percentage</div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon orange-icon">●</div>
+                            <div class="feature-text">Multi-point Trend Analysis</div>
+                        </div>
+                    </div>
+
+                    <div class="ai-badge">
+                        <span class="star-icon">✦</span>
+                        AI-Powered Performance Analysis
+                    </div>
+                </div>
+
+                <div class="features-column">
+                    <div class="feature-category">
+                        <div class="ai-badge">
+                            <span class="star-icon">✦</span>
+                            AI Powered Agentic Recommendations
+                        </div>
+                        <p class="feature-text" style="margin-bottom: 20px;">Get actionable AI suggestions to improve team output, scheduling, and overall performance.</p>
+
+                        <img src="https://10-raisons.fr/wp-content/uploads/2024/06/Les-deepfakes-evoluent-Cette-entreprise-veut-tous-les-attraper.gif" alt="Agentic Recommendations Interface" class="features-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+<style>
+.get-started {
+margin-top:-60px;
+  padding: 40px 0;
+  overflow: hidden; /* Prevent horizontal scrollbar during animation */
+}
+
+.stats-circles {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+.stats-circle {
+  position: relative;
+  width: 280px;
+  opacity: 0;
+}
+
+/* Slide from left animation */
+.slide-from-left {
+  transform: translateX(-100px);
+}
+
+/* Slide from right animation */
+.slide-from-right {
+  transform: translateX(100px);
+}
+
+/* Animation classes */
+.animate-slide-left {
+  animation: slideFromLeft 1s forwards;
+}
+
+.animate-slide-right {
+  animation: slideFromRight 1s forwards;
+}
+
+@keyframes slideFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.circle-container {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dotted-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+}
+
+.circle-content {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+.circle-content p {
+  margin: 10px 0;
+  color: #333;
+}
+
+.circle-content svg {
+  margin-bottom: 15px;
+}
+
+.counter {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stats-circles {
+    gap: 40px;
+  }
+
+  .stats-circle {
+    width: 220px;
+  }
+
+  .circle-container {
+    height: 220px;
+  }
+}
+
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Function to create the dotted circle
+  function createDottedCircle(container) {
+    const circle = container.querySelector('.dotted-circle');
+    const totalDots = 80; // Number of dots
+    const delay = 10; // Delay between each dot appearing (ms)
+
+    for (let i = 0; i < totalDots; i++) {
+      const dot = document.createElement('div');
+      const angle = (i / totalDots) * 360;
+
+      dot.className = 'dot';
+      dot.style.position = 'absolute';
+      dot.style.width = '2px';
+      dot.style.height = '2px';
+      dot.style.backgroundColor = '#333';
+      dot.style.borderRadius = '50%';
+      dot.style.opacity = '0';
+
+      // Calculate position on the circle
+      const radius = circle.offsetWidth / 2 - 1;
+      const radian = (angle * Math.PI) / 180;
+      const x = radius + radius * Math.cos(radian);
+      const y = radius + radius * Math.sin(radian);
+
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+
+      // Add animation delay
+      dot.style.animation = `fadeIn 0.3s forwards`;
+      dot.style.animationDelay = `${i * delay}ms`;
+
+      circle.appendChild(dot);
+    }
+  }
+
+  // Function to animate counter
+  function animateCounter(counter) {
+    const target = parseFloat(counter.textContent);
+    const increment = target / 50;
+    let current = 0;
+
+    const updateCounter = () => {
+      current += increment;
+      if (current < target) {
+        counter.textContent = current.toFixed(1);
+        setTimeout(updateCounter, 40);
+      } else {
+        counter.textContent = target.toFixed(1);
+      }
+    };
+
+    counter.textContent = '0.0';
+    setTimeout(updateCounter, 800); // Start after circle is mostly formed
+  }
+
+  // Check if element is in viewport
+  function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+      rect.bottom >= 0
+    );
+  }
+
+  // Handle animation on scroll
+  function handleScroll() {
+    const getStarted = document.getElementById('get-started');
+    if (isInViewport(getStarted) && !getStarted.classList.contains('animated')) {
+      getStarted.classList.add('animated');
+
+      // Slide in elements
+      const leftSlide = document.querySelector('.slide-from-left');
+      const rightSlide = document.querySelector('.slide-from-right');
+
+      leftSlide.classList.add('animate-slide-left');
+      rightSlide.classList.add('animate-slide-right');
+
+      // Wait for slide animation to complete before creating dots
+      setTimeout(() => {
+        // Create dotted circles
+        const circleContainers = document.querySelectorAll('.circle-container');
+        circleContainers.forEach(createDottedCircle);
+
+        // Animate counters after circles are created
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(animateCounter);
+      }, 800); // Slightly less than the slide animation duration
+    }
+  }
+
+  // Add keyframe animation for dot appearance
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Check on initial load
+  handleScroll();
+
+  // Listen for scroll events
+  window.addEventListener('scroll', handleScroll);
+});
+</script>
+
+
+
+
 </main>
+
+<section class="raven2025_contact_container">
+    <h2 class="raven2025_contact_heading">Contact Us</h2>
+
+    <div class="raven2025_contact_grid">
+      <!-- Left: Image Section -->
+      <div class="raven2025_contact_imageContainer">
+        <svg class="raven2025_contact_image" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4a6fa5" />
+              <stop offset="100%" stop-color="#2d3748" />
+            </linearGradient>
+          </defs>
+          <rect width="800" height="600" fill="url(#bgGradient)" />
+          <!-- Abstract connection illustration -->
+          <circle cx="200" cy="200" r="30" fill="#ffffff" opacity="0.7" />
+          <circle cx="400" cy="150" r="20" fill="#ffffff" opacity="0.5" />
+          <circle cx="600" cy="250" r="25" fill="#ffffff" opacity="0.6" />
+          <circle cx="300" cy="400" r="35" fill="#ffffff" opacity="0.8" />
+          <circle cx="500" cy="350" r="15" fill="#ffffff" opacity="0.4" />
+          <circle cx="150" cy="500" r="20" fill="#ffffff" opacity="0.5" />
+          <circle cx="650" cy="450" r="30" fill="#ffffff" opacity="0.7" />
+
+          <!-- Connection lines -->
+          <line x1="200" y1="200" x2="400" y2="150" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="400" y1="150" x2="600" y2="250" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="600" y1="250" x2="500" y2="350" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="500" y1="350" x2="300" y2="400" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="300" y1="400" x2="150" y2="500" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="650" y1="450" x2="500" y2="350" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="200" y1="200" x2="300" y2="400" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+
+          <!-- Communication icons -->
+          <path d="M200,200 C220,180 240,190 230,210 L215,235 L200,200" fill="#ffffff" opacity="0.9" />
+          <path d="M300,400 C280,390 275,370 290,365 L310,360 L300,400" fill="#ffffff" opacity="0.9" />
+          <path d="M500,350 C520,340 525,360 510,370 L490,375 L500,350" fill="#ffffff" opacity="0.9" />
+        </svg>
+
+        <div class="raven2025_contact_overlay">
+          <h3 class="raven2025_contact_overlayTitle">Let's Connect</h3>
+          <p class="raven2025_contact_overlayText">We're here to answer your questions and provide the solutions you need. Reach out to our team today.</p>
+        </div>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div class="raven2025_contact_formContainer">
+        <div class="required-field-message">All fields are required</div>
+
+        <h3 class="raven2025_contact_formTitle">Send Us a Message</h3>
+
+        <div class="form-message-container"></div>
+
+        <form class="raven2025_contact_form" id="uniqueContactForm2025">
+            <div class="raven2025_contact_inputGroup">
+                <label for="unique_fullname_2025" class="raven2025_contact_label">Full Name</label>
+                <input type="text" id="unique_fullname_2025" name="name2" class="raven2025_contact_input" placeholder="Enter your name" required>
+            </div>
+
+            <div class="raven2025_contact_inputGroup">
+                <label for="unique_email_2025" class="raven2025_contact_label">Email Address</label>
+                <input type="email" id="unique_email_2025" name="email2" class="raven2025_contact_input" placeholder="Enter your email" required>
+            </div>
+
+            <div class="raven2025_contact_inputGroup">
+                <label for="unique_query_2025" class="raven2025_contact_label">Your Query</label>
+                <textarea id="unique_query_2025" name="query" class="raven2025_contact_textarea" placeholder="How can we help you?" required></textarea>
+            </div>
+
+            <button type="submit" class="raven2025_contact_button">Send Message</button>
+        </form>
+    </div>
+  </section>
+
+
 <footer class="footer">
   <div class="footer-container">
-    <nav class="footer-nav">
-      <div>
-        <h3 class="footer-title">Resources</h3>
-        <ul>
-          <li><a class="footer-link" href="#">Blog</a></li>
-
-          <li><a class="footer-link" href="#">Community</a></li>
-        </ul>
+    <div class="footer-logo-section">
+      <img src="{% static 'cdi-removebg-preview.png' %}" alt="Your Logo" class="footer-logo">
+      <p class="footer-tagline">Cutting-edge deepfake detection technology to protect your digital identity</p>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
       </div>
-      <div>
-        <h3 class="footer-title">Company</h3>
-        <ul>
-          <li><a class="footer-link" href="#">About</a></li>
-          <li><a class="footer-link" href="#">Our Mission</a></li>
-          <li><a class="footer-link" href="#">Our Team</a></li>
-          <li><a class="footer-link" href="#">Careers</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="footer-title">Contact Us</h3>
-        <ul>
-          <li><a class="footer-link" href="#">Sales</a></li>
-          <li><a class="footer-link" href="#">Support</a></li>
-        </ul>
-      </div>
-    </nav>
-    <div class="footer-newsletter" id="subscribe">
-      <a href="#"><svg width="169" height="33" viewBox="0 0 169 33" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Learn English">
-          <use xlink:href="#footer__logo"></use>
-        </svg></a>
-      <p>
-        Stay up to date with all Learn English news by subscribing to our newsletter.
-      </p>
-      <form action="https://www.freecodecamp.com/email-submit" method="GET" id="form" class="footer-form">
-        <label for="email" class="visuallyhidden">Email address</label>
-        <input type="email" name="email" class="footer-email" placeholder="Email Address" id="email" spellcheck="false" aria-required="true" aria-invalid="false" />
-        <input type="submit" id="submit" class="button button-email" value="Subscribe" />
-      </form>
     </div>
-    <ul class="footer-social">
-      <li>
-        <a href="mailto:alexandra.caulea@gmail.com?Subject=Hi%20Alexandra" rel="noopener noreferrer"><svg width="23" height="18" viewBox="0 0 27 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <use xlink:href="#contact-email-icon"></use>
-          </svg><span class="visuallyhidden">email</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://www.instagram.com/alexandra__caulea/" target="_blank" rel="noopener noreferrer">
-          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.538 4.66203C16.538 5.32484 16.0006 5.86203 15.338 5.86203C14.6753 5.86203 14.138 5.32484 14.138 4.66203C14.138 3.99922 14.6753 3.46203 15.338 3.46203C16.0008 3.46203 16.538 3.99922 16.538 4.66203ZM10 13.3333C8.15906 13.3333 6.66672 11.8409 6.66672 10C6.66672 8.15906 8.15906 6.66672 10 6.66672C11.8409 6.66672 13.3333 8.15906 13.3333 10C13.3333 11.8409 11.8409 13.3333 10 13.3333ZM10 4.86484C7.16391 4.86484 4.86484 7.16391 4.86484 10C4.86484 12.8361 7.16391 15.1352 10 15.1352C12.8361 15.1352 15.1352 12.8361 15.1352 10C15.1352 7.16391 12.8361 4.86484 10 4.86484ZM10 1.80187C12.6702 1.80187 12.9864 1.81203 14.0408 1.86016C15.0158 1.90469 15.5453 2.0675 15.8977 2.20453C16.3644 2.38594 16.6975 2.60266 17.0475 2.95266C17.3975 3.3025 17.6142 3.63563 17.7956 4.1025C17.9325 4.45484 18.0955 4.98437 18.14 5.95937C18.1881 7.01391 18.1983 7.33016 18.1983 10.0003C18.1983 12.6705 18.1881 12.9867 18.14 14.0411C18.0955 15.0161 17.9327 15.5456 17.7956 15.898C17.6142 16.3647 17.3975 16.6978 17.0475 17.0478C16.6977 17.3978 16.3645 17.6145 15.8977 17.7959C15.5453 17.9328 15.0158 18.0958 14.0408 18.1403C12.9864 18.1884 12.6702 18.1986 10 18.1986C7.32969 18.1986 7.01344 18.1884 5.95906 18.1403C4.98406 18.0958 4.45453 17.933 4.10219 17.7959C3.63547 17.6145 3.30234 17.3978 2.95234 17.0478C2.6025 16.698 2.38563 16.3648 2.20422 15.898C2.06734 15.5456 1.90437 15.0161 1.85984 14.0411C1.81172 12.9866 1.80156 12.6703 1.80156 10.0003C1.80156 7.33016 1.81172 7.01391 1.85984 5.95937C1.90437 4.98437 2.06719 4.45484 2.20422 4.1025C2.38563 3.63578 2.60234 3.30266 2.95234 2.95266C3.30219 2.60266 3.63531 2.38594 4.10219 2.20453C4.45453 2.06766 4.98406 1.90469 5.95906 1.86016C7.01359 1.81203 7.32984 1.80187 10 1.80187ZM10 0C7.28422 0 6.94359 0.0115625 5.87703 0.0601562C4.81266 0.10875 4.08562 0.277812 3.44969 0.525C2.79203 0.780469 2.23437 1.1225 1.67844 1.67844C1.1225 2.23437 0.780469 2.79203 0.525 3.44969C0.277812 4.08578 0.10875 4.81266 0.0601562 5.87703C0.0115625 6.94359 0 7.28422 0 10C0 12.7158 0.0115625 13.0564 0.0601562 14.123C0.10875 15.1873 0.277812 15.9142 0.525 16.5503C0.780469 17.208 1.1225 17.7656 1.67844 18.3216C2.23437 18.8775 2.79203 19.2194 3.44969 19.475C4.08578 19.7222 4.81266 19.8912 5.87703 19.9398C6.94359 19.9884 7.28422 20 10 20C12.7158 20 13.0564 19.9884 14.123 19.9398C15.1873 19.8912 15.9142 19.7222 16.5503 19.475C17.208 19.2194 17.7656 18.8775 18.3216 18.3216C18.8775 17.7656 19.2194 17.208 19.475 16.5503C19.7222 15.9142 19.8912 15.1873 19.9398 14.123C19.9884 13.0564 20 12.7158 20 10C20 7.28422 19.9884 6.94359 19.9398 5.87703C19.8912 4.81266 19.7222 4.08578 19.475 3.44969C19.2194 2.79203 18.8775 2.23437 18.3216 1.67844C17.7656 1.1225 17.208 0.780625 16.5503 0.525C15.9142 0.277812 15.1873 0.10875 14.123 0.0601562C13.0564 0.0115625 12.7158 0 10 0Z" fill="url(#paint0_radial)" />
-            <defs>
-              <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(2.98611 20.0694) scale(25.555)">
-                <stop offset="0" stop-color="#FFB140" />
-                <stop offset="0.2559" stop-color="#FF5445" />
-                <stop offset="0.599" stop-color="#FC2B82" />
-                <stop offset="1" stop-color="#8E40B7" />
-              </radialGradient>
-            </defs>
-          </svg>
-          <span class="visuallyhidden">Instagram</span>
-        </a>
-      </li>
-      <li>
-        <a href="https://twitter.com/alexandracaulea" target="_blank" rel="noopener noreferrer"><svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <use xlink:href="#twitter-icon"></use>
-          </svg>
-          <span class="visuallyhidden">Twitter</span></a>
-      </li>
-    </ul>
-    <p class="copyright">Project made by <a class="dotted-link" href="https://www.alexandracaulea.com/" target="_blank" rel="noopener noreferrer">Alexandra Caulea</a>. View source on <a class="dotted-link" href="https://github.com/alexandracaulea/freecodecamp-projects/tree/master/Responsive-Web-Design-Projects/Build%20a%20Product%20Landing%20Page" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </p>
 
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3>Our Services</h3>
+        <ul>
+          <li><a href="#">Deepfake Detection</a></li>
+          <li><a href="#">Video Analysis</a></li>
+          <li><a href="#">Security Solutions</a></li>
+          <li><a href="#">Enterprise API</a></li>
+          <li><a href="#">Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="/blogs/">Blog</a></li>
+          <li><a href="#">Research Papers</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© 2025 Deepfake Detection Technology. All Rights Reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
   </div>
 </footer>
+
+<style>
+.footer {
+  background-color: #0b2241; /* Navy blue */
+  color: #fff;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Logo section */
+.footer-logo-section {
+  flex: 1;
+  min-width: 250px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #b3c3d9;
+  margin-bottom: 20px;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #1e88e5;
+}
+
+/* Links section */
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  min-width: 160px;
+  margin-bottom: 30px;
+}
+
+.footer-column h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #1e88e5;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+  color: #b3c3d9;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-column ul li a:hover {
+  color: #fff;
+}
+
+/* Bottom section */
+.footer-bottom {
+  background-color: #071a33;
+  padding: 20px 0;
+}
+
+.footer-bottom .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.copyright {
+  color: #8c9cb8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.legal-links {
+  display: flex;
+  gap: 20px;
+}
+
+.legal-links a {
+  color: #8c9cb8;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-logo-section {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-column {
+    flex: 1 0 50%;
+  }
+
+  .footer-bottom .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-column {
+    flex: 1 0 100%;
+  }
+}
+</style>
+<style>
+    .form-message-container {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+    }
+
+    .form-message-container.success-message {
+        display: block;
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .form-message-container.error-message {
+        display: block;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <svg aria-hidden="true" focusable="false" style="display: none;">
   <symbol id="headphones-icon" viewBox="0 0 116 116">
     <path d="M54 115c29.271 0 53-23.505 53-52.5S83.271 10 54 10 1 33.505 1 62.5 24.729 115 54 115z" fill="#F2F2F2" />
@@ -410,3 +4396,379 @@
 <!-- <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script> -->
 </body>
 </html>
+<script>
+<!--    function uploadVideo() {-->
+<!--      const input = document.getElementById('videoInput');-->
+<!--      const file = input.files[0];-->
+<!--      const video = document.getElementById('deepfakeVideo');-->
+
+<!--      if (file) {-->
+<!--        const videoURL = URL.createObjectURL(file);-->
+<!--        video.src = videoURL;-->
+<!--      }-->
+<!--    }-->
+  function handleFileSelect(input) {
+  const fileNameDisplay = document.getElementById("fileName");
+  if (input.files.length > 0) {
+    fileNameDisplay.textContent = `Selected: ${input.files[0].name}`;
+  } else {
+    fileNameDisplay.textContent = "";
+  }
+}
+
+
+
+
+  </script>
+
+
+
+<script>
+  function playDefaultVideo() {
+    const video = document.getElementById('deepfakeVideo');
+    video.setAttribute('controls', 'controls'); // Show all video controls
+    video.play();
+    document.querySelector('.custom-play-btn').style.display = 'none';
+  }
+</script>
+
+<script>
+    let selectedFile = null;
+
+    function handleFileSelect(input) {
+        selectedFile = input.files[0];
+        if (selectedFile) {
+            document.getElementById('fileName').textContent = selectedFile.name;
+        }
+    }
+
+    function uploadVideo() {
+<!--        if (!selectedFile) {-->
+<!--            alert('Please select a video file first.');-->
+<!--            return;-->
+<!--        }-->
+
+        // Store video in localStorage as base64 (not ideal for large files but works for demo)
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            // Store video info in session storage
+            sessionStorage.setItem('videoFileName', selectedFile.name);
+            sessionStorage.setItem('videoFileType', selectedFile.type);
+            sessionStorage.setItem('uploadedVideo', event.target.result);
+
+            // Redirect to register page
+            window.location.href = "{% url 'register' %}";
+        };
+        reader.readAsDataURL(selectedFile);
+    }
+</script>
+<script>
+        // File handling functions
+        function handleFileSelect(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+
+                // Convert file to base64 and store
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Store video data in session storage
+                    sessionStorage.setItem('uploadedVideo', e.target.result);
+                    sessionStorage.setItem('videoFileName', file.name);
+                    sessionStorage.setItem('videoFileType', file.type);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function uploadVideo() {
+            const videoData = sessionStorage.getItem('uploadedVideo');
+            if (!videoData) {
+                alert('Please select a video file first.');
+                return;
+            }
+
+            // Open registration modal
+            document.getElementById('registrationModal').style.display = 'flex';
+
+            // Display filename in modal
+            const videoFileName = sessionStorage.getItem('videoFileName');
+            document.getElementById('videoName').textContent = videoFileName;
+        }
+
+        function closeModal() {
+            document.getElementById('registrationModal').style.display = 'none';
+        }
+
+        // Check if we have video data from landing page
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoFileName = sessionStorage.getItem('videoFileName');
+            if (videoFileName) {
+                document.getElementById('fileName').textContent = videoFileName;
+            }
+        });
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+
+            // Get video data from session storage
+            const videoData = sessionStorage.getItem('uploadedVideo');
+            const videoFileName = sessionStorage.getItem('videoFileName');
+
+            if (!videoData) {
+                showStatus('error', 'No video found. Please go back and upload a video first.');
+                return;
+            }
+
+            // Show progress bar
+            document.getElementById('uploadProgress').classList.remove('hidden');
+            document.getElementById('registerBtn').disabled = true;
+            document.getElementById('registerBtn').innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+
+            // First register the user
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('email', email);
+            formData.append('phone', phone);
+            formData.append('password', password);
+
+            fetch('{% url "register" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    showStatus('error', data.message);
+                    document.getElementById('uploadProgress').classList.add('hidden');
+                    document.getElementById('registerBtn').disabled = false;
+                    document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';
+                    return;
+                }
+
+                // Now upload and process the video
+                processVideo(username, videoFileName, videoData);
+            })
+            .catch(error => {
+                showStatus('error', 'Registration failed: ' + error.message);
+                document.getElementById('uploadProgress').classList.add('hidden');
+                document.getElementById('registerBtn').disabled = false;
+                document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';
+            });
+        });
+
+        function processVideo(username, fileName, videoData) {
+            // Create a video blob from base64 data
+            const byteString = atob(videoData.split(',')[1]);
+            const mimeType = videoData.split(',')[0].split(':')[1].split(';')[0];
+
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+
+            const blob = new Blob([ab], {type: mimeType});
+            const file = new File([blob], fileName, {type: mimeType});
+
+            const videoFormData = new FormData();
+            videoFormData.append('video', file);
+            videoFormData.append('username', username);
+
+            // Update progress
+            let progress = 10;
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+
+            // Simulate progress while processing (actual progress would be better with websockets)
+            const progressInterval = setInterval(() => {
+                if (progress < 90) {
+                    progress += 5;
+                    progressBar.style.width = `${progress}%`;
+                    progressPercent.textContent = `${progress}%`;
+                }
+            }, 500);
+
+            fetch('{% url "process_video" %}', {
+                method: 'POST',
+                body: videoFormData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                clearInterval(progressInterval);
+
+                if (data.success) {
+                    // Complete progress bar
+                    progressBar.style.width = '100%';
+                    progressPercent.textContent = '100%';
+
+                    showStatus('success', 'Registration successful! Redirecting to your dashboard...');
+
+                    // Clear the session storage
+                    sessionStorage.removeItem('uploadedVideo');
+                    sessionStorage.removeItem('videoFileName');
+                    sessionStorage.removeItem('videoFileType');
+
+                    // Store results temporarily if needed
+                    sessionStorage.setItem('analysisResult', JSON.stringify(data.result));
+
+                    // Redirect to dashboard after a brief delay to show success message
+                    setTimeout(() => {
+                        window.location.href = "{% url 'temp_dashboard' %}";
+                    }, 1500);
+                } else {
+                    showStatus('error', 'Video processing failed: ' + data.error);
+                    document.getElementById('registerBtn').disabled = false;
+                    document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';
+                }
+            })
+            .catch(error => {
+                clearInterval(progressInterval);
+                showStatus('error', 'Video processing failed: ' + error.message);
+                document.getElementById('registerBtn').disabled = false;
+                document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';
+            });
+        }
+
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('registrationStatus');
+            statusDiv.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700', 'border-red-200', 'border-green-200');
+
+            if (type === 'error') {
+                statusDiv.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-200');
+                statusDiv.innerHTML = `<div class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i>${message}</div>`;
+            } else {
+                statusDiv.classList.add('bg-green-100', 'text-green-700', 'border', 'border-green-200');
+                statusDiv.innerHTML = `<div class="flex items-center"><i class="fas fa-check-circle mr-2"></i>${message}</div>`;
+            }
+
+            statusDiv.classList.remove('hidden');
+
+            // Scroll to see the status message
+            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Close modal if user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('registrationModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('uniqueContactForm2025');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                // Get form values with unique IDs
+                const name = document.getElementById('unique_fullname_2025').value.trim();
+                const email = document.getElementById('unique_email_2025').value.trim();
+                const query = document.getElementById('unique_query_2025').value.trim();
+
+                // Local validation
+                if (!name || !email || !query) {
+                    showMessage('All fields are required', true);
+                    return;
+                }
+
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showMessage('Please enter a valid email address', true);
+                    return;
+                }
+
+                // Show loading state on button
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+
+                // Message container setup
+                const messageContainer = document.querySelector('.form-message-container');
+
+                function showMessage(message, isError = false) {
+                    messageContainer.textContent = message;
+                    messageContainer.className = 'form-message-container ' +
+                        (isError ? 'error-message' : 'success-message');
+
+                    // Scroll to message
+                    messageContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    if (!isError) {
+                        setTimeout(() => {
+                            messageContainer.textContent = '';
+                            messageContainer.className = 'form-message-container';
+                        }, 5000);
+                    }
+                }
+
+                function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+
+                // Submit form via fetch - CRITICAL: Using the correct field names
+                fetch('/api/contact/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({
+                        name2: name,    // Correct field name matching backend
+                        email2: email,  // Correct field name matching backend
+                        query: query
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+
+                    if (data.status === 'success') {
+                        contactForm.reset();
+                        showMessage(data.message || 'Thank you! Your message has been sent.');
+                    } else {
+                        showMessage(data.message || 'An error occurred. Please try again.', true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+                    showMessage('Failed to send message. Please try again later.', true);
+                });
+            });
+        }
+    });
+</script>
