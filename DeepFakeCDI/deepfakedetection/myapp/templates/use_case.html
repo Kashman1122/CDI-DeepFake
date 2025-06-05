@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Professional Deepfake Detection Platform</title>
+    <style>
+        .aivs2025_header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1000;
+      margin-top:0px;
+    }
+
+    .aivs2025_logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .aivs2025_logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .aivs2025_navItems {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .aivs2025_navItem {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .aivs2025_navItem:hover {
+      color: #4a6fa5;
+    }
+
+    .aivs2025_subscribe {
+
+      color: #4a6fa5;
+      padding: 0.5rem 1.25rem;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+
+    .aivs2025_subscribe:hover {
+      color:black;
+
+    }
+
+    /* Hamburger menu styles */
+    .aivs2025_hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .aivs2025_hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: #333;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile nav container */
+    .aivs2025_mobileNav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background-color: #ffffff;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      padding: 5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: right 0.3s ease;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .aivs2025_mobileNav.aivs2025_active {
+      right: 0;
+    }
+
+    .aivs2025_backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 998;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .aivs2025_backdrop.aivs2025_active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Animation for hamburger to X */
+    .aivs2025_hamburger.aivs2025_active span:first-child {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .aivs2025_hamburger.aivs2025_active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .aivs2025_hamburger.aivs2025_active span:last-child {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Mobile styles */
+    @media screen and (max-width: 1024px) {
+      .aivs2025_navItems {
+        display: none;
+      }
+
+      .aivs2025_hamburger {
+        display: flex;
+      }
+    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
+            color: white;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 32px;
+            opacity: 0.95;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 16px 32px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: white;
+        }
+
+        .hero-visual {
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detection-dashboard {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 24px;
+        }
+
+        .dashboard-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            background: #27ae60;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .threat-alerts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+        }
+
+        .alert-text {
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .content-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .content-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 16px;
+        }
+
+        .content-header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Use Cases Grid */
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-bottom: 80px;
+        }
+
+        .use-case-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #ecf0f1;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .defense-card::before { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
+        .law-card::before { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .kyc-card::before { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
+        .cyber-card::before { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .intelligence-card::before { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+        .forensic-card::before { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .defense-card .card-icon { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
+        .law-card .card-icon { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .kyc-card .card-icon { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
+        .cyber-card .card-icon { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .intelligence-card .card-icon { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+        .forensic-card .card-icon { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+
+        .card-header h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .card-content p {
+            color: #5a6c7d;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+
+        .feature-card p {
+            color: #5a6c7d;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Statistics Section */
+        .stats-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .stats-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 48px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 32px 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 16px;
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 32px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .content-header h2 {
+                font-size: 2rem;
+            }
+
+            .card-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        .features-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            min-height: 80vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .features-nav {
+            width: 400px;
+            padding: 60px;
+            background: #f8f9ff;
+            position: relative;
+        }
+
+        .nav-line {
+            position: absolute;
+            left: 40px;
+            top: 80px;
+            bottom: 80px;
+            width: 2px;
+            background: #e6e8f0;
+        }
+
+        .nav-dot {
+            position: absolute;
+            left: 33px;
+            width: 16px;
+            height: 16px;
+            background: #6366f1;
+            border-radius: 50%;
+            transition: top 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .feature-item {
+            margin-bottom: 40px;
+            padding-left: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(8px);
+        }
+
+        .feature-item h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6366f1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            right: 60px;
+        }
+
+        .content-card.active {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+            top: auto;
+            left: auto;
+            right: auto;
+        }
+
+        .code-preview {
+            background: #1e1e2e;
+            border-radius: 8px;
+            padding: 24px;
+            color: #cdd6f4;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .code-line {
+            margin-bottom: 4px;
+        }
+
+        .code-comment {
+            color: #6c7086;
+        }
+
+        .code-url {
+            color: #a6e3a1;
+        }
+
+        .code-header {
+            color: #f9e2af;
+        }
+
+        .code-form {
+            color: #fab387;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6366f1;
+            font-weight: 600;
+            margin-top: 40px;
+        }
+
+        .brand-icon {
+            width: 24px;
+            height: 24px;
+            background: #6366f1;
+            border-radius: 4px;
+        }
+
+        /* Reports Section */
+        .reports-section {
+            padding: 80px 0;
+            background: #f3f4ff;
+            background-image: url('https://www.10kx.com/images/bg-3.png');
+    background-position: right center;  /* Align image to the left */
+    background-repeat: no-repeat;      /* Prevent image from repeating */
+    background-size: 35%;            /* Cover the section, adjust as needed */
+            margin-bottom:70px;
+        }
+
+        .reports-content {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+
+        .reports-left {
+            flex: 1;
+        }
+
+        .reports-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 32px;
+        }
+
+        .reports-tag::before {
+            content: '📄';
+            font-size: 16px;
+        }
+
+        .reports-title {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .reports-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 32px;
+            padding: 12px 24px;
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download:hover {
+            border-color: #6366f1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-download::after {
+            content: '↓';
+            font-size: 16px;
+        }
+
+        .all-reports-link {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .all-reports-link::after {
+            content: '→';
+            margin-left: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .all-reports-link:hover::after {
+            transform: translateX(4px);
+        }
+
+        .reports-right {
+            flex: 0 0 320px;
+        }
+
+        .report-card {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border-radius: 16px;
+            padding: 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            width:110%;
+            height:170px;
+        }
+
+        .report-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .report-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-logo {
+            position: absolute;
+            bottom: 24px;
+            left: 32px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .report-logo::before {
+            content: '◆';
+            color: white;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 0 0 200px 0;
+        }
+
+        .cta-container {
+            background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+            border-radius: 20px;
+            padding: 48px;
+            display: flex;
+            height:400px;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .cta-left {
+            flex: 1;
+        }
+
+        .cta-tag {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        .cta-title {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #4338ca;
+            border: none;
+            border-radius: 32px;
+            padding: 12px 28px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 32px;
+            padding: 10px 28px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary::after {
+            content: '↗';
+            font-size: 16px;
+        }
+
+        /* Partners Section */
+        .partners-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .partners-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6366f1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 48px;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .partner-logo {
+            height: 40px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+        }
+
+        .partner-logo:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .reports-content {
+                flex-direction: column;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .reports-right {
+                flex: none;
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .cta-container {
+                flex-direction: column;
+                gap: 32px;
+                text-align: center;
+                padding: 40px 24px;
+            }
+
+            .cta-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .partners-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="aivs2025_header">
+    <div class="aivs2025_logo">
+      <img src="https://th.bing.com/th/id/OLC.6OrC7383AoACbQ480x360?&rs=1&pid=ImgDetMain" alt="AI Video Studios Logo">
+    </div>
+
+    <nav class="aivs2025_navItems">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="/blogs/" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="#" class="aivs2025_navItem">Uses</a>
+      <a href="/pricing" class="aivs2025_navItem">Pricing</a>
+      <a href="/register" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#c7e5ef;border:2px solid #b8c0ee; ">Get Started</a>
+      <a href="/login" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#e3ebef;border:3px solid #a4d2ec;">Sign In</a>
+    </nav>
+
+    <!-- Hamburger Menu Button -->
+    <div class="aivs2025_hamburger" id="hamburgerBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="aivs2025_mobileNav" id="mobileNav">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="#" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="#" class="aivs2025_navItem">Uses</a>
+      <a href="/pricing" class="aivs2025_navItem">Pricing</a>
+      <a href="#" class="aivs2025_navItem aivs2025_subscribe">Get Started</a>
+    </nav>
+
+    <!-- Backdrop for closing mobile menu when clicking outside -->
+    <div class="aivs2025_backdrop" id="backdrop"></div>
+</header>
+
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Enterprise Deepfake Detection</h1>
+                <p class="subtitle">Protect your organization with military-grade deepfake detection technology. Comprehensive security solutions for defense, law enforcement, finance, and intelligence agencies worldwide.</p>
+                <div class="hero-buttons">
+                    <a href="/register/" class="btn-primary">Request Demo</a>
+                    <a href="/login/" class="btn-secondary">View Solutions →</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="detection-dashboard">
+                    <div class="dashboard-header">
+                        <div class="dashboard-title">Threat Detection Center</div>
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="threat-alerts">
+                        <div class="alert-item">
+                            <div class="alert-icon">🛡️</div>
+                            <div class="alert-text">Deepfake Detected & Blocked</div>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon">⚠️</div>
+                            <div class="alert-text">Suspicious Media Flagged</div>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon">🔍</div>
+                            <div class="alert-text">Real-time Analysis Active</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="container">
+        <div class="content-header">
+            <h2>Industry-Specific Solutions</h2>
+            <p>Tailored deepfake detection and prevention systems designed for the unique security challenges of professional organizations.</p>
+        </div>
+
+        <div class="use-cases-grid">
+            <!-- Defense Agencies Card -->
+            <div class="use-case-card defense-card">
+                <div class="card-header">
+                    <div class="card-icon">🏛️</div>
+                    <h3>Defense & Military</h3>
+                </div>
+                <div class="card-content">
+                    <p>Comprehensive protection against sophisticated information warfare campaigns using deepfake technology to compromise security communications and operational integrity.</p>
+                    <p>Military-grade detection with real-time authentication, classified briefing protection, and advanced threat intelligence to identify coordinated disinformation campaigns.</p>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">99.8%</div>
+                            <div class="stat-label">Detection Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">0.2s</div>
+                            <div class="stat-label">Response Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Law Enforcement Card -->
+            <div class="use-case-card law-card">
+                <div class="card-header">
+                    <div class="card-icon">👮</div>
+                    <h3>Law Enforcement</h3>
+                </div>
+                <div class="card-content">
+                    <p>Forensic-grade detection tools for criminal investigations, evidence analysis, and court proceedings with comprehensive chain of custody documentation.</p>
+                    <p>Integration with case management systems, admissible evidence analysis, and expert testimony support for successful prosecutions.</p>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">Court Acceptance</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1,200+</div>
+                            <div class="stat-label">Cases Supported</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KYC/Finance Card -->
+            <div class="use-case-card kyc-card">
+                <div class="card-header">
+                    <div class="card-icon">🏦</div>
+                    <h3>Financial Services</h3>
+                </div>
+                <div class="card-content">
+                    <p>Advanced protection against synthetic identity fraud, account takeovers, and sophisticated KYC bypass attempts using AI-generated documentation.</p>
+                    <p>Seamless integration with KYC workflows, real-time identity verification, and biometric liveness detection for regulatory compliance.</p>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">94%</div>
+                            <div class="stat-label">Fraud Reduction</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">$8.2B</div>
+                            <div class="stat-label">Annual Savings</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cybersecurity Card -->
+            <div class="use-case-card cyber-card">
+                <div class="card-header">
+                    <div class="card-icon">🛡️</div>
+                    <h3>Cybersecurity</h3>
+                </div>
+                <div class="card-content">
+                    <p>Comprehensive protection against deepfake-powered social engineering attacks, CEO fraud, and sophisticated phishing campaigns.</p>
+                    <p>SOC team integration with automated threat detection, incident response workflows, and behavioral analysis for coordinated attack identification.</p>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">67%</div>
+                            <div class="stat-label">Attack Reduction</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15min</div>
+                            <div class="stat-label">Detection Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intelligence Card -->
+            <div class="use-case-card intelligence-card">
+                <div class="card-header">
+                    <div class="card-icon">🕵️</div>
+                    <h3>Intelligence Agencies</h3>
+                </div>
+                <div class="card-content">
+                    <p>Classified-level security for verifying source materials, combating state-sponsored disinformation, and protecting sensitive intelligence operations.</p>
+                    <p>Advanced attribution analysis, pattern recognition for influence operations, and integration with existing intelligence workflows.</p>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Global Monitoring</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">150+</div>
+                            <div class="stat-label">Countries Covered</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digital Forensics Card -->
+            <div class="use-case-card forensic-card">
+                <div class="card-header">
+                    <div class="card-icon">🔬</div>
+                    <h3>Digital Forensics</h3>
+                </div>
+                <div class="card-content">
+                    <p>Comprehensive media authentication tools for legal proceedings, expert analysis support, and chain of custody maintenance.</p>
+                    <p>Integration with forensic platforms, detailed technical reports, expert witness support, and advanced visualization for court presentations.</p>
+                    <div class="card-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">99.9%</div>
+                            <div class="stat-label">Evidence Integrity</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">650+</div>
+                            <div class="stat-label">Expert Reports</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<h2 style="text-align:center; font-size:42px; font-weight:600;">Features</h2>
+<div class="features-section">
+        <div class="features-nav">
+            <div class="nav-line"></div>
+            <div class="nav-dot" id="navDot"></div>
+
+            <div class="feature-item" data-target="0">
+                <h3>Analysis of File and URLs</h3>
+            </div>
+
+            <div class="feature-item" data-target="1">
+                <h3>Real Time Monitoring</h3>
+            </div>
+
+            <div class="feature-item" data-target="2">
+                <h3>Detailed Pixel Level Report</h3>
+            </div>
+
+            <div class="feature-item" data-target="3">
+                <h3>Detailed File Forensic Analysis</h3>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="content-card active" id="content-0">
+                <div class="code-preview">
+                    <div class="code-line code-comment">curl --request POST \</div>
+                    <div class="code-line code-url">--url https://api.cdi.ai/tasks/face_manipulation \</div>
+                    <div class="code-line code-header">--header 'Authorization: REPLACE_KEY_VALUE' \</div>
+                    <div class="code-line code-header">--header 'content-type: multipart/form-data' \</div>
+                    <div class="code-line code-form">--form url='string' \</div>
+                    <div class="code-line code-form">--form file='string' \</div>
+                    <div class="code-line code-form">--form expired='false'</div>
+                </div>
+                <div class="brand">
+                    <div class="brand-icon"></div>
+                    <span>cdi</span>
+                </div>
+            </div>
+
+            <div class="content-card" id="content-1">
+                <div class="description">
+                    Monitor threats in real-time with continuous scanning and instant alerts. Our system provides 24/7 surveillance of your digital assets, detecting AI-generated manipulations as they emerge across platforms and networks.
+                </div>
+                <div class="brand">
+                    <div class="brand-icon"></div>
+                    <span>cdi</span>
+                </div>
+            </div>
+
+            <div class="content-card" id="content-2">
+                <div class="description">
+                    Get comprehensive pixel-level analysis reports that reveal the deepest technical details of AI manipulations. Our advanced algorithms examine every aspect of multimedia content to provide forensic-grade evidence and detailed manipulation signatures.
+                </div>
+                <div class="brand">
+                    <div class="brand-icon"></div>
+                    <span>cdi</span>
+                </div>
+            </div>
+
+            <div class="content-card" id="content-3">
+                <div class="description">
+                    Our API is designed to work seamlessly with both files and URLs, streamlining the detection process and minimizing friction for cybersecurity analysts. By supporting these dual input methods, the API enables quick and efficient analysis of multimedia content, whether it's uploaded directly as a file or referenced via a URL. This flexibility accelerates the detection of AI-generated manipulations, allowing analysts to swiftly identify and address potential threats.
+                </div>
+                <div class="brand">
+                    <div class="brand-icon"></div>
+                    <span>cdi</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const featureItems = document.querySelectorAll('.feature-item');
+        const contentCards = document.querySelectorAll('.content-card');
+        const navDot = document.getElementById('navDot');
+
+        let currentIndex = 1;
+        let isScrolling = false;
+
+        function updateActiveDot(index) {
+            const itemHeight = 64; // Approximate height including margin
+            const topOffset = index * itemHeight + 8;
+            navDot.style.top = topOffset + 'px';
+        }
+
+        function showContent(index) {
+            contentCards.forEach((card, i) => {
+                card.classList.toggle('active', i === index);
+            });
+            updateActiveDot(index);
+            currentIndex = index;
+        }
+
+        // Click handlers
+        featureItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                showContent(index);
+            });
+        });
+
+        // Auto-scroll functionality
+        function autoScroll() {
+            if (!isScrolling) {
+                currentIndex = (currentIndex + 2) % featureItems.length;
+                showContent(currentIndex);
+            }
+        }
+
+        // Start auto-scroll
+        let autoScrollInterval = setInterval(autoScroll, 1000);
+
+        // Pause auto-scroll on hover
+        document.querySelector('.features-section').addEventListener('mouseenter', () => {
+            isScrolling = true;
+            clearInterval(autoScrollInterval);
+        });
+
+        document.querySelector('.features-section').addEventListener('mouseleave', () => {
+            isScrolling = false;
+            autoScrollInterval = setInterval(autoScroll, 3000);
+        });
+
+        // Initialize
+        updateActiveDot(0);
+    </script>
+
+
+<section class="reports-section">
+        <div class="container">
+            <div class="reports-content">
+                <div class="reports-left">
+                    <div class="reports-tag">Reports</div>
+                    <h1 class="reports-title">The State of<br>Deepfakes 2024</h1>
+                    <div class="reports-actions">
+                        <a href="#" class="btn-download">Download Report</a>
+                        <a href="#" class="all-reports-link">All reports</a>
+                    </div>
+                </div>
+                <div class="reports-right">
+                    <div class="report-card">
+                        <h3>The State Of<br>Deepfakes 2024</h3>
+                        <div class="report-logo">cdi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-container">
+                <div class="cta-left">
+                    <div class="cta-tag">Contact Us</div>
+                    <h2 class="cta-title">Ready to get started?</h2>
+                </div>
+                <div class="cta-actions">
+                    <a href="/register/" class="btn-primary">Get started</a>
+                    <a href="#" class="btn-secondary">Talk to an expert</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+<!--    <section class="partners-section">-->
+<!--        <div class="container">-->
+<!--            <h3 class="partners-title">Supported By</h3>-->
+<!--            <div class="partners-grid">-->
+<!--                <div class="partner-item">-->
+<!--                    <svg class="partner-logo" viewBox="0 0 160 80" fill="none">-->
+<!--                        &lt;!&ndash; VISA Logo &ndash;&gt;-->
+<!--                        <rect x="10" y="12" width="20" height="16" fill="#1a1f71"/>-->
+<!--                        <rect x="35" y="8" width="4" height="24" fill="#1a1f71"/>-->
+<!--                        <rect x="44" y="12" width="12" height="4" fill="#1a1f71"/>-->
+<!--                        <rect x="44" y="18" width="12" height="4" fill="#1a1f71"/>-->
+<!--                        <rect x="44" y="24" width="12" height="4" fill="#1a1f71"/>-->
+<!--                        <rect x="61" y="8" width="12" height="4" fill="#1a1f71"/>-->
+<!--                        <rect x="61" y="16" width="8" height="4" fill="#1a1f71"/>-->
+<!--                        <rect x="61" y="24" width="12" height="4" fill="#1a1f71"/>-->
+<!--                        <rect x="78" y="8" width="20" height="4" fill="#1a1f71"/>-->
+<!--                        <rect x="86" y="12" width="4" height="16" fill="#1a1f71"/>-->
+<!--                        <rect x="94" y="24" width="4" height="4" fill="#1a1f71"/>-->
+<!--                        <text x="10" y="36" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1a1f71">VISA</text>-->
+<!--                    </svg>-->
+<!--                </div>-->
+<!--                <div class="partner-item">-->
+<!--                    <svg class="partner-logo" viewBox="0 0 160 80" fill="none">-->
+<!--                        &lt;!&ndash; Google Logo &ndash;&gt;-->
+<!--                        <circle cx="20" cy="20" r="8" fill="#4285f4"/>-->
+<!--                        <circle cx="20" cy="20" r="6" fill="#ea4335"/>-->
+<!--                        <circle cx="20" cy="20" r="4" fill="#fbbc05"/>-->
+<!--                        <circle cx="20" cy="20" r="2" fill="#34a853"/>-->
+<!--                        <text x="35" y="16" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#5f6368">Google</text>-->
+<!--                        <text x="35" y="28" font-family="Arial, sans-serif" font-size="8" fill="#5f6368">News Initiative</text>-->
+<!--                    </svg>-->
+<!--                </div>-->
+<!--                <div class="partner-item">-->
+<!--                    <svg class="partner-logo" viewBox="0 0 120 40" fill="none">-->
+<!--                        &lt;!&ndash; EU Commission Logo &ndash;&gt;-->
+<!--                        <rect x="10" y="10" width="24" height="16" fill="#003399" rx="2"/>-->
+<!--                        <circle cx="14" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="16" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="18" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="20" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="22" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="24" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="26" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="28" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <circle cx="30" cy="14" r="1" fill="#ffcc00"/>-->
+<!--                        <text x="10" y="32" font-family="Arial, sans-serif" font-size="7" fill="#003399">European Commission</text>-->
+<!--                    </svg>-->
+<!--                </div>-->
+<!--                <div class="partner-item">-->
+<!--                    <svg class="partner-logo" viewBox="0 0 180 40" fill="none">-->
+<!--                        &lt;!&ndash; NATO Logo &ndash;&gt;-->
+<!--                        <polygon points="10,20 20,10 30,20 20,30" fill="#1f4788"/>-->
+<!--                        <text x="40" y="14" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1f4788">NATO</text>-->
+<!--                        <text x="40" y="20" font-family="Arial, sans-serif" font-size="6" fill="#1f4788">STRATEGIC</text>-->
+<!--                        <text x="40" y="26" font-family="Arial, sans-serif" font-size="6" fill="#1f4788">COMMUNICATIONS</text>-->
+<!--                        <text x="40" y="32" font-family="Arial, sans-serif" font-size="6" fill="#1f4788">CENTRE OF EXCELLENCE</text>-->
+<!--                    </svg>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+
+
+{% load static %}
+    <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo-section">
+      <img src="{% static 'cdi-removebg-preview.png' %}" alt="Your Logo" class="footer-logo">
+      <p class="footer-tagline">Cutting-edge deepfake detection technology to protect your digital identity</p>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3>Our Services</h3>
+        <ul>
+          <li><a href="#">Deepfake Detection</a></li>
+          <li><a href="#">Video Analysis</a></li>
+          <li><a href="#">Security Solutions</a></li>
+          <li><a href="#">Enterprise API</a></li>
+          <li><a href="#">Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Research Papers</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© 2025 Deepfake Detection Technology. All Rights Reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background-color: #0b2241; /* Navy blue */
+  color: #fff;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Logo section */
+.footer-logo-section {
+  flex: 1;
+  min-width: 250px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #b3c3d9;
+  margin-bottom: 20px;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #1e88e5;
+}
+
+/* Links section */
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  min-width: 160px;
+  margin-bottom: 30px;
+}
+
+.footer-column h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #1e88e5;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+  color: #b3c3d9;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-column ul li a:hover {
+  color: #fff;
+}
+
+/* Bottom section */
+.footer-bottom {
+  background-color: #071a33;
+  padding: 20px 0;
+}
+
+.footer-bottom .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.copyright {
+  color: #8c9cb8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.legal-links {
+  display: flex;
+  gap: 20px;
+}
+
+.legal-links a {
+  color: #8c9cb8;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-logo-section {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-column {
+    flex: 1 0 50%;
+  }
+
+  .footer-bottom .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-column {
+    flex: 1 0 100%;
+  }
+}
+    .raven2025_contact_container {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .raven2025_contact_heading {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 3rem;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .raven2025_contact_heading:after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: #4a6fa5;
+      margin: 0.8rem auto 0;
+    }
+
+    .raven2025_contact_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .raven2025_contact_imageContainer {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+      background: linear-gradient(135deg, #4a6fa5 0%, #2d3748 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .raven2025_contact_image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .raven2025_contact_overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+      color: white;
+    }
+
+    .raven2025_contact_overlayTitle {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .raven2025_contact_overlayText {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .raven2025_contact_formContainer {
+      padding: 3rem 2rem;
+    }
+
+    .raven2025_contact_formTitle {
+      font-size: 1.75rem;
+      color: #2d3748;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .raven2025_contact_form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .raven2025_contact_inputGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .raven2025_contact_label {
+      font-weight: 500;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    .raven2025_contact_input,
+    .raven2025_contact_textarea {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .raven2025_contact_input:focus,
+    .raven2025_contact_textarea:focus {
+      outline: none;
+      border-color: #4a6fa5;
+      box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+    }
+
+    .raven2025_contact_textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .raven2025_contact_button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      align-self: flex-start;
+    }
+
+    .raven2025_contact_button:hover {
+      background: #3a5a84;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .raven2025_contact_grid {
+        grid-template-columns: 1fr;
+      }
+
+      .raven2025_contact_imageContainer {
+        min-height: 300px;
+      }
+    }
+</style>

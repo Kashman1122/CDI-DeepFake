@@ -1,0 +1,2104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Video Studios - Pricing</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap");
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+:root {
+	--primary-font: "Poppins", sans-serif;
+	--margin-x: 1em;
+	--accent-1: #1a73e8;
+	--accent-2: #4285f4;
+	--accent-3: #0b5cad;
+	--black: #212733;
+	--pink: #f3659a;
+	--gray-light: #f5f7fa;
+	--gray-med: #eaeef2;
+}
+html, body {
+	font-family: var(--primary-font);
+	color: var(--black);
+	line-height: 1.3;
+	max-width: 100%;
+	margin: 0 auto;
+	background-color: white;
+	padding: 0;
+}
+.accent-1 {
+	color: var(--accent-1);
+}
+.accent-2 {
+	color: var(--accent-2);
+}
+ul {
+	padding: 0;
+}
+li {
+	list-style: none;
+}
+a {
+	color: unset;
+	text-decoration: unset;
+}
+
+/* Header Navigation */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: left;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.nav-items {
+    display: flex;
+    align: left;
+    gap: 25px;
+}
+
+.nav-item {
+    font-weight: 500;
+}
+
+.subscribe {
+    color: var(--accent-2);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--gray-light);
+    background-image: url('https://cfcdn.apowersoft.info/astro/picwish/_astro/originality-bg-2.11ed00fd.png');
+    background-position: left center;  /* Align image to the left */
+    background-repeat: no-repeat;      /* Prevent image from repeating */
+    background-size: 28%;            /* Cover the section, adjust as needed */
+}
+
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--black);
+}
+
+.hero p {
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    color: #666;
+}
+
+/* Pricing Section */
+.pricing {
+	text-align: center;
+	margin: 2em 1em;
+}
+
+.pricing-header {
+    margin-bottom: 2em;
+}
+
+.pricing-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5em;
+}
+
+.pricing-header p {
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.plan-duration {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin: 0 auto;
+	width: 200px;
+}
+.plan-duration__toggle {
+	width: 45px;
+	height: 25px;
+	background: linear-gradient(130deg, var(--accent-2), var(--accent-1));
+	border-radius: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	transition: justify-content 0.2s;
+    cursor: pointer;
+}
+.plan-duration__toggle-ball {
+	--size: 18px;
+	margin: 0 4px;
+	width: var(--size);
+	height: var(--size);
+	border-radius: 50%;
+	background: white;
+}
+.plan-duration__text {
+	color: #21273399;
+}
+.plan-duration--active {
+	color: var(--black);
+	font-weight: bold;
+}
+.plans__list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 1.5em 0;
+    gap: 1rem;
+}
+.plan__item {
+	--radius: 10px;
+	border-radius: var(--radius);
+	box-shadow: 1px 2px 15px rgba(80, 80, 80, 0.12);
+	margin: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+    background-color: white;
+    width: 280px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+}
+.plan__item:nth-child(1) { animation-delay: 0.1s; }
+.plan__item:nth-child(2) { animation-delay: 0.2s; }
+.plan__item:nth-child(3) { animation-delay: 0.3s; }
+.plan__item:nth-child(4) { animation-delay: 0.4s; }
+.plan__item:hover {
+    transform: translateY(-5px);
+}
+.plan__item--active {
+	box-shadow: 0 0 25px rgba(66, 133, 244, 0.25);
+    position: relative;
+    background-color: var(--gray-light);
+}
+.best-value-tag {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    background-color: var(--accent-1);
+    color: white;
+    padding: 5px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.plan__header {
+    margin-bottom: 1rem;
+}
+.plan__title {
+	color: var(--accent-1);
+	margin-bottom: 0.2em;
+    font-size: 1.5rem;
+}
+.plan__subtitle {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0 0 1rem;
+    min-height: 40px;
+}
+.plan__price {
+	font-size: 2.5em;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+.plan__price:before {
+	content: "$";
+	font-size: 1.2rem;
+    vertical-align: super;
+    font-weight: 400;
+}
+.plan__price-period {
+    color: #666;
+    font-size: 0.9rem;
+}
+.plan__seat-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+}
+.seat-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--accent-1);
+    background-color: white;
+    color: var(--accent-1);
+    font-weight: bold;
+    cursor: pointer;
+}
+.seat-count {
+    margin: 0 10px;
+    min-width: 50px;
+}
+.plan__cta {
+    margin: 1rem 0;
+}
+.plan__cta-link {
+	color: var(--accent-3);
+	padding: 0.8em 0;
+	border-radius: 30px;
+    display: block;
+    border: 2px solid var(--accent-3);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.plan__cta-link:hover {
+    background-color: rgba(66, 133, 244, 0.1);
+}
+.plan__cta-link--active {
+	background: var(--accent-3);
+	color: white;
+}
+.plan__cta-link--active:hover {
+    background: var(--accent-1);
+}
+.plan__features-title {
+    text-align: left;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+.plan__feature-list {
+	text-align: left;
+    margin: 1rem 0;
+}
+.plan__feature-item {
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+.plan__feature-item::before {
+    content: "✓";
+    color: var(--accent-1);
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 1rem;
+}
+.accent-feature {
+    color: var(--accent-2);
+    font-weight: 600;
+}
+.plans__special-offer {
+    margin: 2rem 0;
+}
+.plans__special-offer a {
+	color: var(--accent-2);
+	text-decoration: underline;
+	text-decoration-color: var(--accent-2);
+}
+.currency {
+	margin: 2em var(--margin-x);
+	display: grid;
+	justify-content: flex-end;
+	grid-gap: .5em;
+	grid-auto-flow: column;
+	align-items: center;
+}
+.currency__select {
+	border-radius: 15px;
+	border: none;
+	background: #eee;
+	font-weight: bold;
+	padding: 2px 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.currency__select:hover {
+    background: #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Button animations */
+.plan__cta-link, .seat-btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.plan__cta-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+    transition: all 0.6s ease;
+}
+
+.plan__cta-link:hover::after {
+    left: 100%;
+}
+
+/* Support Table */
+.support-section {
+    padding: 2rem 1rem;
+    margin: 2rem 0;
+    background-color: var(--gray-light);
+}
+
+.support-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--black);
+    margin-bottom: 2rem;
+}
+
+.support-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.support-table th,
+.support-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gray-med);
+}
+
+.support-table th:first-child,
+.support-table td:first-child {
+    text-align: left;
+    padding-left: 2rem;
+}
+
+.support-table th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+}
+
+.support-table .info-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #ccc;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 18px;
+    margin-left: 5px;
+    font-size: 0.8rem;
+}
+
+.check {
+    color: #4CAF50;
+    font-size: 1.2rem;
+}
+
+.cross {
+    color: #F44336;
+    font-size: 1.2rem;
+}
+
+.priority-text {
+    color: var(--accent-1);
+    font-weight: 600;
+}
+
+/* Featured On Section */
+.featured-section {
+    padding: 3rem 1rem;
+    background-color: var(--gray-light);
+    text-align: center;
+    background-image: url('https://cfcdn.apowersoft.info/astro/picwish/_astro/main-bg-3.d2b6afa6.png');
+    background-position: right center;  /* Align image to the left */
+    background-repeat: no-repeat;      /* Prevent image from repeating */
+    background-size: 30%;            /* Cover the section, adjust as needed */
+
+}
+
+
+
+
+.featured-section h2 {
+    font-size: 1.5rem;
+    color: var(--accent-1);
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.featured-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.featured-logo {
+    height: 40px;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+}
+
+.featured-logo:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* FAQ Section */
+
+
+
+        /* From Uiverse.io by Wendell47 */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 30px;
+  border: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10rem;
+  transition: all 0.02s;
+  font-weight: bold;
+  cursor: pointer;
+  color: rgb(37, 37, 37);
+  z-index: 0;
+  box-shadow: 0 0px 7px -5px rgba(0, 0, 0, 0.5);
+}
+
+.button:hover {
+  background: rgb(193, 228, 248);
+  color: rgb(33, 0, 85);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.hoverEffect {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.hoverEffect div {
+  background: rgb(222, 0, 75);
+  background: linear-gradient(
+    90deg,
+    rgba(222, 0, 75, 1) 0%,
+    rgba(191, 70, 255, 1) 49%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  border-radius: 40rem;
+  width: 10rem;
+  height: 10rem;
+  transition: 0.4s;
+  filter: blur(20px);
+  animation: effect infinite 3s linear;
+  opacity: 0.5;
+}
+
+.button:hover .hoverEffect div {
+  width: 8rem;
+  height: 8rem;
+}
+
+@keyframes effect {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.header {
+<!--border-bottom: 2.2px solid #dedbdb;-->
+box-shadow: 0 6px 8px rgba(100, 100, 100, 2.6);
+}
+        /* From Uiverse.io by JesusRafaelNavaCruz */
+.container {
+  overflow: auto;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  width: 90%;
+  margin: 0 auto;
+  padding: 0 15px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+
+.card {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border-radius: 10px;
+  padding: 2rem;
+  margin: 1rem;
+  width: 300%;
+}
+
+.container:hover > :not(:hover) {
+  opacity: 0.2;
+}
+
+.title {
+  width: 100%;
+  display: inline-block;
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  margin: 1rem auto;
+}
+        .acme2025_whyChooseUs_container {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .acme2025_whyChooseUs_heading {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 3rem;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .acme2025_whyChooseUs_heading:after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: #4a6fa5;
+      margin: 0.8rem auto 0;
+    }
+
+    .acme2025_whyChooseUs_cardGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .acme2025_whyChooseUs_card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: #ffffff;
+    }
+
+    .acme2025_whyChooseUs_card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .acme2025_whyChooseUs_cardImageWrapper {
+      height: 180px;
+      background: #f7f9fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .acme2025_whyChooseUs_cardSvg {
+      width: 100px;
+      height: 100px;
+    }
+
+    .acme2025_whyChooseUs_cardContent {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .acme2025_whyChooseUs_cardTitle {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.75rem;
+    }
+
+    .acme2025_whyChooseUs_cardDescription {
+      color: #4a5568;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+        .aivs2025_header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1000;
+    }
+
+    .aivs2025_logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .aivs2025_logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .aivs2025_navItems {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .aivs2025_navItem {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .aivs2025_navItem:hover {
+      color: #4a6fa5;
+    }
+
+    .aivs2025_subscribe {
+      color: #4a6fa5;
+      padding: 0.5rem 1.25rem;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+
+    .aivs2025_subscribe:hover {
+      color: black;
+    }
+
+    /* Hamburger menu styles */
+    .aivs2025_hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .aivs2025_hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: #333;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile nav container */
+    .aivs2025_mobileNav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background-color: #ffffff;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+      padding: 5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: right 0.3s ease;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .aivs2025_mobileNav.aivs2025_active {
+      right: 0;
+    }
+
+    .aivs2025_backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 998;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .aivs2025_backdrop.aivs2025_active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Animation for hamburger to X */
+    .aivs2025_hamburger.aivs2025_active span:first-child {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .aivs2025_hamburger.aivs2025_active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .aivs2025_hamburger.aivs2025_active span:last-child {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Mobile styles */
+    @media screen and (max-width: 1024px) {
+      .aivs2025_navItems {
+        display: none;
+      }
+
+      .aivs2025_hamburger {
+        display: flex;
+      }
+    }
+        .we360__faq-section-main-wrapper {
+            padding: 60px 0;
+        }
+
+        .we360__faq-header-container {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .we360__faq-headline-text {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .we360__faq-headline-gradient-text {
+            background: linear-gradient(90deg, #7c5dfa, #4ac3e3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .we360__faq-subtitle-paragraph {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #555;
+        }
+
+        .we360__faq-items-master-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .we360__faq-single-item-container {
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .we360__faq-question-clickable-element {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .we360__faq-question-clickable-element:hover {
+            background-color: #f9f9ff;
+        }
+
+        .we360__faq-question-clickable-element.active {
+            color: #7c5dfa;
+        }
+
+        .we360__faq-question-text-content {
+            flex-grow: 1;
+        }
+
+        .we360__faq-toggle-icon-container {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .we360__faq-toggle-icon-container::before,
+        .we360__faq-toggle-icon-container::after {
+            content: '';
+            position: absolute;
+            background-color: #7c5dfa;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .we360__faq-toggle-icon-container::before {
+            width: 16px;
+            height: 2px;
+            top: 11px;
+            left: 4px;
+        }
+
+        .we360__faq-toggle-icon-container::after {
+            width: 2px;
+            height: 16px;
+            top: 4px;
+            left: 11px;
+        }
+
+        .we360__faq-question-clickable-element.active .we360__faq-toggle-icon-container::after {
+            transform: rotate(90deg);
+            opacity: 0;
+        }
+
+        .we360__faq-answer-container {
+            padding: 0 25px 20px;
+            display: none;
+            color: #555;
+            font-size: 16px;
+            line-height: 1.7;
+            border-top: 1px solid #f0f0f0;
+            margin-top: -1px;
+        }
+         .still-need-card {
+            width: 100%;
+            max-width: 1200px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            justify-content:center;
+            align-item:center;
+            margin-left:150px;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #D8B5FF 0%, #A5D8FF 50%, #FFFFFF 100%);
+            padding: 25px 30px;
+            position: relative;
+        }
+
+        .card-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 16px;
+            color: #555;
+            font-weight: 400;
+        }
+
+        .card-content {
+            background-color: white;
+            padding: 25px 30px;
+        }
+
+        .need-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .need-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .item-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #D8B5FF 0%, #A5D8FF 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .item-icon::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .item-text {
+            font-size: 18px;
+            color: #333;
+            flex-grow: 1;
+        }
+
+        .priority-tag {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .high {
+            background-color: #FFE8E8;
+            color: #FF5757;
+        }
+
+        .medium {
+            background-color: #FFF8E8;
+            color: #FFAE57;
+        }
+
+        .low {
+            background-color: #E8F8FF;
+            color: #57ADFF;
+        }
+
+        .card-footer {
+            background: linear-gradient(135deg, #FFFFFF 0%, #A5D8FF 50%, #D8B5FF 100%);
+            padding: 15px 30px;
+            text-align: right;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize FAQ dropdowns
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const isOpen = answer.style.display === 'block';
+
+                    // Close all answers
+                    document.querySelectorAll('.faq-answer').forEach(item => {
+                        item.style.display = 'none';
+                    });
+
+                    // Update all question indicators
+                    document.querySelectorAll('.faq-question').forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    // Toggle current answer
+                    if (!isOpen) {
+                        answer.style.display = 'block';
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Initialize pricing toggle
+            const pricingToggle = document.querySelector('.plan-duration__toggle');
+            const pricingBall = document.querySelector('.plan-duration__toggle-ball');
+            const monthlyText = document.querySelector('.plan-duration__text:first-child');
+            const annualText = document.querySelector('.plan-duration__text:last-child');
+
+            pricingToggle.addEventListener('click', function() {
+                const isMonthly = pricingBall.style.marginLeft === '0px' || pricingBall.style.marginLeft === '';
+
+                if (isMonthly) {
+                    pricingBall.style.marginLeft = '23px';
+                    monthlyText.classList.remove('plan-duration--active');
+                    annualText.classList.add('plan-duration--active');
+
+                    // Update prices for annual (20% discount)
+                    document.querySelectorAll('.plan__price').forEach(price => {
+                        if (price.textContent !== 'Let\'s Talk') {
+                            const monthlyPrice = parseFloat(price.textContent);
+                            if (!isNaN(monthlyPrice)) {
+                                const annualPrice = Math.round(monthlyPrice * 0.8);
+                                price.setAttribute('data-monthly', monthlyPrice);
+                                price.textContent = annualPrice;
+                            }
+                        }
+                    });
+
+                    // Update period text
+                    document.querySelectorAll('.plan__price-period').forEach(period => {
+                        period.textContent = '/Mo (billed annually)';
+                    });
+
+                } else {
+                    pricingBall.style.marginLeft = '0px';
+                    annualText.classList.remove('plan-duration--active');
+                    monthlyText.classList.add('plan-duration--active');
+
+                    // Restore monthly prices
+                    document.querySelectorAll('.plan__price').forEach(price => {
+                        const monthlyPrice = price.getAttribute('data-monthly');
+                        if (monthlyPrice) {
+                            price.textContent = monthlyPrice;
+                        }
+                    });
+
+                    // Restore period text
+                    document.querySelectorAll('.plan__price-period').forEach(period => {
+                        period.textContent = '/Mo';
+                    });
+                }
+            });
+
+            // Initialize seat counter
+            const decreaseBtn = document.querySelector('.plan__seat-selector .seat-btn:first-child');
+            const increaseBtn = document.querySelector('.plan__seat-selector .seat-btn:last-child');
+            const seatCountEl = document.querySelector('.seat-count');
+            let seatCount = 1;
+
+            decreaseBtn.addEventListener('click', function() {
+                if (seatCount > 1) {
+                    seatCount--;
+                    seatCountEl.textContent = seatCount + (seatCount === 1 ? ' Seat' : ' Seats');
+                    updateTeamPrice();
+                }
+            });
+
+            increaseBtn.addEventListener('click', function() {
+                if (seatCount < 10) {
+                    seatCount++;
+                    seatCountEl.textContent = seatCount + ' Seats';
+                    updateTeamPrice();
+                }
+            });
+
+            function updateTeamPrice() {
+                const basePriceEl = document.querySelector('.plan__item--active .plan__price');
+                const basePrice = 55;
+                const newPrice = basePrice * seatCount;
+                basePriceEl.textContent = newPrice;
+            }
+
+            // Add animation to plan items
+            const planItems = document.querySelectorAll('.plan__item');
+            planItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.15)';
+                });
+
+                item.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('plan__item--active')) {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = '1px 2px 15px rgba(80, 80, 80, 0.12)';
+                    } else {
+                        this.style.transform = 'translateY(-5px)';
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="aivs2025_header">
+    <div class="aivs2025_logo">
+      <img src="https://th.bing.com/th/id/OLC.6OrC7383AoACbQ480x360?&rs=1&pid=ImgDetMain" alt="AI Video Studios Logo">
+    </div>
+
+    <nav class="aivs2025_navItems">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="/blogs/" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="/use-case/" class="aivs2025_navItem">Uses</a>
+      <a href="/pricing/" class="aivs2025_navItem">Pricing</a>
+      <a href="/register" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#c7e5ef; border:2px solid #b8c0ee;">Get Started</a>
+        <a href="/login" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#e3ebef;border:3px solid #a4d2ec;">signin</a>
+    </nav>
+
+    <!-- Hamburger Menu Button -->
+    <div class="aivs2025_hamburger" id="hamburgerBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="aivs2025_mobileNav" id="mobileNav">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="#" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="#" class="aivs2025_navItem">Uses</a>
+      <a href="#" class="aivs2025_navItem">Pricing</a>
+      <a href="#" class="aivs2025_navItem aivs2025_subscribe">Subscribe</a>
+    </nav>
+
+    <!-- Backdrop for closing mobile menu when clicking outside -->
+    <div class="aivs2025_backdrop" id="backdrop"></div>
+  </header>
+
+  <script>
+    // Get DOM elements
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const backdrop = document.getElementById('backdrop');
+
+    // Toggle mobile nav menu
+    hamburgerBtn.addEventListener('click', function() {
+      hamburgerBtn.classList.toggle('aivs2025_active');
+      mobileNav.classList.toggle('aivs2025_active');
+      backdrop.classList.toggle('aivs2025_active');
+      document.body.style.overflow = mobileNav.classList.contains('aivs2025_active') ? 'hidden' : '';
+    });
+
+    // Close menu when clicking the backdrop
+    backdrop.addEventListener('click', function() {
+      hamburgerBtn.classList.remove('aivs2025_active');
+      mobileNav.classList.remove('aivs2025_active');
+      backdrop.classList.remove('aivs2025_active');
+      document.body.style.overflow = '';
+    });
+
+    // Close menu when clicking a nav item (for better UX)
+    const mobileNavItems = mobileNav.querySelectorAll('.aivs2025_navItem');
+    mobileNavItems.forEach(item => {
+      item.addEventListener('click', function() {
+        hamburgerBtn.classList.remove('aivs2025_active');
+        mobileNav.classList.remove('aivs2025_active');
+        backdrop.classList.remove('aivs2025_active');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Handle window resize to reset state when switching from mobile to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 1024 && mobileNav.classList.contains('aivs2025_active')) {
+        hamburgerBtn.classList.remove('aivs2025_active');
+        mobileNav.classList.remove('aivs2025_active');
+        backdrop.classList.remove('aivs2025_active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Simple, Transparent Pricing</h1>
+        <p>Choose the perfect plan for your AI video creation needs. Scale as your needs grow.</p>
+        <!-- From Uiverse.io by Wendell47 -->
+<button class="button" onclick="window.location.href='http://127.0.0.1:8000/register/'">
+  Get in touch
+  <div class="hoverEffect">
+    <div></div>
+  </div>
+</button>
+
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="pricing-header">
+            <h2>Plans For Every Creator</h2>
+            <p>Whether you're just starting or scaling up your video content, we have the right plan for you.</p>
+        </div>
+
+        <div class="plan-duration">
+            <div class="plan-duration__text plan-duration--active">Monthly</div>
+            <div class="plan-duration__toggle">
+                <div class="plan-duration__toggle-ball"></div>
+            </div>
+            <div class="plan-duration__text">Annual</div>
+        </div>
+
+        <div class="plans__list">
+            <!-- Free Plan -->
+            <article class="plan__item">
+                <div class="plan__header">
+                    <h2 class="plan__title">Free</h2>
+                    <p class="plan__subtitle">Start to protect you and your family against DeepFake</p>
+                    <h1 class="plan__price">0</h1>
+                    <div class="plan__price-period">/Mo</div>
+                </div>
+
+                <div class="plan__features">
+                    <h4 class="plan__features-title">Key Features</h4>
+                    <ul class="plan__feature-list">
+                        <li class="plan__feature-item"><span class="accent-feature">5</span> Video Credits</li>
+                        <li class="plan__feature-item">Videos up to <span class="accent-feature">2min</span></li>
+                        <li class="plan__feature-item"><span class="accent-feature">1</span> Report Analysis(No Graphs)</li>
+                        <li class="plan__feature-item">Standard Video Processing</li>
+                    </ul>
+                </div>
+
+                <div class="plan__cta">
+                    <a href="#" class="plan__cta-link">Get Started</a>
+                </div>
+            </article>
+
+            <!-- Personal Plan -->
+            <article class="plan__item">
+                <div class="plan__header">
+                    <h2 class="plan__title">Basic</h2>
+                    <p class="plan__subtitle">Secure your privacy and protect your life against deepfake</p>
+                    <h1 class="plan__price">24</h1>
+                    <div class="plan__price-period">/Mo</div>
+                </div>
+
+                <div class="plan__features">
+                    <h4 class="plan__features-title">Key Features</h4>
+                    <ul class="plan__feature-list">
+                        <li class="plan__feature-item"><span class="accent-feature">20</span> Video Exports</li>
+                        <li class="plan__feature-item">Videos up to <span class="accent-feature">10 mins</span></li>
+                        <li class="plan__feature-item"><span class="accent-feature">80</span> Credits</li>
+                        <li class="plan__feature-item">Report Analysis with advance graph vizualization</li>
+                        <li class="plan__feature-item">Fast Video Processing</li>
+
+                    </ul>
+                </div>
+
+                <div class="plan__cta">
+                    <a href="#" class="plan__cta-link">Get Started</a>
+                </div>
+            </article>
+
+            <!-- Team Plan -->
+            <article class="plan__item plan__item--active">
+                <div class="best-value-tag">✨ Best Value ✨</div>
+                <div class="plan__header">
+                    <h2 class="plan__title">Standard</h2>
+                    <p class="plan__subtitle">For Builders use our advance API.</p>
+                    <h1 class="plan__price">55</h1>
+                    <div class="plan__price-period">/Mo</div>
+                </div>
+
+                <div class="plan__seat-selector">
+                    <button class="seat-btn">-</button>
+                    <div class="seat-count">1 Seat</div>
+                    <button class="seat-btn">+</button>
+                </div>
+
+                <div class="plan__features">
+                    <h4 class="plan__features-title">Key Features</h4>
+                    <ul class="plan__feature-list">
+                        <li class="plan__feature-item"><span class="accent-feature">500</span> Video Exports</li>
+                        <li class="plan__feature-item">Videos up to <span class="accent-feature">30 mins</span></li>
+                        <li class="plan__feature-item"><span class="accent-feature">200</span> credits</li>
+                        <li class="plan__feature-item">Fast Video Processing</li>
+                    </ul>
+                </div>
+
+                <div class="plan__cta">
+                    <a href="#" class="plan__cta-link plan__cta-link--active">Get Started</a>
+                </div>
+
+                <a href="#" class="plan-details-link">About This Plan</a>
+            </article>
+
+            <!-- Enterprise Plan -->
+            <article class="plan__item">
+                <div class="plan__header">
+                    <h2 class="plan__title">Premium</h2>
+                    <p class="plan__subtitle">Lets Connect your bussiness with us</p>
+                    <h1 class="plan__price">160</h1>
+                    <div class="plan__price-period">/Mo</div>
+<!--                    <h1 class="plan__price" style="font-size: 2rem;">Let's Talk</h1>-->
+                </div>
+
+                <div class="plan__features">
+                    <h4 class="plan__features-title">Includes</h4>
+                    <ul class="plan__feature-list">
+                        <li class="plan__feature-item"><span class="accent-feature">Unlimited</span> Video uploads</li>
+                        <li class="plan__feature-item"><span class="accent-feature">Unlimited</span> Video Duration</li>
+                        <li class="plan__feature-item"><span class="accent-feature">Unlimited</span> Credits</li>
+                        <li class="plan__feature-item">Priority Video Processing</li>
+                    </ul>
+                </div>
+
+                <div class="plan__cta">
+                    <a href="#" class="plan__cta-link">Contact Us</a>
+                </div>
+            </article>
+        </div>
+
+        <div class="plans__special-offer">
+            <p><strong>Limited offer: </strong> Save 20% on annual plans. Get the coupon <a href="#">here</a></p>
+        </div>
+    </section>
+
+    <!-- Featured On Section -->
+    <section class="featured-section">
+        <h2>Featured On</h2>
+        <div class="featured-logos">
+            <img src="https://i0.wp.com/examtipsindia.com/wp-content/uploads/2022/10/download-3.png" alt="India Security Press" class="featured-logo" style="animation-delay: 0.1s; height:120px; width:120px;">
+            <img src="https://th.bing.com/th/id/OIP.Ytfx67njQG-oRJQMYIYYMAHaEH?rs=1&pid=ImgDetMain" alt="Electronic Security" class="featured-logo" style="animation-delay: 0.2s; height:120px; width:120px;">
+            <img src="https://th.bing.com/th/id/OIP.A6vhRTYHodCLA9BTeM55TAHaH_?rs=1&pid=ImgDetMain" alt="Indian Intelligence" class="featured-logo" style="animation-delay: 0.3s; height:120px; width:120px;">
+            <img src="https://th.bing.com/th/id/OLC.6OrC7383AoACbQ480x360?&rs=1&pid=ImgDetMain" alt="CDI" class="featured-logo" style="animation-delay: 0.4s; height:120px; width:120px;" >
+            <img src="https://www.clipartmax.com/png/middle/156-1562350_central-security-service-wikipedia-national-emblem-of-india.png" alt="IIB" class="featured-logo" style="animation-delay: 0.5s; height:120px; width:120px;">
+        </div>
+    </section>
+    <!-- From Uiverse.io by JesusRafaelNavaCruz -->
+
+    <!-- Support Table Section -->
+    <section class="support-section">
+        <h2>Tech & Support</h2>
+        <table class="support-table">
+            <thead>
+                <tr>
+                    <th width="35%"></th>
+                    <th width="16%">Free</th>
+                    <th width="16%">Basic</th>
+                    <th width="16%">Standard</th>
+                    <th width="16%">Platinum</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Support Chat <span class="info-icon">i</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Knowledge Base <span class="info-icon">i</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>On-Call Support <span class="info-icon">i</span></td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Dedicated Customer Service Manager <span class="info-icon">i</span></td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Report Analysis <span class="info-icon">i</span></td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                    <td><span class="check">✓</span></td>
+                </tr>
+                <tr>
+                    <td>Video Synthesis Processing Speed <span class="info-icon">i</span></td>
+                    <td>Standard</td>
+                    <td>Standard</td>
+                    <td><span class="priority-text">Priority</span></td>
+                    <td><span class="priority-text">Priority</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+<section class="acme2025_whyChooseUs_container">
+    <h2 class="acme2025_whyChooseUs_heading">Why Choose Us</h2>
+
+    <div class="acme2025_whyChooseUs_cardGrid">
+      <!-- Card 1 -->
+      <div class="acme2025_whyChooseUs_card">
+        <div class="acme2025_whyChooseUs_cardImageWrapper">
+          <svg class="acme2025_whyChooseUs_cardSvg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 6V12L16 14" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 16H12.01" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.5 7.5L7.51 7.51" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16.5 7.5L16.51 7.51" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7.5 16.5L7.51 16.51" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16.5 16.5L16.51 16.51" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="acme2025_whyChooseUs_cardContent">
+          <h3 class="acme2025_whyChooseUs_cardTitle">24/7 Dedicated Support</h3>
+          <p class="acme2025_whyChooseUs_cardDescription">Our expert team is available around the clock to assist you with any questions or issues. We're committed to providing timely and effective support whenever you need it.</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="acme2025_whyChooseUs_card">
+        <div class="acme2025_whyChooseUs_cardImageWrapper">
+          <svg class="acme2025_whyChooseUs_cardSvg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22C12 22 20 18 20 12V4L12 2L4 4V12C4 18 12 22 12 22Z" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 8L10.5 13.5L8 11" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="acme2025_whyChooseUs_cardContent">
+          <h3 class="acme2025_whyChooseUs_cardTitle">Advanced Privacy Technology</h3>
+          <p class="acme2025_whyChooseUs_cardDescription">We employ cutting-edge encryption and security protocols to ensure your information remains protected. Our innovative technology safeguards your privacy at every step.</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="acme2025_whyChooseUs_card">
+        <div class="acme2025_whyChooseUs_cardImageWrapper">
+          <svg class="acme2025_whyChooseUs_cardSvg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 3v4a1 1 0 0 0 1 1h4" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 17L15 17" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 11V17" stroke="#4A6FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="acme2025_whyChooseUs_cardContent">
+          <h3 class="acme2025_whyChooseUs_cardTitle">Zero Data Storage Policy</h3>
+          <p class="acme2025_whyChooseUs_cardDescription">Your privacy is our priority. We operate with a strict no-storage policy, ensuring that your personal data is never retained or sold to third parties.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+    <section class="we360__faq-section-main-wrapper">
+            <div class="we360__faq-header-container">
+                <h2 class="we360__faq-headline-text">Frequently Asked <span class="we360__faq-headline-gradient-text">Questions</span></h2>
+                <p class="we360__faq-subtitle-paragraph">Find answers to the most common questions about our workforce productivity intelligence platform.</p>
+            </div>
+
+            <div class="we360__faq-items-master-container">
+                <!-- FAQ Item 1 -->
+                <div class="we360__faq-single-item-container" id="we360__faq-item-01">
+                    <div class="we360__faq-question-clickable-element">
+                        <div class="we360__faq-question-text-content">What is DeepFake?</div>
+                        <div class="we360__faq-toggle-icon-container"></div>
+                    </div>
+                    <div class="we360__faq-answer-container">
+    DeepFake is another threat introduced by AI. It involves the use of artificial intelligence to create hyper-realistic but entirely fake videos, images, or audio recordings. These can be used to impersonate individuals, spread misinformation, manipulate public opinion, or damage reputations. Detecting and countering DeepFakes is essential to ensure digital safety and maintain trust in media content.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="we360__faq-single-item-container" id="we360__faq-item-02">
+                    <div class="we360__faq-question-clickable-element">
+                        <div class="we360__faq-question-text-content">How we are different from others ?</div>
+                        <div class="we360__faq-toggle-icon-container"></div>
+                    </div>
+                    <div class="we360__faq-answer-container">
+                        Our AI-powered productivity tracking system analyzes various work-related data points such as application usage, task completion rates, and work patterns. Machine learning algorithms then identify productivity trends, potential bottlenecks, and opportunities for improvement. The system provides personalized insights while maintaining privacy and focusing on team-level metrics rather than individual surveillance.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="we360__faq-single-item-container" id="we360__faq-item-03">
+                    <div class="we360__faq-question-clickable-element">
+                        <div class="we360__faq-question-text-content">Is my team's data secure with your company?</div>
+                        <div class="we360__faq-toggle-icon-container"></div>
+                    </div>
+                    <div class="we360__faq-answer-container">
+                        Absolutely. We prioritize data security and compliance with industry standards. All data is encrypted both in transit and at rest. We follow strict access control protocols, and our infrastructure undergoes regular security audits. We are compliant with GDPR, CCPA, and other relevant regulations to ensure your team's information remains protected at all times.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="we360__faq-single-item-container" id="we360__faq-item-04">
+                    <div class="we360__faq-question-clickable-element">
+                        <div class="we360__faq-question-text-content">Easy way to connect with your company?</div>
+                        <div class="we360__faq-toggle-icon-container"></div>
+                    </div>
+                    <div class="we360__faq-answer-container">
+                        Leave the query in the query box or chat with our support.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="we360__faq-single-item-container" id="we360__faq-item-05">
+                    <div class="we360__faq-question-clickable-element">
+                        <div class="we360__faq-question-text-content">What kind of support do you offer?</div>
+                        <div class="we360__faq-toggle-icon-container"></div>
+                    </div>
+                    <div class="we360__faq-answer-container">
+                        We offer 24/7 customer support through multiple channels including email, live chat, and phone. Our dedicated customer success team is available to help with onboarding, training, and troubleshooting. Enterprise customers also receive a dedicated account manager who provides personalized guidance and regular check-ins to ensure you're getting the most value from our platform.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="we360__faq-single-item-container" id="we360__faq-item-06">
+                    <div class="we360__faq-question-clickable-element">
+                        <div class="we360__faq-question-text-content">Is the money will be refundable ?</div>
+                        <div class="we360__faq-toggle-icon-container"></div>
+                    </div>
+                    <div class="we360__faq-answer-container">
+                        Yes, with in 24 hours you can refund your money after that we are not responsible.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Section -->
+
+        </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize FAQ dropdowns
+            const faqQuestions = document.querySelectorAll('.we360__faq-question-clickable-element');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const isOpen = answer.style.display === 'block';
+
+                    // Close all answers
+                    document.querySelectorAll('.we360__faq-answer-container').forEach(item => {
+                        item.style.display = 'none';
+                    });
+
+                    // Update all question indicators
+                    document.querySelectorAll('.we360__faq-question-clickable-element').forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    // Toggle current answer
+                    if (!isOpen) {
+                        answer.style.display = 'block';
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <div class="still-need-card">
+        <div class="card-header">
+            <h1 class="card-title">Still Need help ?</h1>
+            <p class="card-subtitle">Just connect with us by enter your detail in the contact area.</p>
+        </div>
+    </div>
+
+      <section class="raven2025_contact_container">
+    <h2 class="raven2025_contact_heading">Contact Us</h2>
+
+    <div class="raven2025_contact_grid">
+      <!-- Left: Image Section -->
+      <div class="raven2025_contact_imageContainer">
+        <svg class="raven2025_contact_image" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4a6fa5" />
+              <stop offset="100%" stop-color="#2d3748" />
+            </linearGradient>
+          </defs>
+          <rect width="800" height="600" fill="url(#bgGradient)" />
+          <!-- Abstract connection illustration -->
+          <circle cx="200" cy="200" r="30" fill="#ffffff" opacity="0.7" />
+          <circle cx="400" cy="150" r="20" fill="#ffffff" opacity="0.5" />
+          <circle cx="600" cy="250" r="25" fill="#ffffff" opacity="0.6" />
+          <circle cx="300" cy="400" r="35" fill="#ffffff" opacity="0.8" />
+          <circle cx="500" cy="350" r="15" fill="#ffffff" opacity="0.4" />
+          <circle cx="150" cy="500" r="20" fill="#ffffff" opacity="0.5" />
+          <circle cx="650" cy="450" r="30" fill="#ffffff" opacity="0.7" />
+
+          <!-- Connection lines -->
+          <line x1="200" y1="200" x2="400" y2="150" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="400" y1="150" x2="600" y2="250" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="600" y1="250" x2="500" y2="350" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="500" y1="350" x2="300" y2="400" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="300" y1="400" x2="150" y2="500" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="650" y1="450" x2="500" y2="350" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="200" y1="200" x2="300" y2="400" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+
+          <!-- Communication icons -->
+          <path d="M200,200 C220,180 240,190 230,210 L215,235 L200,200" fill="#ffffff" opacity="0.9" />
+          <path d="M300,400 C280,390 275,370 290,365 L310,360 L300,400" fill="#ffffff" opacity="0.9" />
+          <path d="M500,350 C520,340 525,360 510,370 L490,375 L500,350" fill="#ffffff" opacity="0.9" />
+        </svg>
+
+        <div class="raven2025_contact_overlay">
+          <h3 class="raven2025_contact_overlayTitle">Let's Connect</h3>
+          <p class="raven2025_contact_overlayText">We're here to answer your questions and provide the solutions you need. Reach out to our team today.</p>
+        </div>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div class="raven2025_contact_formContainer">
+        <h3 class="raven2025_contact_formTitle">Send Us a Message</h3>
+
+        <form class="raven2025_contact_form">
+          <div class="raven2025_contact_inputGroup">
+            <label for="name" class="raven2025_contact_label">Full Name</label>
+            <input type="text" id="name" name="name" class="raven2025_contact_input" placeholder="Enter your name" required>
+          </div>
+
+          <div class="raven2025_contact_inputGroup">
+            <label for="email" class="raven2025_contact_label">Email Address</label>
+            <input type="email" id="email" name="email" class="raven2025_contact_input" placeholder="Enter your email" required>
+          </div>
+
+          <div class="raven2025_contact_inputGroup">
+            <label for="query" class="raven2025_contact_label">Your Query</label>
+            <textarea id="query" name="query" class="raven2025_contact_textarea" placeholder="How can we help you?" required></textarea>
+          </div>
+
+          <button type="submit" class="raven2025_contact_button">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+{% load static %}
+    <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo-section">
+      <img src="{% static 'cdi-removebg-preview.png' %}" alt="Your Logo" class="footer-logo">
+      <p class="footer-tagline">Cutting-edge deepfake detection technology to protect your digital identity</p>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3>Our Services</h3>
+        <ul>
+          <li><a href="#">Deepfake Detection</a></li>
+          <li><a href="#">Video Analysis</a></li>
+          <li><a href="#">Security Solutions</a></li>
+          <li><a href="#">Enterprise API</a></li>
+          <li><a href="#">Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Research Papers</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© 2025 Deepfake Detection Technology. All Rights Reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background-color: #0b2241; /* Navy blue */
+  color: #fff;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Logo section */
+.footer-logo-section {
+  flex: 1;
+  min-width: 250px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #b3c3d9;
+  margin-bottom: 20px;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #1e88e5;
+}
+
+/* Links section */
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  min-width: 160px;
+  margin-bottom: 30px;
+}
+
+.footer-column h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #1e88e5;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+  color: #b3c3d9;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-column ul li a:hover {
+  color: #fff;
+}
+
+/* Bottom section */
+.footer-bottom {
+  background-color: #071a33;
+  padding: 20px 0;
+}
+
+.footer-bottom .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.copyright {
+  color: #8c9cb8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.legal-links {
+  display: flex;
+  gap: 20px;
+}
+
+.legal-links a {
+  color: #8c9cb8;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-logo-section {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-column {
+    flex: 1 0 50%;
+  }
+
+  .footer-bottom .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-column {
+    flex: 1 0 100%;
+  }
+}
+    .raven2025_contact_container {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .raven2025_contact_heading {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 3rem;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .raven2025_contact_heading:after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: #4a6fa5;
+      margin: 0.8rem auto 0;
+    }
+
+    .raven2025_contact_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .raven2025_contact_imageContainer {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+      background: linear-gradient(135deg, #4a6fa5 0%, #2d3748 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .raven2025_contact_image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .raven2025_contact_overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+      color: white;
+    }
+
+    .raven2025_contact_overlayTitle {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .raven2025_contact_overlayText {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .raven2025_contact_formContainer {
+      padding: 3rem 2rem;
+    }
+
+    .raven2025_contact_formTitle {
+      font-size: 1.75rem;
+      color: #2d3748;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .raven2025_contact_form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .raven2025_contact_inputGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .raven2025_contact_label {
+      font-weight: 500;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    .raven2025_contact_input,
+    .raven2025_contact_textarea {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .raven2025_contact_input:focus,
+    .raven2025_contact_textarea:focus {
+      outline: none;
+      border-color: #4a6fa5;
+      box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+    }
+
+    .raven2025_contact_textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .raven2025_contact_button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      align-self: flex-start;
+    }
+
+    .raven2025_contact_button:hover {
+      background: #3a5a84;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .raven2025_contact_grid {
+        grid-template-columns: 1fr;
+      }
+
+      .raven2025_contact_imageContainer {
+        min-height: 300px;
+      }
+    }
+</style>
+
+
+
+</body>
+</html>

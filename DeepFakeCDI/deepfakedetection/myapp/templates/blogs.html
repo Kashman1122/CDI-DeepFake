@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'blogs.css' %}">
+<!--    <script src="{% static 'dashboard.js' %}"></script>-->
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --light-blue: #a3cfee;
+            --light-purple: #d2b3e5;
+            --dark-text: #333;
+            --light-text: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff, #f0f4f8);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            background: linear-gradient(135deg, var(--light-purple), var(--light-blue));
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-header h1 {
+            font-size: 36px;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .blog-post {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+        }
+
+        .blog-preview {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 30px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-preview:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-content {
+            display: flex;
+            padding: 20px;
+        }
+
+        .preview-image {
+            flex: 0 0 30%;
+            margin-right: 20px;
+        }
+
+        .preview-image img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .preview-text {
+            flex: 1;
+        }
+
+        .preview-text h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+
+        .preview-text p {
+            color: var(--light-text);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .category {
+            display: inline-block;
+            padding: 5px 15px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        .technology {
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+        }
+
+        .workplace {
+            background: linear-gradient(to right, #3498db, #2980b9);
+        }
+
+        .digital {
+            background: linear-gradient(to right, #f1c40f, #f39c12);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .post-header img {
+            width: 50%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+        .post-header-content {
+            flex: 1;
+        }
+
+        .post-header-content h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .post-content {
+            padding: 20px;
+        }
+
+        .post-content p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .read-more {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary-blue), #2980b9);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            background: linear-gradient(135deg, #2980b9, var(--primary-blue));
+            transform: translateY(-2px);
+        }
+
+        .related-posts {
+            margin-top: 40px;
+        }
+
+        .related-posts h3 {
+            font-size:.22px;
+            margin-bottom: 20px;
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--light-blue);
+            padding-bottom: 10px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .related-post {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .related-post img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .related-post-content {
+            padding: 15px;
+        }
+
+        .related-post-content h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+
+        .related-post-content p {
+            font-size: 14px;
+            color: var(--light-text);
+        }
+
+        .back-to-list {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--light-purple), var(--light-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-list:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .preview-content {
+                flex-direction: column;
+            }
+
+            .preview-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .post-header {
+                flex-direction: column;
+            }
+
+            .post-header img {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .raven2025_contact_container {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1200px;
+      margin: 1rem auto;
+      margin-top:-40px;
+      padding: 0 1rem;
+    }
+
+    .raven2025_contact_heading {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #2d3748;
+      margin-bottom: 3rem;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .raven2025_contact_heading:after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: #4a6fa5;
+      margin: 0.8rem auto 0;
+    }
+
+    .raven2025_contact_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .raven2025_contact_imageContainer {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+      background: linear-gradient(135deg, #4a6fa5 0%, #2d3748 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .raven2025_contact_image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .raven2025_contact_overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+      color: white;
+    }
+
+    .raven2025_contact_overlayTitle {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .raven2025_contact_overlayText {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .raven2025_contact_formContainer {
+      padding: 3rem 2rem;
+    }
+
+    .raven2025_contact_formTitle {
+      font-size: 1.75rem;
+      color: #2d3748;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+
+    .raven2025_contact_form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .raven2025_contact_inputGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .raven2025_contact_label {
+      font-weight: 500;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    .raven2025_contact_input,
+    .raven2025_contact_textarea {
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .raven2025_contact_input:focus,
+    .raven2025_contact_textarea:focus {
+      outline: none;
+      border-color: #4a6fa5;
+      box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+    }
+
+    .raven2025_contact_textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .raven2025_contact_button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      align-self: flex-start;
+    }
+
+    .raven2025_contact_button:hover {
+      background: #3a5a84;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .raven2025_contact_grid {
+        grid-template-columns: 1fr;
+      }
+
+      .raven2025_contact_imageContainer {
+        min-height: 300px;
+      }
+    }
+
+
+
+
+    </style>
+</head>
+<body>
+
+{% load static %}
+<header class="aivs2025_header">
+    <div class="aivs2025_logo">
+      <img src="https://th.bing.com/th/id/OLC.6OrC7383AoACbQ480x360?&rs=1&pid=ImgDetMain" alt="AI Video Studios Logo">
+    </div>
+
+
+    <nav class="aivs2025_navItems">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="/blogs/" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="/use-case/" class="aivs2025_navItem">Uses</a>
+      <a href="/pricing/" class="aivs2025_navItem">Pricing</a>
+      <a href="/register" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#c7e5ef; border:2px solid #b8c0ee;">Get Started</a>
+        <a href="/login" class="aivs2025_navItem aivs2025_subscribe" style="background-color:#e3ebef;border:3px solid #a4d2ec;">signin</a>
+    </nav>
+
+    <!-- Hamburger Menu Button -->
+    <div class="aivs2025_hamburger" id="hamburgerBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="aivs2025_mobileNav" id="mobileNav">
+      <a href="http://127.0.0.1:8000/" class="aivs2025_navItem">Home</a>
+      <a href="#" class="aivs2025_navItem">About Us</a>
+      <a href="#" class="aivs2025_navItem">Features</a>
+      <a href="#" class="aivs2025_navItem">Blogs</a>
+      <a href="#" class="aivs2025_navItem">Technology</a>
+      <a href="#" class="aivs2025_navItem">Uses</a>
+      <a href="#" class="aivs2025_navItem">Pricing</a>
+      <a href="#" class="aivs2025_navItem aivs2025_subscribe">Subscribe</a>
+    </nav>
+
+    <!-- Backdrop for closing mobile menu when clicking outside -->
+    <div class="aivs2025_backdrop" id="backdrop"></div>
+  </header>
+
+<h2 style="margin-left:180px; color:#3498db; font-size:38px; font-weight:450;">BLOGS</h2>
+
+<div class="container">
+
+
+        <div class="blog-grid" id="blog-grid">
+            <!-- Blog Previews -->
+            <div class="blog-preview" onclick="showPost('post1')">
+                <div class="preview-content">
+                    <div class="preview-image">
+                        <img src="https://logos-world.net/wp-content/uploads/2024/07/Studio-Ghibli-Logo-1985-500x281.png" alt="Studio Ghibli Inspired Art">
+                    </div>
+                    <div class="preview-text">
+                        <span class="category technology">TECHNOLOGY</span>
+                        <h3>The Magical World of Studio Ghibli: A Journey Through Animation</h3>
+                        <p>It is the use of AI tools like OpenAI's ChatGPT image generator to create photos and memes into visuals emulating art of Studio Ghibli. The latter is a...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-preview" onclick="showPost('post2')">
+                <div class="preview-content">
+                    <div class="preview-image">
+                        <img src="https://internationalbanker.com/wp-content/uploads/2021/02/Deepfake-Technology.png" alt="Workforce Analytics">
+                    </div>
+                    <div class="preview-text">
+                        <span class="category workplace">WORKPLACE</span>
+                        <h3>Workforce Analytics vs HR Analytics vs People Analytics vs Talent Analytics</h3>
+                        <p>Understanding the subtle differences between these analytics approaches can transform how organizations make decisions about their most valuable asset...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-preview" onclick="showPost('post3')">
+                <div class="preview-content">
+                    <div class="preview-image">
+                        <img src="https://static.tnn.in/thumb/msid-107161832,thumbsize-1346428,width-1280,height-720,resizemode-75/107161832.jpg" alt="Digital Presenteeism">
+                    </div>
+                    <div class="preview-text">
+                        <span class="category digital">DeepFake</span>
+                        <h3>The Rise of 'Digital Presenteeism': Why Being Online ≠ Being Productive</h3>
+                        <p>Digital presenteeism represents an outdated understanding of work that measures value by visibility rather than impact. As remote and hybrid...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-preview" onclick="showPost('post4')">
+                <div class="preview-content">
+                    <div class="preview-image">
+                        <img src="https://th.bing.com/th/id/OIP.9_pWCyudgNlIIaLWGBboWwHaD4?cb=iwp1&rs=1&pid=ImgDetMain" alt="Productivity Measurement">
+                    </div>
+                    <div class="preview-text">
+                        <span class="category workplace">WORKPLACE</span>
+                        <h3>Productivity Measurement Frameworks for Modern Teams</h3>
+                        <p>Traditional productivity metrics often fail to capture the nuanced nature of knowledge work. This article explores better frameworks for measuring team output...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-preview" onclick="showPost('post5')">
+                <div class="preview-content">
+                    <div class="preview-image">
+                        <img src="https://th.bing.com/th/id/OIP.8kcg7wRwqBmk_mMc6OaXnQHaEJ?cb=iwp1&rs=1&pid=ImgDetMain" alt="Operational Efficiency">
+                    </div>
+                    <div class="preview-text">
+                        <span class="category workplace">WORKPLACE</span>
+                        <h3>Operational Efficiency: The Hidden Competitive Advantage</h3>
+                        <p>While many organizations focus on innovation, those who master operational efficiency often gain sustainable advantages in their markets...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-preview" onclick="showPost('post6')">
+                <div class="preview-content">
+                    <div class="preview-image">
+                        <img src="https://cdn.mos.cms.futurecdn.net/NEaP2bkgWaYcnUW3jeQDTL.jpg" alt="Hot Desking Trends">
+                    </div>
+                    <div class="preview-text">
+                        <span class="category workplace">WORKPLACE</span>
+                        <h3>Hot Desking Trends in 2025: What's Working and What's Not</h3>
+                        <p>As offices continue to evolve post-pandemic, hot desking approaches have transformed. This article examines current successful strategies...</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <!-- Full Blog Posts (Hidden initially) -->
+        <div id="post1" class="blog-post">
+            <div class="post-header">
+                <img src="https://logos-world.net/wp-content/uploads/2024/07/Studio-Ghibli-Logo-1985-500x281.png" alt="Studio Ghibli Inspired Art">
+                <div class="post-header-content">
+                    <span class="category technology">TECHNOLOGY</span>
+                    <h2>The Magical World of Studio Ghibli: A Journey Through Animation</h2>
+                    <p>Published: May 1, 2025 | By: Sarah Johnson</p>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>Studio Ghibli has captivated audiences worldwide with its enchanting storytelling and breathtaking animation. Founded by directors Hayao Miyazaki and Isao Takahata in 1985, the Japanese animation studio has produced some of the most beloved animated films of all time, including "Spirited Away," "My Neighbor Totoro," and "Princess Mononoke."</p>
+
+                <p>What makes Studio Ghibli's work so magical is not just the visual beauty but the depth of its storytelling. The films often explore profound themes such as environmentalism, pacifism, feminism, and the complexity of human nature. Characters are rarely simply good or evil; instead, they exist in morally complex worlds where motivations are nuanced and multifaceted.</p>
+
+                <p>The studio's distinctive visual style combines fantastical elements with meticulous attention to detail in depicting everyday life. From the delicate movement of wind through grass to the steam rising from a bowl of ramen, Ghibli's animation celebrates the beauty in ordinary moments.</p>
+
+                <p>Now, AI tools like OpenAI's ChatGPT image generator are being used to create visuals that emulate the distinctive art style of Studio Ghibli. These AI-generated images attempt to capture the whimsical character designs, lush natural landscapes, and magical elements that define Ghibli's aesthetic.</p>
+
+                <p>While these AI tools can produce impressive results, they also raise questions about artistic authenticity and the value of human creativity. Studio Ghibli's works are the product of painstaking craftsmanship, with many frames still hand-drawn in an era dominated by computer animation.</p>
+
+                <p>As we continue to develop AI capabilities in creative fields, it's worth considering what elements of artistic expression can be algorithmically reproduced and what aspects remain uniquely human. The magic of Studio Ghibli reminds us that art is not just about aesthetics but about conveying emotion and meaning through a distinctly human lens.</p>
+
+                <button class="back-to-list" onclick="showBlogList()">Back to Blog List</button>
+
+                <div class="related-posts">
+                    <h3>Related Posts</h3>
+                    <div class="related-grid">
+                        <div class="related-post">
+                            <img src="https://th.bing.com/th/id/OIP.mUcY_ws1boDZ2hkrtUDK4wHaD4?cb=iwp2&w=1200&h=630&rs=1&pid=ImgDetMain" alt="AI Art">
+                            <div class="related-post-content">
+                                <h4>The Ethics of AI Art Generation</h4>
+                                <p>The rise of AI image generation models like Stable Diffusion has ignited a paradigm shift in the art world, prompting both innovation and controversy.</p>
+                            </div>
+                        </div>
+                        <div class="related-post">
+                            <img src="https://th.bing.com/th/id/OIP.YPkQX4qo6JBe7n2LwopgNQHaEO?cb=iwp2&rs=1&pid=ImgDetMain" alt="Animation Industry">
+                            <div class="related-post-content">
+                                <h4>The Evolution of Animation Techniques</h4>
+                                <p>From hand-drawn cells to digital rendering: how animation has transformed over decades.</p>
+                            </div>
+                        </div>
+                        <div class="related-post">
+                            <img src="https://th.bing.com/th/id/OIP.LH14CKs6FvyWHaZIkTQLpwHaEO?cb=iwp2&rs=1&pid=ImgDetMain" alt="Japanese Culture">
+                            <div class="related-post-content">
+                                <h4>Japanese Storytelling Traditions in Modern Media</h4>
+                                <p>How ancient storytelling techniques continue to influence contemporary Japanese animation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="post2" class="blog-post">
+            <div class="post-header">
+                <img src="https://internationalbanker.com/wp-content/uploads/2021/02/Deepfake-Technology.png" alt="Workforce Analytics">
+                <div class="post-header-content">
+                    <span class="category workplace">WORKPLACE</span>
+                    <h2>Workforce Analytics vs HR Analytics vs People Analytics vs Talent Analytics</h2>
+                    <p>Published: April 25, 2025 | By: Michael Chen</p>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>In the evolving landscape of organizational management, various analytical approaches have emerged to help businesses make data-driven decisions about their workforce. While these terms—Workforce Analytics, HR Analytics, People Analytics, and Talent Analytics—are often used interchangeably, they each have distinct focuses and applications.</p>
+
+                <p><strong>Workforce Analytics</strong> takes a broad approach, examining the entire workforce ecosystem. It focuses on organizational structure, workforce planning, and operational efficiency. This approach helps companies understand how their workforce is distributed across departments and locations, identify potential gaps or redundancies, and optimize resource allocation.</p>
+
+                <p><strong>HR Analytics</strong> is primarily concerned with the effectiveness of HR processes and programs. It measures metrics like recruitment efficiency, onboarding effectiveness, compensation competitiveness, and benefits utilization. The goal is to improve HR operations and demonstrate the ROI of HR initiatives to business stakeholders.</p>
+
+                <p><strong>People Analytics</strong> adopts a more human-centered perspective, focusing on employee behaviors, preferences, and experiences. It examines factors like engagement, wellbeing, collaboration patterns, and cultural alignment. People analytics helps organizations understand what motivates their employees and how to create environments where people can thrive.</p>
+
+                <p><strong>Talent Analytics</strong> narrows in on identifying, developing, and retaining high-performing individuals. It looks at performance metrics, skill gaps, leadership potential, and career progression. This approach helps organizations make strategic decisions about talent acquisition, development programs, and succession planning.</p>
+
+                <p>While these analytical disciplines have different emphases, they share common goals: to optimize human capital, improve decision-making, and drive business performance. The most effective organizations don't silo these approaches but instead integrate them to gain comprehensive insights into how their workforce contributes to organizational success.</p>
+
+                <button class="back-to-list" onclick="showBlogList()">Back to Blog List</button>
+
+                <div class="related-posts">
+                    <h3>Related Posts</h3>
+                    <div class="related-grid">
+                        <div class="related-post">
+                            <img src="https://hrone.cloud/wp-content/uploads/2022/10/Data-Driven-HR-Strategies.png" alt="Data-Driven HR">
+                            <div class="related-post-content">
+                                <h4>5 Steps to Build a Data-Driven HR Function</h4>
+                                <p>A practical guide to transforming your HR department through analytics.</p>
+                            </div>
+                        </div>
+                        <div class="related-post">
+                            <img src="https://th.bing.com/th/id/OIP.EWHV348DZ-fZ3ua4qrZy1QHaE8?cb=iwp2&rs=1&pid=ImgDetMain" alt="Predictive Analytics">
+                            <div class="related-post-content">
+                                <h4>The Power of Predictive Analytics in Talent Management</h4>
+                                <p>How forward-looking data analysis can transform your approach to talent.</p>
+                            </div>
+                        </div>
+                        <div class="related-post">
+                            <img src="https://th.bing.com/th/id/OIP.YyWbuxABvXjrOjkV5m0dZQAAAA?o=7&cb=iwp2rm=3&rs=1&pid=ImgDetMain" alt="HR Technology">
+                            <div class="related-post-content">
+                                <h4>Top HR Analytics Tools for 2025</h4>
+                                <p>A review of the most powerful platforms for workforce insights.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="post3" class="blog-post">
+    <div class="post-header">
+        <img src="https://static.tnn.in/thumb/msid-107161832,thumbsize-1346428,width-1280,height-720,resizemode-75/107161832.jpg" alt="Deepfake Presenteeism">
+        <div class="post-header-content">
+            <span class="category digital">AI & Ethics</span>
+            <h2>The Rise of 'Deepfake Presenteeism': When Appearances Replace Authentic Engagement</h2>
+            <p>Published: May 3, 2025 | By: Emma Rodriguez</p>
+        </div>
+    </div>
+    <div class="post-content">
+        <p>In today's AI-driven workplace, a new ethical concern is surfacing: <strong>deepfake presenteeism</strong>. As virtual avatars and AI-generated video stand-ins become increasingly realistic, organizations must grapple with a fundamental question: is digital presence still synonymous with real participation?</p>
+
+        <p>Deepfake presenteeism describes a growing trend where employees use AI-generated avatars or pre-recorded videos to simulate live presence in meetings or digital workspaces. While the technology behind these tools—such as real-time facial animation and lip-syncing—is impressive, their misuse challenges the very nature of trust and accountability in distributed teams.</p>
+
+        <p>This phenomenon emerges from the same pressures that fueled digital presenteeism: the need to be "seen" as available and engaged. But now, rather than just manipulating online status or attending excessive video calls, workers may delegate their presence to AI personas—blurring the lines between efficiency and deception.</p>
+
+        <p>Such practices raise serious ethical and operational concerns. Can teams maintain psychological safety when colleagues might not truly be present? How do leaders ensure fair collaboration when some contributions are simulated? And what does it mean to be "present" in a virtual environment?</p>
+
+        <p>Progressive organizations are beginning to confront these challenges by promoting authenticity and rethinking engagement metrics:</p>
+
+        <p>1. <strong>Presence verification</strong>: Encouraging opt-in identity confirmations for high-stakes meetings and sensitive communications.</p>
+        <p>2. <strong>AI transparency policies</strong>: Requiring employees to disclose when generative tools are being used to represent them.</p>
+        <p>3. <strong>Outcome over illusion</strong>: Shifting focus away from visual presence toward measurable results and collaboration quality.</p>
+        <p>4. <strong>Ethical AI literacy</strong>: Educating teams about the benefits and risks of deepfake technologies in professional settings.</p>
+
+        <p>In a world where presence can be faked with uncanny realism, authenticity becomes a competitive advantage. The future of work demands more than technical fluency—it requires ethical clarity and a renewed commitment to human connection. Organizations that embrace transparency and prioritize trust over appearance will lead in the era of synthetic identity.</p>
+
+        <button class="back-to-list" onclick="showBlogList()">Back to Blog List</button>
+
+        <div class="related-posts">
+            <h3>Related Posts</h3>
+            <div class="related-grid">
+                <div class="related-post">
+                    <img src="https://th.bing.com/th/id/OIP.qhEi9wmZ_QWDPPuZSnTCzgHaEK?cb=iwp2&rs=1&pid=ImgDetMain" alt="AI Identity Verification">
+                    <div class="related-post-content">
+                        <h4>Protecting Your Family from Deepfake Threats</h4>
+                        <p>Strategies for securing virtual spaces in the age of synthetic media.</p>
+                    </div>
+                </div>
+                <div class="related-post">
+                    <img src="https://th.bing.com/th/id/OIP.LBJZz-GkoUwnF8YMgl0bSAHaEb?cb=iwp2&rs=1&pid=ImgDetMain" alt="Synthetic Avatars">
+                    <div class="related-post-content">
+                        <h4>When Your Colleague is an AI</h4>
+                        <p>Understanding the rise of digital avatars in workplace collaboration.</p>
+                    </div>
+                </div>
+                <div class="related-post">
+                    <img src="https://th.bing.com/th/id/OIP.lp0QavAhBqGszuwi_-w4xwHaEO?cb=iwp2&rs=1&pid=ImgDetMain" alt="AI Ethics">
+                    <div class="related-post-content">
+                        <h4>Ethical AI: Drawing the Line in Remote Work</h4>
+                        <p>Balancing innovation with integrity in AI-assisted environments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <!-- Additional blog posts would follow the same pattern -->
+        <div id="post4" class="blog-post">
+            <!-- Content for post 4 -->
+            <div class="post-header">
+                <img src="https://th.bing.com/th/id/OIP.9_pWCyudgNlIIaLWGBboWwHaD4?cb=iwp1&rs=1&pid=ImgDetMain" alt="Productivity Measurement">
+                <div class="post-header-content">
+                    <span class="category workplace">WORKPLACE</span>
+                    <h2>Productivity Measurement Frameworks for Modern Teams</h2>
+                    <p>Published: April 28, 2025 | By: David Kim</p>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>Traditional productivity metrics often fail to capture the nuanced nature of knowledge work in today's complex business environment. This article explores better frameworks for measuring team output in ways that actually reflect value creation.</p>
+
+                <button class="back-to-list" onclick="showBlogList()">Back to Blog List</button>
+            </div>
+        </div>
+
+        <div id="post5" class="blog-post">
+            <!-- Content for post 5 -->
+            <div class="post-header">
+                <img src="/api/placeholder/400/320" alt="Operational Efficiency">
+                <div class="post-header-content">
+                    <span class="category workplace">WORKPLACE</span>
+                    <h2>Operational Efficiency: The Hidden Competitive Advantage</h2>
+                    <p>Published: April 22, 2025 | By: Lisa Thompson</p>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>While many organizations focus on innovation, those who master operational efficiency often gain sustainable advantages in their markets. This article explores how streamlined operations create room for innovation to flourish.</p>
+
+                <button class="back-to-list" onclick="showBlogList()">Back to Blog List</button>
+            </div>
+        </div>
+
+        <div id="post6" class="blog-post">
+            <!-- Content for post 6 -->
+            <div class="post-header">
+                <img src="https://cdn.mos.cms.futurecdn.net/NEaP2bkgWaYcnUW3jeQDTL.jpg" alt="Hot Desking Trends">
+                <div class="post-header-content">
+                    <span class="category workplace">WORKPLACE</span>
+                    <h2>Hot Desking Trends in 2025: What's Working and What's Not</h2>
+                    <p>Published: May 5, 2025 | By: James Wilson</p>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>As offices continue to evolve post-pandemic, hot desking approaches have transformed. This article examines current successful strategies for implementing flexible workspace solutions that enhance productivity and employee satisfaction.</p>
+
+                <button class="back-to-list" onclick="showBlogList()">Back to Blog List</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPost(postId) {
+            // Hide all blog previews
+            const previews = document.querySelectorAll('.blog-preview');
+            previews.forEach(preview => {
+                preview.style.display = 'none';
+            });
+
+            // Hide all blog posts
+            const posts = document.querySelectorAll('.blog-post');
+            posts.forEach(post => {
+                post.style.display = 'none';
+            });
+
+            // Show the selected post
+            document.getElementById(postId).style.display = 'block';
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function showBlogList() {
+            // Hide all blog posts
+            const posts = document.querySelectorAll('.blog-post');
+            posts.forEach(post => {
+                post.style.display = 'none';
+            });
+
+            // Show all blog previews
+            const previews = document.querySelectorAll('.blog-preview');
+            previews.forEach(preview => {
+                preview.style.display = 'block';
+            });
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+  <script>
+    // Get DOM elements
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const backdrop = document.getElementById('backdrop');
+
+    // Toggle mobile nav menu
+    hamburgerBtn.addEventListener('click', function() {
+      hamburgerBtn.classList.toggle('aivs2025_active');
+      mobileNav.classList.toggle('aivs2025_active');
+      backdrop.classList.toggle('aivs2025_active');
+      document.body.style.overflow = mobileNav.classList.contains('aivs2025_active') ? 'hidden' : '';
+    });
+
+    // Close menu when clicking the backdrop
+    backdrop.addEventListener('click', function() {
+      hamburgerBtn.classList.remove('aivs2025_active');
+      mobileNav.classList.remove('aivs2025_active');
+      backdrop.classList.remove('aivs2025_active');
+      document.body.style.overflow = '';
+    });
+
+    // Close menu when clicking a nav item (for better UX)
+    const mobileNavItems = mobileNav.querySelectorAll('.aivs2025_navItem');
+    mobileNavItems.forEach(item => {
+      item.addEventListener('click', function() {
+        hamburgerBtn.classList.remove('aivs2025_active');
+        mobileNav.classList.remove('aivs2025_active');
+        backdrop.classList.remove('aivs2025_active');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Handle window resize to reset state when switching from mobile to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 1024 && mobileNav.classList.contains('aivs2025_active')) {
+        hamburgerBtn.classList.remove('aivs2025_active');
+        mobileNav.classList.remove('aivs2025_active');
+        backdrop.classList.remove('aivs2025_active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+
+
+
+
+<section class="raven2025_contact_container">
+    <h2 class="raven2025_contact_heading">Contact Us</h2>
+
+    <div class="raven2025_contact_grid">
+      <!-- Left: Image Section -->
+      <div class="raven2025_contact_imageContainer">
+        <svg class="raven2025_contact_image" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#4a6fa5" />
+              <stop offset="100%" stop-color="#2d3748" />
+            </linearGradient>
+          </defs>
+          <rect width="800" height="600" fill="url(#bgGradient)" />
+          <!-- Abstract connection illustration -->
+          <circle cx="200" cy="200" r="30" fill="#ffffff" opacity="0.7" />
+          <circle cx="400" cy="150" r="20" fill="#ffffff" opacity="0.5" />
+          <circle cx="600" cy="250" r="25" fill="#ffffff" opacity="0.6" />
+          <circle cx="300" cy="400" r="35" fill="#ffffff" opacity="0.8" />
+          <circle cx="500" cy="350" r="15" fill="#ffffff" opacity="0.4" />
+          <circle cx="150" cy="500" r="20" fill="#ffffff" opacity="0.5" />
+          <circle cx="650" cy="450" r="30" fill="#ffffff" opacity="0.7" />
+
+          <!-- Connection lines -->
+          <line x1="200" y1="200" x2="400" y2="150" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="400" y1="150" x2="600" y2="250" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="600" y1="250" x2="500" y2="350" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="500" y1="350" x2="300" y2="400" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="300" y1="400" x2="150" y2="500" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="650" y1="450" x2="500" y2="350" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+          <line x1="200" y1="200" x2="300" y2="400" stroke="#ffffff" stroke-width="2" opacity="0.3" />
+
+          <!-- Communication icons -->
+          <path d="M200,200 C220,180 240,190 230,210 L215,235 L200,200" fill="#ffffff" opacity="0.9" />
+          <path d="M300,400 C280,390 275,370 290,365 L310,360 L300,400" fill="#ffffff" opacity="0.9" />
+          <path d="M500,350 C520,340 525,360 510,370 L490,375 L500,350" fill="#ffffff" opacity="0.9" />
+        </svg>
+
+        <div class="raven2025_contact_overlay">
+          <h3 class="raven2025_contact_overlayTitle">Let's Connect</h3>
+          <p class="raven2025_contact_overlayText">We're here to answer your questions and provide the solutions you need. Reach out to our team today.</p>
+        </div>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div class="raven2025_contact_formContainer">
+        <h3 class="raven2025_contact_formTitle">Send Us a Message</h3>
+
+        <form class="raven2025_contact_form">
+          <div class="raven2025_contact_inputGroup">
+            <label for="name" class="raven2025_contact_label">Full Name</label>
+            <input type="text" id="name" name="name" class="raven2025_contact_input" placeholder="Enter your name" required>
+          </div>
+
+          <div class="raven2025_contact_inputGroup">
+            <label for="email" class="raven2025_contact_label">Email Address</label>
+            <input type="email" id="email" name="email" class="raven2025_contact_input" placeholder="Enter your email" required>
+          </div>
+
+          <div class="raven2025_contact_inputGroup">
+            <label for="query" class="raven2025_contact_label">Your Query</label>
+            <textarea id="query" name="query" class="raven2025_contact_textarea" placeholder="How can we help you?" required></textarea>
+          </div>
+
+          <button type="submit" class="raven2025_contact_button">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo-section">
+      <img src="{% static 'cdi-removebg-preview.png' %}" alt="Your Logo" class="footer-logo">
+      <p class="footer-tagline">Cutting-edge deepfake detection technology to protect your digital identity</p>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3>Our Services</h3>
+        <ul>
+          <li><a href="#">Deepfake Detection</a></li>
+          <li><a href="#">Video Analysis</a></li>
+          <li><a href="#">Security Solutions</a></li>
+          <li><a href="#">Enterprise API</a></li>
+          <li><a href="#">Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Research Papers</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© 2025 Deepfake Detection Technology. All Rights Reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background-color: #0b2241; /* Navy blue */
+  color: #fff;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Logo section */
+.footer-logo-section {
+  flex: 1;
+  min-width: 250px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #b3c3d9;
+  margin-bottom: 20px;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #1e88e5;
+}
+
+/* Links section */
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  min-width: 160px;
+  margin-bottom: 30px;
+}
+
+.footer-column h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #1e88e5;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+  color: #b3c3d9;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-column ul li a:hover {
+  color: #fff;
+}
+
+/* Bottom section */
+.footer-bottom {
+  background-color: #071a33;
+  padding: 20px 0;
+}
+
+.footer-bottom .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.copyright {
+  color: #8c9cb8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.legal-links {
+  display: flex;
+  gap: 20px;
+}
+
+.legal-links a {
+  color: #8c9cb8;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-logo-section {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-column {
+    flex: 1 0 50%;
+  }
+
+  .footer-bottom .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-column {
+    flex: 1 0 100%;
+  }
+}
+</style>
+
+</body>
+</html>

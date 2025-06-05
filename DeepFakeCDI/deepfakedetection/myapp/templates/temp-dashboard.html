@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Analysis - Welcome Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #e6f2ff;
+            --accent-color: #3366cc;
+            --text-color: #333333;
+            --border-color: #b3d9ff;
+            --button-color: #e05c7f;
+            --button-hover: #c94769;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* greyish shadow */
+            position:fixed;
+            z-index:999;
+            width:100%;
+        }
+
+        .navbar-brand, .nav-link {
+            color: black !important;
+
+        }
+       .navbar-brand:hover,
+.nav-link:hover {
+    color: purple !important;
+}
+
+
+        .navbar-dark .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .sidebar {
+            background-color: var(--secondary-bg);
+            min-height: calc(100vh - 56px);
+            border-right: 1px solid var(--border-color);
+            margin-top:50px;
+        }
+
+        .card {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            background-color: rgba(179, 217, 255, 0.3);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--accent-color);
+        }
+
+        .result-card {
+            height: 100%;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--primary-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border: 5px solid grey;
+            margin: 0 auto;
+        }
+
+        .big-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .tab-panel {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .badge-custom {
+            background-color: rgba(51, 102, 204, 0.1);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+        }
+
+        .welcome-card {
+        margin-top:50px;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .tutorial-step {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 25px;
+        }
+
+        .tutorial-step .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+            border: none;
+        }
+
+        .btn-accent:hover {
+            background-color: #264d99;
+            color: var(--primary-bg);
+        }
+
+        .btn-outline-accent {
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            background-color: transparent;
+        }
+
+        .btn-outline-accent:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-bg);
+        }
+
+        .btn-subscribe {
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-subscribe:hover {
+            background-color: var(--button-hover);
+            color: white;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--text-color);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .list-group-item {
+            background-color: transparent;
+            color: var(--text-color);
+            border-color: var(--border-color);
+        }
+
+        .progress-bar.bg-danger {
+            background-color: #ff7676 !important;
+        }
+
+        .progress-bar.bg-success {
+            background-color: #62c76a !important;
+        }
+        .logo {
+    width: 44px; /* Adjust size */
+    height: 44px;
+    margin-right: 8px; /* Space between icon and text */
+    vertical-align: middle;
+}
+        .score-circle-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .score-circle .big-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #162056;
+  }
+
+  .loading-spinner {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: #3a56e4;
+    border-right-color: #3a56e4;
+    animation: spin 1.5s linear infinite;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .loading-spinner.active {
+    opacity: 1;
+  }
+
+  .loading-spinner::before,
+  .loading-spinner::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .loading-spinner::before {
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 4px solid transparent;
+    border-left-color: #6e96ff;
+    border-bottom-color: #6e96ff;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Upload status styling */
+  #uploadStatus {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #3a56e4;
+  }
+
+  .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .help-section {
+            background-color: #1a1a3a;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .help-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .help-section p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background-color: #7c5dfa;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .cta-button:hover {
+            background-color: #6a4ee7;
+        }
+
+        .no-strings {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+<body>
+{% load static %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+              <img src="{% static 'cdi-removebg-preview.png' %}" class="logo" alt="Detect DeepFake" id="header-img" />
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="p">
+                <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+            <a class="nav-link active" href="http://127.0.0.1:8000/">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">About Us</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="http://127.0.0.1:8000/#how-it-works">How It Works</a>
+        </li>
+    </ul>
+</div>
+
+                <div class="d-flex">
+<div class="video-upload-container">
+  <a href="#" id="uploadVideoBtn" class="btn btn-outline-accent me-2">
+    <i class="fas fa-upload me-1"></i> Upload New Video
+  </a>
+  <input type="file" id="videoFileInput" accept="video/*" style="display: none;">
+
+  <!-- Progress and status indicators -->
+  <div id="uploadProgressContainer" class="mt-3" style="display: none;">
+    <div class="progress">
+      <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+    </div>
+    <p id="uploadStatus" class="mt-2 small">Preparing to upload...</p>
+  </div>
+</div><!--                    <a href="#" class="btn btn-subscribe">-->
+<!--                        <i class="fas fa-crown me-1"></i> Get Pro-->
+<!--                    </a>-->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 d-none d-md-block sidebar py-3">
+                <div class="d-flex flex-column">
+                    <div class="text-center mb-4">
+<!--                        <div class="score-circle mb-2">-->
+<!--                            <div class="big-number">Your</div>-->
+<!--                            <div class="small">Analysis</div>-->
+
+<!--                        </div>-->
+<div class="mt-2" style="
+    font-size: 2.1em;
+    font-weight: 400;
+    color: black;
+    background: linear-gradient(to right, #e6ccff, #cce5ff,#cce5ff, #ffffff);
+    padding: 10px;
+    border-radius: 8px;
+">
+    Hey! {{ analysis.user }}
+</div>
+
+
+
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action bg-transparent border-0">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-transparent border-0">
+                            <i class="fas fa-file-video me-2"></i> My Videos
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-transparent border-0">
+                            <i class="fas fa-chart-line me-2"></i> Statistics
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-transparent border-0">
+                            <i class="fas fa-info-circle me-2"></i> About
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-transparent border-0">
+                            <i class="fas fa-question-circle me-2"></i> Help
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10 col-12 py-4">
+                <!-- Welcome Message -->
+                <div class="card welcome-card mb-4">
+                    <div class="card-body">
+                        <h4><i class="fas fa-hand-wave me-2"></i> Welcome to DeepFake Detector!</h4>
+                        <p class="mb-0">Thank you for analyzing your first video. This dashboard provides detailed insights into whether your video contains manipulated content. Below you'll find your analysis results and next steps.</p>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div class="row mb-4">
+                    <div class="col-lg-8">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i> Analysis Results</h5>
+<span class="badge badge-custom py-2 px-3">{{ analysis.prediction|floatformat:1 }}</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+        <div class="col-md-4 text-center mb-8 mb-md-0">
+            <div class="score-circle-container">
+                <div class="loading-spinner" id="uploadSpinner"></div>
+                <div class="score-circle mb-2">
+                    <div class="big-number">{{ analysis.fake_percentage|floatformat:1 }}%</div>
+                </div>
+            </div>
+            <div id="uploadStatusCircle" class="mt-2" style="display: none;">
+                <div id="uploadStatusText">Preparing upload...</div>
+            </div>
+            <button id="downloadReportBtn" class="btn btn-accent mt-3">
+                <i class="fas fa-download me-2"></i> Download Report
+            </button>
+        </div>
+        <div class="col-md-8">
+            <h6>Key Metrics</h6>
+            <div class="mb-3">
+                <label class="form-label d-flex justify-content-between">
+                    <span>Fake Probability</span>
+                    <span>{{ analysis.fake_percentage|floatformat:1 }}%</span>
+                </label>
+                <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ analysis.fake_percentage }}%"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label d-flex justify-content-between">
+                    <span>Real Probability</span>
+                    <span>{{ analysis.real_percentage|floatformat:1 }}%</span>
+                </label>
+                <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ analysis.real_percentage }}%"></div>
+                </div>
+            </div>
+            <div class="mb-0">
+                <label class="form-label">Frames Analyzed: {{ analysis.frame_count }}</label>
+            </div>
+            <div class="mb-0">
+    <label class="form-label">Fake Scores:
+        {% if chart_data.fake_scores %}
+            {{ chart_data.fake_scores|slice:":5" }}
+            <small class="text-muted">(showing first 5 of {{ chart_data.fake_scores|length }} scores)</small>
+        {% else %}
+            No fake scores available
+        {% endif %}
+    </label>
+</div>
+        </div>
+    </div>
+
+                                <div class="tab-panel mt-4">
+                                    <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Summary</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="frames-tab" data-bs-toggle="tab" data-bs-target="#frames" type="button" role="tab">Frame Analysis</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="metadata-tab" data-bs-toggle="tab" data-bs-target="#metadata" type="button" role="tab">Metadata</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content p-3 border border-top-0 rounded-bottom" id="resultTabContent">
+                                        <div class="tab-pane fade show active" id="summary" role="tabpanel">
+                                            <p>Our AI model has analyzed your video and determined it is <strong>{{ analysis.prediction }}</strong> with {{ analysis.confidence }}% confidence.</p>
+                                            <p>The analysis examined {{ analysis.frame_count }} frames from your video, measuring various visual artifacts and inconsistencies that could indicate manipulation.</p>
+                                            <p class="mb-0">For more details, check the Frame Analysis and Metadata tabs.</p>
+                                        </div>
+                                        <div class="tab-pane fade" id="frames" role="tabpanel">
+                                            <div class="alert alert-info">
+                                                <i class="fas fa-info-circle me-2"></i> Frame analysis shows how each section of your video was evaluated. Areas with higher fake probability are highlighted.
+                                            </div>
+                                            <div class="text-center py-3">
+                                                <button class="btn btn-subscribe" onclick="window.location.href='http://127.0.0.1:8000/pricing'">
+                                                    Show Analysis
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="metadata" role="tabpanel">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h6>Basic Details</h6>
+                                                    <ul class="list-group list-group-flush mb-3">
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Filename:</span>
+                                                            <span>{{ analysis.metadata.basic_details.filename }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>File Size:</span>
+                                                            <span>{{ analysis.metadata.basic_details.file_size }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Format:</span>
+                                                            <span>{{ analysis.metadata.basic_details.format }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Encoded_by:</span>
+                                                            <span>{{ analysis.metadata.software_info.encoded_by }}</span>
+                                                        </li>
+                                                         <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Error:</span>
+                                                            <span>{{ analysis.metadata.software_info.error }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Writting Application: </span>
+                                                            <span>{{ analysis.metadata.software_info.writing_application }}</span>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h6>Technical Metadata</h6>
+                                                    <ul class="list-group list-group-flush mb-3">
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Codecs:</span>
+                                                            <span>{{ analysis.metadata.technical_metadata.codecs }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Bit Rate:</span>
+                                                            <span>{{ analysis.metadata.technical_metadata.bit_rate }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Start Time:</span>
+                                                            <span>{{ analysis.metadata.technical_metadata.start_time }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Streams:</span>
+                                                            <span>{{ analysis.metadata.technical_metadata.nb_streams }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Writting Library: </span>
+                                                            <span>{{ analysis.metadata.software_info.writing_library }}</span>
+                                                        </li>
+                                                        <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                                            <span>Risk: </span>
+                                                            <span>{{ analysis.metadata.software_info.risk_assessment }}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mt-4 mt-lg-0">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i> Getting Started</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="tutorial-step">
+                                    <div class="step-number">1</div>
+                                    <h6>Understanding Your Results</h6>
+                                    <p>Your first analysis is complete! The confidence score shows how certain our AI is about the prediction.</p>
+                                </div>
+
+                                <div class="tutorial-step">
+                                    <div class="step-number">2</div>
+                                    <h6>Try Another Video</h6>
+                                    <p>Upload more videos to build your history and compare results across different content.</p>
+                                </div>
+
+                                <div class="tutorial-step">
+                                    <div class="step-number">3</div>
+                                    <h6>Explore Advanced Features</h6>
+                                    <p>Check out frame-by-frame analysis, metadata extraction, and statistical reports.</p>
+                                </div>
+
+                                <div class="mt-4">
+                                    <a href="http://127.0.0.1:8000/pricing/" class="btn btn-accent w-100 mb-3">
+                                        <i class="fas fa-arrow-right me-2"></i> Go to Full Dashboard
+                                    </a>
+                                    <a href="http://127.0.0.1:8000/pricing/" class="btn btn-subscribe w-100">
+                                        <i class="fas fa-crown me-2"></i> Upgrade to Premium
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if chart_data.fake_scores %}
+<div class="mb-4">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Fake Probability Score Analysis - Frame by Frame</h5>
+        </div>
+        <div class="card-body" style="height: 500px;">
+            <canvas id="fakeScoresChart"></canvas>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">
+                Total Frames: {{ chart_data.fake_scores|length }} |
+                Average Score: {{ chart_data.avg_score|floatformat:3 }} |
+                Threshold: {{ chart_data.threshold }}
+            </small>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the canvas context
+    const ctx = document.getElementById('fakeScoresChart').getContext('2d');
+
+    // Prepare the data from Django template
+    const fakeScores = {{ chart_data.fake_scores|safe }};
+    const frameNumbers = {{ chart_data.frame_numbers|safe }};
+    const threshold = {{ chart_data.threshold|default:0.5 }};
+    const avgScore = {{ chart_data.avg_score|default:0 }};
+
+    // Create threshold line data (horizontal line at 0.5)
+    const thresholdData = Array(frameNumbers.length).fill(threshold);
+    const avgScoreData = Array(frameNumbers.length).fill(avgScore);
+
+    // Create the chart
+    const fakeScoresChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: frameNumbers,
+            datasets: [{
+                label: 'Fake Probability Score',
+                data: fakeScores,
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                borderWidth: 1.5,
+                fill: true,
+                tension: 0,
+                pointRadius: 0,
+                pointHoverRadius: 3,
+                pointBackgroundColor: '#007bff',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 1
+            }, {
+                label: 'Threshold (0.5)',
+                data: thresholdData,
+                borderColor: '#dc3545',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 0
+            }, {
+                label: 'Average Score',
+                data: avgScoreData,
+                borderColor: '#28a745',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                borderDash: [10, 5],
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Frame Number',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    grid: {
+                        display: true,
+                        color: 'rgba(0,0,0,0.1)'
+                    },
+                    ticks: {
+                        maxTicksLimit: 20, // Limit x-axis labels to prevent crowding
+                        callback: function(value, index) {
+                            // Show every 10th frame number for better readability
+                            return (value % 10 === 0 || value === 1) ? value : '';
+                        }
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Fake Probability Score',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    min: 0,
+                    max: 1,
+                    grid: {
+                        display: true,
+                        color: 'rgba(0,0,0,0.1)'
+                    },
+                    ticks: {
+                        stepSize: 0.1,
+                        callback: function(value) {
+                            return value.toFixed(1);
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(context) {
+                            if (context.datasetIndex === 0) {
+                                return `Frame ${context.label}: ${context.parsed.y.toFixed(4)}`;
+                            } else if (context.datasetIndex === 1) {
+                                return `Threshold: ${context.parsed.y.toFixed(1)}`;
+                            } else {
+                                return `Average: ${context.parsed.y.toFixed(4)}`;
+                            }
+                        }
+                    }
+                },
+                annotation: {
+                    annotations: {
+                        threshold: {
+                            type: 'line',
+                            yMin: threshold,
+                            yMax: threshold,
+                            borderColor: '#dc3545',
+                            borderWidth: 2,
+                            borderDash: [5, 5]
+                        }
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            }
+        }
+    });
+
+    // Add some statistics below the chart
+    const totalFrames = fakeScores.length;
+    const fakeFrames = fakeScores.filter(score => score > threshold).length;
+    const realFrames = totalFrames - fakeFrames;
+    const fakePercentage = ((fakeFrames / totalFrames) * 100).toFixed(1);
+    const realPercentage = ((realFrames / totalFrames) * 100).toFixed(1);
+
+    console.log(`Chart Statistics:
+        Total Frames: ${totalFrames}
+        Fake Frames (>${threshold}): ${fakeFrames} (${fakePercentage}%)
+        Real Frames (≤${threshold}): ${realFrames} (${realPercentage}%)
+        Average Score: ${avgScore.toFixed(4)}
+    `);
+});
+</script>
+{% endif %}
+
+                <!-- Video Preview -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-film me-2"></i> Your Video</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="ratio ratio-16x9 mb-3 mb-md-0">
+                                    <video controls class="rounded">
+                                        <source src="{{ analysis.video_url }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Analyzed Video Information</h6>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                        <span><i class="fas fa-calendar me-2"></i> Analysis Date:</span>
+                                        <span>{{ analysis.created_at|date:"F j, Y, g:i a" }}</span>
+                                    </li>
+                                    <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                        <span><i class="fas fa-check-circle me-2"></i> Status:</span>
+                                        <span class="badge badge-custom py-2 px-3">{{ analysis.prediction }}</span>
+                                    </li>
+                                    <li class="list-group-item bg-transparent d-flex justify-content-between">
+                                        <span><i class="fas fa-image me-2"></i> Frame Count:</span>
+                                        <span>{{ analysis.frame_count }}</span>
+                                    </li>
+                                    <li class="list-group-item bg-transparent">
+                                        <span><i class="fas fa-info-circle me-2"></i> Next Steps:</span>
+                                        <p class="mt-2 mb-0">To get more detailed insights, try our advanced analysis features or upload additional videos for comparison.</p>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Canvas for the line chart -->
+
+                <!-- Help Section -->
+<!--                <div class="card">-->
+<!--                    <div class="card-header">-->
+<!--                        <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i> Need Help?</h5>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-4 mb-3 mb-md-0">-->
+<!--                                <div class="card h-100 result-card">-->
+<!--                                    <div class="card-body text-center">-->
+<!--                                        <i class="fas fa-book fa-3x mb-3 text-info"></i>-->
+<!--                                        <h6>Documentation</h6>-->
+<!--                                        <p class="small">Learn how our deepfake detection technology works</p>-->
+<!--                                        <a href="#" class="btn btn-sm btn-outline-info mt-2">Read Docs</a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4 mb-3 mb-md-0">-->
+<!--                                <div class="card h-100 result-card">-->
+<!--                                    <div class="card-body text-center">-->
+<!--                                        <i class="fas fa-graduation-cap fa-3x mb-3 text-warning"></i>-->
+<!--                                        <h6>Tutorials</h6>-->
+<!--                                        <p class="small">Watch video tutorials on using advanced features</p>-->
+<!--                                        <a href="#" class="btn btn-sm btn-outline-warning mt-2">Watch Tutorials</a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-4">-->
+<!--                                <div class="card h-100 result-card">-->
+<!--                                    <div class="card-body text-center">-->
+<!--                                        <i class="fas fa-headset fa-3x mb-3 text-danger"></i>-->
+<!--                                        <h6>Support</h6>-->
+<!--                                        <p class="small">Contact our team for technical assistance</p>-->
+<!--                                        <a href="#" class="btn btn-sm btn-outline-danger mt-2">Get Support</a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+<!-- Add this script in the head section to include jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+<!-- Add the Download Report button right after the Video Preview card header -->
+<!--<div class="card mb-4">-->
+<!--    <div class="card-header d-flex justify-content-between align-items-center">-->
+<!--        <h5 class="mb-0"><i class="fas fa-film me-2"></i>Download your Report from here!!</h5>-->
+<!--        <button id="downloadReportBtn" class="btn btn-accent">-->
+<!--            <i class="fas fa-download me-2"></i> Download Report-->
+<!--        </button>-->
+<!--    </div>-->
+<!--    <div class="card-body">-->
+<!--        Our Company work harder to safe you and your family against deepfake.-->
+<!--    </div>-->
+<!--</div>-->
+
+<!-- Add this script at the end of the body -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listener to download button
+    const downloadBtn = document.getElementById('downloadReportBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', generatePDF);
+    }
+
+    function generatePDF() {
+        // Initialize jsPDF
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Set document properties
+        doc.setProperties({
+            title: 'DeepFake Analysis Report',
+            subject: 'Comprehensive Analysis Results',
+            author: 'DeepFake Detector',
+            creator: 'DeepFake Detector'
+        });
+
+        // ============== PAGE 1: SUMMARY AND OVERVIEW ==============
+
+        // Add header with logo
+        doc.setFontSize(22);
+        doc.setTextColor(41, 128, 185);
+        doc.text('DeepFake Analysis Report', 105, 20, { align: 'center' });
+
+        // Add date
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        const date = new Date().toLocaleString();
+        doc.text(`Analysis Date: ${date}`, 105, 30, { align: 'center' });
+
+        // Add horizontal line
+        doc.setDrawColor(41, 128, 185);
+        doc.setLineWidth(0.5);
+        doc.line(20, 35, 190, 35);
+
+        // Executive Summary section
+        doc.setFontSize(16);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Executive Summary', 20, 45);
+
+        doc.setFontSize(11);
+        doc.setTextColor(80);
+        const summary = "This report presents a comprehensive analysis of the submitted media for potential deepfake manipulation. It includes technical metadata, detection results, and a risk assessment to help understand the authenticity of the content.";
+        const summaryLines = doc.splitTextToSize(summary, 170);
+        doc.text(summaryLines, 20, 55);
+
+        // Key Results section
+        doc.setFontSize(16);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Key Results', 20, 75);
+
+        doc.setFontSize(12);
+        doc.setTextColor(80);
+        doc.text(`Prediction: {{ analysis.prediction }}`, 20, 85);
+        doc.text(`Confidence: {{ analysis.confidence }}%`, 20, 92);
+        doc.text(`Frames Analyzed: {{ analysis.frame_count }}`, 20, 99);
+
+        // Draw a simple bar chart for fake vs real percentage
+        doc.setFontSize(16);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Detection Results', 20, 115);
+
+        const fakePercentage = parseFloat('{{ analysis.fake_percentage }}') || 75;
+        const realPercentage = parseFloat('{{ analysis.real_percentage }}') || 25;
+
+        // Chart labels
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        doc.text('Fake:', 20, 125);
+        doc.text('Real:', 20, 135);
+
+        // Chart bars
+        doc.setFillColor(231, 76, 60); // Red for fake
+        doc.rect(45, 122, fakePercentage * 1.2, 5, 'F');
+        doc.text(`${fakePercentage.toFixed(1)}%`, 45 + fakePercentage * 1.2 + 5, 125);
+
+        doc.setFillColor(46, 204, 113); // Green for real
+        doc.rect(45, 132, realPercentage * 1.2, 5, 'F');
+        doc.text(`${realPercentage.toFixed(1)}%`, 45 + realPercentage * 1.2 + 5, 135);
+
+        // Add explanation of results
+        doc.setFontSize(12);
+        doc.setTextColor(80);
+        doc.text('What does this mean?', 20, 150);
+
+        doc.setFontSize(10);
+        const explanation = "The analysis shows the percentage of frames that exhibit characteristics of manipulation versus those that appear authentic. Higher fake percentages indicate a greater likelihood of deepfake manipulation in the content.";
+        const explanationLines = doc.splitTextToSize(explanation, 170);
+        doc.text(explanationLines, 20, 158);
+
+        // Add first page footer
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text('Generated by DeepFake Detector - Official Analysis Report', 105, 285, { align: 'center' });
+        doc.text('Page 1 of 4', 190, 285, { align: 'right' });
+
+        // ============== PAGE 2: TECHNICAL METADATA ==============
+        doc.addPage();
+
+        // Add header
+        doc.setFontSize(22);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Technical Metadata', 105, 20, { align: 'center' });
+
+        // Add horizontal line
+        doc.setDrawColor(41, 128, 185);
+        doc.setLineWidth(0.5);
+        doc.line(20, 25, 190, 25);
+
+        // Introduction text
+        doc.setFontSize(11);
+        doc.setTextColor(80);
+        const metaIntro = "Technical metadata provides important information about the file's properties, format, and encoding. This information can help identify inconsistencies that may indicate manipulation.";
+        const metaIntroLines = doc.splitTextToSize(metaIntro, 170);
+        doc.text(metaIntroLines, 20, 35);
+
+        // Basic Details section
+        doc.setFontSize(14);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Basic Details', 20, 50);
+
+        const basicDetailsData = [
+            ['Filename', '{{ analysis.metadata.basic_details.filename }}'],
+            ['File Size', '{{ analysis.metadata.basic_details.file_size }}'],
+            ['Format', '{{ analysis.metadata.basic_details.format }}']
+        ];
+
+        // Generate table with larger font size
+        doc.autoTable({
+            startY: 55,
+            head: [['Property', 'Value']],
+            body: basicDetailsData,
+            theme: 'striped',
+            headStyles: { fillColor: [41, 128, 185], textColor: [255], fontSize: 12 },
+            bodyStyles: { fontSize: 11 },
+            alternateRowStyles: { fillColor: [240, 240, 240] }
+        });
+
+        // Technical Details section
+        doc.setFontSize(14);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Technical Details', 20, doc.autoTable.previous.finalY + 20);
+
+        const technicalData = [
+            ['Codecs', '{{ analysis.metadata.technical_metadata.codecs }}'],
+            ['Bit Rate', '{{ analysis.metadata.technical_metadata.bit_rate }}'],
+            ['Start Time', '{{ analysis.metadata.technical_metadata.start_time }}'],
+            ['Streams', '{{ analysis.metadata.technical_metadata.nb_streams }}']
+        ];
+
+        // Generate table
+        doc.autoTable({
+            startY: doc.autoTable.previous.finalY + 25,
+            head: [['Property', 'Value']],
+            body: technicalData,
+            theme: 'striped',
+            headStyles: { fillColor: [41, 128, 185], textColor: [255], fontSize: 12 },
+            bodyStyles: { fontSize: 11 },
+            alternateRowStyles: { fillColor: [240, 240, 240] }
+        });
+
+        // Metadata explanation
+        doc.setFontSize(12);
+        doc.setTextColor(80);
+        doc.text('Understanding the Technical Metadata', 20, doc.autoTable.previous.finalY + 20);
+
+        doc.setFontSize(10);
+        const metaExplanation = "Codecs: Compression technologies used in the file. Unusual codec combinations may indicate manipulation.\nBit Rate: The amount of data processed per second. Inconsistent bit rates across frames can indicate editing.\nStreams: The number of media streams in the file. Unexpected stream counts might indicate manipulation.";
+        const metaExplanationLines = doc.splitTextToSize(metaExplanation, 170);
+        doc.text(metaExplanationLines, 20, doc.autoTable.previous.finalY + 30);
+
+        // Add second page footer
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text('Generated by DeepFake Detector - Official Analysis Report', 105, 285, { align: 'center' });
+        doc.text('Page 2 of 4', 190, 285, { align: 'right' });
+
+        // ============== PAGE 3: SOFTWARE INFO & RISK ASSESSMENT ==============
+        doc.addPage();
+
+        // Add header
+        doc.setFontSize(22);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Software & Risk Analysis', 105, 20, { align: 'center' });
+
+        // Add horizontal line
+        doc.setDrawColor(41, 128, 185);
+        doc.setLineWidth(0.5);
+        doc.line(20, 25, 190, 25);
+
+        // Introduction text
+        doc.setFontSize(11);
+        doc.setTextColor(80);
+        const softwareIntro = "Software information reveals tools used to create or modify the file. Certain software combinations are common in deepfake creation.";
+        const softwareIntroLines = doc.splitTextToSize(softwareIntro, 170);
+        doc.text(softwareIntroLines, 20, 35);
+
+        // Software info table
+        doc.setFontSize(14);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Software Information', 20, 50);
+
+        const softwareData = [
+            ['Encoded By', '{{ analysis.metadata.software_info.encoded_by }}'],
+            ['Error', '{{ analysis.metadata.software_info.error }}'],
+            ['Writing Application', '{{ analysis.metadata.software_info.writing_application }}'],
+            ['Writing Library', '{{ analysis.metadata.software_info.writing_library }}']
+        ];
+
+        // Generate table
+        doc.autoTable({
+            startY: 55,
+            head: [['Property', 'Value']],
+            body: softwareData,
+            theme: 'striped',
+            headStyles: { fillColor: [41, 128, 185], textColor: [255], fontSize: 12 },
+            bodyStyles: { fontSize: 11 },
+            alternateRowStyles: { fillColor: [240, 240, 240] }
+        });
+
+        // Risk Assessment section
+        doc.setFontSize(14);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Risk Assessment', 20, doc.autoTable.previous.finalY + 20);
+
+        // Risk box
+        doc.setFillColor(255, 243, 224);
+        doc.rect(20, doc.autoTable.previous.finalY + 25, 170, 40, 'F');
+        doc.setDrawColor(255, 152, 0);
+        doc.setLineWidth(1);
+        doc.rect(20, doc.autoTable.previous.finalY + 25, 170, 40, 'S');
+
+        doc.setFontSize(12);
+        doc.setTextColor(230, 81, 0);
+        doc.text('Risk Level: {{ analysis.metadata.software_info.risk_assessment }}', 30, doc.autoTable.previous.finalY + 35);
+
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        const riskExplanation = "This assessment evaluates the likelihood that the media has been manipulated based on the technical characteristics and software signatures detected. It considers patterns common in deepfake creation tools and techniques.";
+        const riskExplanationLines = doc.splitTextToSize(riskExplanation, 150);
+        doc.text(riskExplanationLines, 30, doc.autoTable.previous.finalY + 45);
+
+        // Software markers explanation
+        doc.setFontSize(12);
+        doc.setTextColor(80);
+        doc.text('Understanding Software Indicators', 20, doc.autoTable.previous.finalY + 80);
+
+        doc.setFontSize(10);
+        const softwareExplanation = "Writing Application: The software used to create the file. Certain applications are commonly used in deepfake creation.\n\nWriting Library: The underlying software libraries used. Some specialized libraries are associated with media manipulation.\n\nError Information: Errors in the file structure may indicate rushed editing or manipulation attempts.\n\nEncoded By: Identifies the encoding software used, which can reveal inconsistencies in the media's creation process.";
+        const softwareExplanationLines = doc.splitTextToSize(softwareExplanation, 170);
+        doc.text(softwareExplanationLines, 20, doc.autoTable.previous.finalY + 90);
+
+        // Add third page footer
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text('Generated by DeepFake Detector - Official Analysis Report', 105, 285, { align: 'center' });
+        doc.text('Page 3 of 4', 190, 285, { align: 'right' });
+
+        // ============== PAGE 4: DETAILED ANALYSIS & RECOMMENDATIONS ==============
+        doc.addPage();
+
+        // Add header
+        doc.setFontSize(22);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Detailed Analysis & Recommendations', 105, 20, { align: 'center' });
+
+        // Add horizontal line
+        doc.setDrawColor(41, 128, 185);
+        doc.setLineWidth(0.5);
+        doc.line(20, 25, 190, 25);
+
+        // Analysis Methods section
+        doc.setFontSize(14);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Analysis Methods', 20, 40);
+
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        const methodsText = "This analysis employed multiple detection algorithms to identify deepfake indicators including:\n\n• Facial inconsistency detection\n• Audio-visual synchronization analysis\n• Metadata examination\n• Digital fingerprint analysis\n• Temporal consistency evaluation\n\nEach method contributes to the overall confidence score, with multiple confirmations strengthening the assessment reliability.";
+        const methodsLines = doc.splitTextToSize(methodsText, 170);
+        doc.text(methodsLines, 20, 50);
+
+        // Common Deepfake Indicators section
+        doc.setFontSize(14);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Common Deepfake Indicators', 20, 95);
+
+        // Create a table of indicators
+        const indicatorsData = [
+            ['Unnatural blinking', 'Deepfakes often struggle to accurately reproduce natural eye blinking patterns'],
+            ['Facial boundary issues', 'Poor blending at edges where manipulated faces meet original video'],
+            ['Audio-visual mismatches', 'Lip movements that don\'t sync precisely with spoken words'],
+            ['Metadata inconsistencies', 'Unusual software signatures or editing patterns'],
+            ['Unnatural lighting', 'Inconsistent shadows or lighting that doesn\'t match across the face']
+        ];
+
+        // Generate indicators table
+        doc.autoTable({
+            startY: 100,
+            head: [['Indicator', 'Description']],
+            body: indicatorsData,
+            theme: 'striped',
+            headStyles: { fillColor: [41, 128, 185], textColor: [255], fontSize: 11 },
+            bodyStyles: { fontSize: 9 },
+            columnStyles: {
+                0: { cellWidth: 50 },
+                1: { cellWidth: 120 }
+            },
+            alternateRowStyles: { fillColor: [240, 240, 240] }
+        });
+
+        // Recommendations section
+        doc.setFontSize(14);
+        doc.setTextColor(41, 128, 185);
+        doc.text('Recommendations', 20, doc.autoTable.previous.finalY + 20);
+
+        // Info box
+        doc.setFillColor(235, 246, 255);
+        doc.rect(20, doc.autoTable.previous.finalY + 25, 170, 60, 'F');
+        doc.setDrawColor(41, 128, 185);
+        doc.setLineWidth(1);
+        doc.rect(20, doc.autoTable.previous.finalY + 25, 170, 60, 'S');
+
+        doc.setFontSize(10);
+        doc.setTextColor(80);
+        const recommendationsText = "Based on the analysis results, we recommend the following:\n\n1. Treat this content with appropriate skepticism based on the detection confidence level\n\n2. Request additional verification from the content source if being used for important purposes\n\n3. Consider conducting additional analysis if the content is critical for decision-making\n\n4. Be aware that deepfake technology continues to evolve, and detection methods must evolve alongside it";
+        const recommendationsLines = doc.splitTextToSize(recommendationsText, 160);
+        doc.text(recommendationsLines, 25, doc.autoTable.previous.finalY + 35);
+
+        // Add fourth page footer
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text('Generated by DeepFake Detector - Official Analysis Report', 105, 285, { align: 'center' });
+        doc.text('Page 4 of 4', 190, 285, { align: 'right' });
+
+        // Save the PDF
+        doc.save('DeepFake_Analysis_Report.pdf');
+    }
+});
+</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Custom JavaScript can be added here
+        $(document).ready(function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+
+            // Handle upload button click
+            $(".btn-upload").on("click", function() {
+                // Redirect to upload page or open upload modal
+                window.location.href = "/upload";
+            });
+
+            // Handle dashboard button click
+            $(".btn-accent").on("click", function() {
+                window.location.href = "/dashboard";
+            });
+        });
+    </script>
+
+
+<!-- Still Need Help Section -->
+<!--        <section class="help-section">-->
+<!--            <h2>Still Need Help?</h2>-->
+<!--            <p>No worries at all! Drop us a line at sales@we360.ai or hit us up in the chat at the bottom right corner, and we'll help you out. That's what we're here for!</p>-->
+<!--            <button class="cta-button">Get Started For Free</button>-->
+<!--            <p class="no-strings">Free Trial - Absolutely No Strings Attached</p>-->
+<!--        </section>-->
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo-section">
+      <img src="{% static 'cdi-removebg-preview.png' %}" alt="Your Logo" class="footer-logo">
+      <p class="footer-tagline">Cutting-edge deepfake detection technology to protect your digital identity</p>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3>Our Services</h3>
+        <ul>
+          <li><a href="#">Deepfake Detection</a></li>
+          <li><a href="#">Video Analysis</a></li>
+          <li><a href="#">Security Solutions</a></li>
+          <li><a href="#">Enterprise API</a></li>
+          <li><a href="#">Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Research Papers</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© 2025 Deepfake Detection Technology. All Rights Reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background-color: #0b2241; /* Navy blue */
+  color: #fff;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Logo section */
+.footer-logo-section {
+  flex: 1;
+  min-width: 250px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #b3c3d9;
+  margin-bottom: 20px;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #1e88e5;
+}
+
+/* Links section */
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  min-width: 160px;
+  margin-bottom: 30px;
+}
+
+.footer-column h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #1e88e5;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+  color: #b3c3d9;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-column ul li a:hover {
+  color: #fff;
+}
+
+/* Bottom section */
+.footer-bottom {
+  background-color: #071a33;
+  padding: 20px 0;
+}
+
+.footer-bottom .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.copyright {
+  color: #8c9cb8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.legal-links {
+  display: flex;
+  gap: 20px;
+}
+
+.legal-links a {
+  color: #8c9cb8;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-logo-section {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-column {
+    flex: 1 0 50%;
+  }
+
+  .footer-bottom .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-column {
+    flex: 1 0 100%;
+  }
+}
+</style>
+
+</body>
+</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const uploadBtn = document.getElementById('uploadVideoBtn');
+  const fileInput = document.getElementById('videoFileInput');
+  const progressContainer = document.getElementById('uploadProgressContainer');
+  const progressBar = document.getElementById('uploadProgressBar');
+  const uploadStatus = document.getElementById('uploadStatus');
+  const uploadSpinner = document.getElementById('uploadSpinner');
+  const uploadStatusCircle = document.getElementById('uploadStatusCircle');
+  const uploadStatusText = document.getElementById('uploadStatusText');
+
+  // Trigger file input when button is clicked
+  uploadBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    fileInput.click();
+  });
+
+  // Handle file selection
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      const videoFile = this.files[0];
+
+      // Check file size (optional - adjust or remove as needed)
+      if (videoFile.size > 100 * 1024 * 1024) { // 100MB limit
+        alert('Video size exceeds limit (100MB). Please select a smaller file.');
+        return;
+      }
+
+      // Check file type (optional - adjust or remove as needed)
+      if (!videoFile.type.includes('video/')) {
+        alert('Please select a valid video file.');
+        return;
+      }
+
+      // Show progress container
+      progressContainer.style.display = 'block';
+      uploadStatus.textContent = 'Preparing to upload...';
+
+      // Show circular loading animation
+      uploadSpinner.classList.add('active');
+      uploadStatusCircle.style.display = 'block';
+      uploadStatusText.textContent = 'Preparing to upload...';
+
+      // Create form data
+      const formData = new FormData();
+      formData.append('video', videoFile);
+
+      // Set up AJAX request
+      const xhr = new XMLHttpRequest();
+
+      // Track upload progress
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          const percentComplete = Math.round((e.loaded / e.total) * 100);
+          progressBar.style.width = percentComplete + '%';
+          uploadStatus.textContent = `Uploading: ${percentComplete}%`;
+          uploadStatusText.textContent = `Uploading: ${percentComplete}%`;
+        }
+      });
+
+      // Handle response
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+
+              if (response.success) {
+                uploadStatus.textContent = 'Video analyzed successfully!';
+                uploadStatusText.textContent = 'Analysis complete!';
+
+                // Hide spinner after a brief delay to show completion
+                setTimeout(() => {
+                  uploadSpinner.classList.remove('active');
+                  uploadStatusCircle.style.display = 'none';
+                }, 1000);
+
+                // Redirect based on paid status
+                if (response.result && response.result.redirect_url) {
+                  window.location.href = response.result.redirect_url;
+                } else {
+                  // Fallback redirect if no specific URL is provided
+                  if (response.is_paid_user) {
+                    window.location.href = '/dashboard/';
+                  } else {
+                    window.location.href = '/temp-dashboard/';
+                  }
+                }
+              } else {
+                uploadStatus.textContent = 'Error: ' + (response.error || 'Unknown error occurred');
+                uploadStatusText.textContent = 'Error: ' + (response.error || 'Unknown error occurred');
+                progressBar.classList.remove('progress-bar-animated');
+                progressBar.classList.add('bg-danger');
+                uploadSpinner.classList.remove('active');
+              }
+            } catch (e) {
+              uploadStatus.textContent = 'Error parsing server response';
+              uploadStatusText.textContent = 'Error parsing server response';
+              progressBar.classList.remove('progress-bar-animated');
+              progressBar.classList.add('bg-danger');
+              uploadSpinner.classList.remove('active');
+            }
+          } else {
+            uploadStatus.textContent = 'Server error: ' + xhr.status;
+            uploadStatusText.textContent = 'Server error: ' + xhr.status;
+            progressBar.classList.remove('progress-bar-animated');
+            progressBar.classList.add('bg-danger');
+            uploadSpinner.classList.remove('active');
+          }
+        }
+      };
+
+      // Send request
+      xhr.open('POST', '/process-video/', true);
+      // Get the CSRF token from cookie
+      const csrftoken = getCookie('csrftoken');
+      if (csrftoken) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+      }
+      xhr.send(formData);
+
+      uploadStatus.textContent = 'Uploading video...';
+      uploadStatusText.textContent = 'Uploading video...';
+    }
+  });
+
+  // Function to get CSRF token from cookies
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+});
+</script>

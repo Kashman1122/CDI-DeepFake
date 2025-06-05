@@ -1,0 +1,854 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Register - Deepfake Detector</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body class="bg-gray-100">-->
+<!--    {% load static %}-->
+
+<!--{% block content %}-->
+<!--<div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl my-10 p-6">-->
+<!--    <h2 class="text-2xl font-bold text-center text-blue-900 mb-6">Create Your Account</h2>-->
+
+<!--    <div id="registrationStatus" class="mb-4 hidden rounded p-2"></div>-->
+
+<!--    <form id="registrationForm">-->
+<!--        {% csrf_token %}-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>-->
+<!--            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"-->
+<!--                   id="username" type="text" name="username" required>-->
+<!--        </div>-->
+
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>-->
+<!--            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"-->
+<!--                   id="email" type="email" name="email" required>-->
+<!--        </div>-->
+
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">Phone Number</label>-->
+<!--            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"-->
+<!--                   id="phone" type="tel" name="phone" required>-->
+<!--        </div>-->
+
+<!--        <div class="mb-6">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>-->
+<!--            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"-->
+<!--                   id="password" type="password" name="password" required>-->
+<!--        </div>-->
+
+<!--        <div class="mb-4 text-center">-->
+<!--            <p class="text-sm text-gray-600">Selected video: <span id="videoName" class="font-semibold">No video selected</span></p>-->
+<!--            <div id="uploadProgress" class="hidden">-->
+<!--                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">-->
+<!--                    <div class="bg-blue-600 h-2.5 rounded-full" id="progressBar" style="width: 0%"></div>-->
+<!--                </div>-->
+<!--                <p class="text-xs text-gray-500 mt-1">Processing video... <span id="progressPercent">0%</span></p>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="flex items-center justify-between">-->
+<!--            <button class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"-->
+<!--                    type="submit" id="registerBtn">-->
+<!--                Register & Process Video-->
+<!--            </button>-->
+<!--        </div>-->
+
+<!--        <div class="text-center mt-4">-->
+<!--            <p class="text-sm text-gray-600">Already have an account? <a href="{% url 'login' %}" class="text-blue-700 hover:text-blue-900">Login</a></p>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // Check if we have video data from landing page-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        const videoFileName = sessionStorage.getItem('videoFileName');-->
+<!--        if (videoFileName) {-->
+<!--            document.getElementById('videoName').textContent = videoFileName;-->
+<!--        } else {-->
+<!--            // Redirect back to landing if no video-->
+<!--            window.location.href = "{% url 'landing' %}";-->
+<!--        }-->
+<!--    });-->
+
+<!--    document.getElementById('registrationForm').addEventListener('submit', function(e) {-->
+<!--        e.preventDefault();-->
+
+<!--        const username = document.getElementById('username').value;-->
+<!--        const email = document.getElementById('email').value;-->
+<!--        const phone = document.getElementById('phone').value;-->
+<!--        const password = document.getElementById('password').value;-->
+
+<!--        // Get video data from session storage-->
+<!--        const videoData = sessionStorage.getItem('uploadedVideo');-->
+<!--        const videoFileName = sessionStorage.getItem('videoFileName');-->
+
+<!--        if (!videoData) {-->
+<!--            showStatus('error', 'No video found. Please go back and upload a video first.');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        // Show progress bar-->
+<!--        document.getElementById('uploadProgress').classList.remove('hidden');-->
+<!--        document.getElementById('registerBtn').disabled = true;-->
+
+<!--        // First register the user-->
+<!--        const formData = new FormData();-->
+<!--        formData.append('username', username);-->
+<!--        formData.append('email', email);-->
+<!--        formData.append('phone', phone);-->
+<!--        formData.append('password', password);-->
+
+<!--        fetch('{% url "register" %}', {-->
+<!--            method: 'POST',-->
+<!--            body: formData,-->
+<!--            headers: {-->
+<!--                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            if (data.status === 'error') {-->
+<!--                showStatus('error', data.message);-->
+<!--                document.getElementById('uploadProgress').classList.add('hidden');-->
+<!--                document.getElementById('registerBtn').disabled = false;-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Now upload and process the video-->
+<!--            processVideo(username, videoFileName, videoData);-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            showStatus('error', 'Registration failed: ' + error.message);-->
+<!--            document.getElementById('uploadProgress').classList.add('hidden');-->
+<!--            document.getElementById('registerBtn').disabled = false;-->
+<!--        });-->
+<!--    });-->
+
+<!--    function processVideo(username, fileName, videoData) {-->
+<!--        // Create a video blob from base64 data-->
+<!--        const byteString = atob(videoData.split(',')[1]);-->
+<!--        const mimeType = videoData.split(',')[0].split(':')[1].split(';')[0];-->
+
+<!--        const ab = new ArrayBuffer(byteString.length);-->
+<!--        const ia = new Uint8Array(ab);-->
+<!--        for (let i = 0; i < byteString.length; i++) {-->
+<!--            ia[i] = byteString.charCodeAt(i);-->
+<!--        }-->
+
+<!--        const blob = new Blob([ab], {type: mimeType});-->
+<!--        const file = new File([blob], fileName, {type: mimeType});-->
+
+<!--        const videoFormData = new FormData();-->
+<!--        videoFormData.append('video', file);-->
+<!--        videoFormData.append('username', username);-->
+
+<!--        // Update progress-->
+<!--        let progress = 10;-->
+<!--        const progressBar = document.getElementById('progressBar');-->
+<!--        const progressPercent = document.getElementById('progressPercent');-->
+
+<!--        // Simulate progress while processing (actual progress would be better with websockets)-->
+<!--        const progressInterval = setInterval(() => {-->
+<!--            if (progress < 90) {-->
+<!--                progress += 5;-->
+<!--                progressBar.style.width = `${progress}%`;-->
+<!--                progressPercent.textContent = `${progress}%`;-->
+<!--            }-->
+<!--        }, 500);-->
+
+<!--        fetch('{% url "process_video" %}', {-->
+<!--            method: 'POST',-->
+<!--            body: videoFormData,-->
+<!--            headers: {-->
+<!--                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            clearInterval(progressInterval);-->
+
+<!--            if (data.success) {-->
+<!--                // Complete progress bar-->
+<!--                progressBar.style.width = '100%';-->
+<!--                progressPercent.textContent = '100%';-->
+
+<!--                // Clear the session storage-->
+<!--                sessionStorage.removeItem('uploadedVideo');-->
+<!--                sessionStorage.removeItem('videoFileName');-->
+<!--                sessionStorage.removeItem('videoFileType');-->
+
+<!--                // Store results temporarily if needed-->
+<!--                sessionStorage.setItem('analysisResult', JSON.stringify(data.result));-->
+
+<!--                // Redirect to dashboard-->
+<!--                window.location.href = "{% url 'dashboard' %}";-->
+<!--            } else {-->
+<!--                showStatus('error', 'Video processing failed: ' + data.error);-->
+<!--                document.getElementById('registerBtn').disabled = false;-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            clearInterval(progressInterval);-->
+<!--            showStatus('error', 'Video processing failed: ' + error.message);-->
+<!--            document.getElementById('registerBtn').disabled = false;-->
+<!--        });-->
+<!--    }-->
+
+<!--    function showStatus(type, message) {-->
+<!--        const statusDiv = document.getElementById('registrationStatus');-->
+<!--        statusDiv.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700');-->
+
+<!--        if (type === 'error') {-->
+<!--            statusDiv.classList.add('bg-red-100', 'text-red-700');-->
+<!--        } else {-->
+<!--            statusDiv.classList.add('bg-green-100', 'text-green-700');-->
+<!--        }-->
+
+<!--        statusDiv.textContent = message;-->
+<!--        statusDiv.classList.remove('hidden');-->
+<!--    }-->
+<!--</script>-->
+<!--{% endblock %}-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Deepfake Detector</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .input-focused:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+        .progress-animation {
+            transition: width 0.5s ease;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row gap-8">
+            <!-- Left Info Column -->
+            <div class="md:w-2/5 mb-6 md:mb-0">
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Deepfake Detection</h2>
+                    <div class="mb-6">
+                        <img src="https://img.freepik.com/premium-vector/deepfake-synthetic-media-manipulating-replacing-one-person_277904-23032.jpg" alt="Deepfake detection illustration" class="rounded-lg w-full h-auto mb-4">
+                    </div>
+                    <p class="text-gray-700 mb-4">Our advanced AI technology analyzes your video to detect manipulated content with industry-leading accuracy.</p>
+
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            </div>
+                            <p class="ml-3 text-sm text-gray-600">State-of-the-art facial manipulation detection</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            </div>
+                            <p class="ml-3 text-sm text-gray-600">Advanced voice synthesis detection</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            </div>
+                            <p class="ml-3 text-sm text-gray-600">Detailed analysis reports and verification certificates</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Registration Form -->
+            <div class="md:w-3/5">
+                <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                    <div class="gradient-bg py-4 px-6">
+                        <h2 class="text-xl font-bold text-white">Create Your Account</h2>
+                        <p class="text-blue-100 text-sm">Join thousands of users protecting themselves against deepfakes</p>
+                    </div>
+
+                    <div class="p-6">
+                        <div id="registrationStatus" class="mb-4 hidden rounded p-3 text-sm"></div>
+
+                        <form id="registrationForm" class="space-y-5">
+                            {% csrf_token %}
+
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2" for="username">Username</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-user text-gray-400"></i>
+                                    </div>
+                                    <input class="input-focused appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none"
+                                        id="username" type="text" name="username" required placeholder="Choose a username">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2" for="email">Email Address</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-envelope text-gray-400"></i>
+                                    </div>
+                                    <input class="input-focused appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none"
+                                        id="email" type="email" name="email" required placeholder="your@email.com">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2" for="phone">Phone Number</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-phone text-gray-400"></i>
+                                    </div>
+                                    <input class="input-focused appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none"
+                                        id="phone" type="tel" name="phone" required placeholder="+1 (123) 456-7890">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-gray-700 text-sm font-medium mb-2" for="password">Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i class="fas fa-lock text-gray-400"></i>
+                                    </div>
+                                    <input class="input-focused appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none"
+                                        id="password" type="password" name="password" required placeholder="Create a secure password">
+                                </div>
+                                <p class="mt-1 text-xs text-gray-500">Password must be at least 8 characters long</p>
+                            </div>
+
+                            <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-film text-blue-500 mr-2"></i>
+                                    <h3 class="text-sm font-medium text-blue-800">Selected Video</h3>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">File: <span id="videoName" class="font-semibold">No video selected</span></p>
+                                <div id="uploadProgress" class="hidden">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                                        <div class="bg-blue-600 h-2.5 rounded-full progress-animation" id="progressBar" style="width: 0%"></div>
+                                    </div>
+                                    <div class="flex justify-between items-center mt-1">
+                                        <p class="text-xs text-gray-500">Processing video...</p>
+                                        <p class="text-xs font-medium text-blue-700" id="progressPercent">0%</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button class="w-full bg-blue-700 hover:bg-blue-800 text-white font-medium py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out flex justify-center items-center"
+                                        type="submit" id="registerBtn">
+                                    <i class="fas fa-user-plus mr-2"></i>
+                                    Register & Process Video
+                                </button>
+                            </div>
+
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Already have an account? <a href="{% url 'login' %}" class="text-blue-700 hover:text-blue-900 font-medium">Login</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo-section">
+      <img src="{% static 'cdi-removebg-preview.png' %}" alt="Your Logo" class="footer-logo">
+      <p class="footer-tagline">Cutting-edge deepfake detection technology to protect your digital identity</p>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3>Our Services</h3>
+        <ul>
+          <li><a href="#">Deepfake Detection</a></li>
+          <li><a href="#">Video Analysis</a></li>
+          <li><a href="#">Security Solutions</a></li>
+          <li><a href="#">Enterprise API</a></li>
+          <li><a href="#">Consulting</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Research Papers</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-container">
+      <p class="copyright">© 2025 Deepfake Detection Technology. All Rights Reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background-color: #0b2241; /* Navy blue */
+  color: #fff;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Logo section */
+.footer-logo-section {
+  flex: 1;
+  min-width: 250px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #b3c3d9;
+  margin-bottom: 20px;
+}
+
+/* Social icons */
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #1e88e5;
+}
+
+/* Links section */
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer-column {
+  min-width: 160px;
+  margin-bottom: 30px;
+}
+
+.footer-column h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: #1e88e5;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+  color: #b3c3d9;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: 14px;
+}
+
+.footer-column ul li a:hover {
+  color: #fff;
+}
+
+/* Bottom section */
+.footer-bottom {
+  background-color: #071a33;
+  padding: 20px 0;
+}
+
+.footer-bottom .footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.copyright {
+  color: #8c9cb8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.legal-links {
+  display: flex;
+  gap: 20px;
+}
+
+.legal-links a {
+  color: #8c9cb8;
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+  color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+  }
+
+  .footer-logo-section {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-column {
+    flex: 1 0 50%;
+  }
+
+  .footer-bottom .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-column {
+    flex: 1 0 100%;
+  }
+}
+</style>
+
+
+    <script>
+<!--        // Check if we have video data from landing page-->
+<!--        document.addEventListener('DOMContentLoaded', function() {-->
+<!--            const videoFileName = sessionStorage.getItem('videoFileName');-->
+<!--            if (videoFileName) {-->
+<!--                document.getElementById('videoName').textContent = videoFileName;-->
+<!--            } else {-->
+<!--                // Redirect back to landing if no video-->
+<!--                window.location.href = "{% url 'landing' %}";-->
+<!--            }-->
+<!--        });-->
+
+<!--        document.getElementById('registrationForm').addEventListener('submit', function(e) {-->
+<!--            e.preventDefault();-->
+
+<!--            const username = document.getElementById('username').value;-->
+<!--            const email = document.getElementById('email').value;-->
+<!--            const phone = document.getElementById('phone').value;-->
+<!--            const password = document.getElementById('password').value;-->
+
+<!--            // Get video data from session storage-->
+<!--            const videoData = sessionStorage.getItem('uploadedVideo');-->
+<!--            const videoFileName = sessionStorage.getItem('videoFileName');-->
+
+<!--&lt;!&ndash;            if (!videoData) {&ndash;&gt;-->
+<!--&lt;!&ndash;                showStatus('error', 'No video found. Please go back and upload a video first.');&ndash;&gt;-->
+<!--&lt;!&ndash;                return;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+
+<!--            // Show progress bar-->
+<!--            document.getElementById('uploadProgress').classList.remove('hidden');-->
+<!--            document.getElementById('registerBtn').disabled = true;-->
+<!--            document.getElementById('registerBtn').innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';-->
+
+<!--            // First register the user-->
+<!--            const formData = new FormData();-->
+<!--            formData.append('username', username);-->
+<!--            formData.append('email', email);-->
+<!--            formData.append('phone', phone);-->
+<!--            formData.append('password', password);-->
+
+<!--            fetch('{% url "register" %}', {-->
+<!--                method: 'POST',-->
+<!--                body: formData,-->
+<!--                headers: {-->
+<!--                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                if (data.status === 'error') {-->
+<!--                    showStatus('error', data.message);-->
+<!--                    document.getElementById('uploadProgress').classList.add('hidden');-->
+<!--                    document.getElementById('registerBtn').disabled = false;-->
+<!--                    document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';-->
+<!--                    return;-->
+<!--                }-->
+
+<!--                // Now upload and process the video-->
+<!--                processVideo(username, videoFileName, videoData);-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                showStatus('error', 'Registration failed: ' + error.message);-->
+<!--                document.getElementById('uploadProgress').classList.add('hidden');-->
+<!--                document.getElementById('registerBtn').disabled = false;-->
+<!--                document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';-->
+<!--            });-->
+<!--        });-->
+
+<!--        function processVideo(username, fileName, videoData) {-->
+<!--            // Create a video blob from base64 data-->
+<!--            const byteString = atob(videoData.split(',')[1]);-->
+<!--            const mimeType = videoData.split(',')[0].split(':')[1].split(';')[0];-->
+
+<!--            const ab = new ArrayBuffer(byteString.length);-->
+<!--            const ia = new Uint8Array(ab);-->
+<!--            for (let i = 0; i < byteString.length; i++) {-->
+<!--                ia[i] = byteString.charCodeAt(i);-->
+<!--            }-->
+
+<!--            const blob = new Blob([ab], {type: mimeType});-->
+<!--            const file = new File([blob], fileName, {type: mimeType});-->
+
+<!--            const videoFormData = new FormData();-->
+<!--            videoFormData.append('video', file);-->
+<!--            videoFormData.append('username', username);-->
+
+<!--            // Update progress-->
+<!--            let progress = 10;-->
+<!--            const progressBar = document.getElementById('progressBar');-->
+<!--            const progressPercent = document.getElementById('progressPercent');-->
+
+<!--            // Simulate progress while processing (actual progress would be better with websockets)-->
+<!--            const progressInterval = setInterval(() => {-->
+<!--                if (progress < 90) {-->
+<!--                    progress += 5;-->
+<!--                    progressBar.style.width = `${progress}%`;-->
+<!--                    progressPercent.textContent = `${progress}%`;-->
+<!--                }-->
+<!--            }, 500);-->
+
+<!--            fetch('{% url "process_video" %}', {-->
+<!--                method: 'POST',-->
+<!--                body: videoFormData,-->
+<!--                headers: {-->
+<!--                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                clearInterval(progressInterval);-->
+
+<!--                if (data.success) {-->
+<!--                    // Complete progress bar-->
+<!--                    progressBar.style.width = '100%';-->
+<!--                    progressPercent.textContent = '100%';-->
+
+<!--                    showStatus('success', 'Registration successful! Redirecting to your dashboard...');-->
+
+<!--                    // Clear the session storage-->
+<!--                    sessionStorage.removeItem('uploadedVideo');-->
+<!--                    sessionStorage.removeItem('videoFileName');-->
+<!--                    sessionStorage.removeItem('videoFileType');-->
+
+<!--                    // Store results temporarily if needed-->
+<!--                    sessionStorage.setItem('analysisResult', JSON.stringify(data.result));-->
+
+<!--                    // Redirect to dashboard after a brief delay to show success message-->
+<!--                    setTimeout(() => {-->
+<!--                        window.location.href = "{% url 'temp_dashboard' %}";-->
+<!--                    }, 1500);-->
+<!--                } else {-->
+<!--                    showStatus('error', 'Video processing failed: ' + data.error);-->
+<!--                    document.getElementById('registerBtn').disabled = false;-->
+<!--                    document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                clearInterval(progressInterval);-->
+<!--                showStatus('error', 'Video processing failed: ' + error.message);-->
+<!--                document.getElementById('registerBtn').disabled = false;-->
+<!--                document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register & Process Video';-->
+<!--            });-->
+<!--        }-->
+
+<!--        function showStatus(type, message) {-->
+<!--            const statusDiv = document.getElementById('registrationStatus');-->
+<!--            statusDiv.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700', 'border-red-200', 'border-green-200');-->
+
+<!--            if (type === 'error') {-->
+<!--                statusDiv.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-200');-->
+<!--                statusDiv.innerHTML = `<div class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i>${message}</div>`;-->
+<!--            } else {-->
+<!--                statusDiv.classList.add('bg-green-100', 'text-green-700', 'border', 'border-green-200');-->
+<!--                statusDiv.innerHTML = `<div class="flex items-center"><i class="fas fa-check-circle mr-2"></i>${message}</div>`;-->
+<!--            }-->
+
+<!--            statusDiv.classList.remove('hidden');-->
+
+<!--            // Scroll to see the status message-->
+<!--            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });-->
+<!--        }-->
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const password = document.getElementById('password').value;
+
+    // Show processing state
+    document.getElementById('registerBtn').disabled = true;
+    document.getElementById('registerBtn').innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+
+    // Register the user
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('password', password);
+
+    // Updated URL to /register_view/
+    fetch('/register/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'error') {
+            showStatus('error', data.message);
+            document.getElementById('registerBtn').disabled = false;
+            document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register';
+            return;
+        }
+
+        // Registration successful
+        showStatus('success', 'Registration successful! Redirecting to your dashboard...');
+
+        // Redirect to dashboard after a brief delay
+        setTimeout(() => {
+            window.location.href = "/login/";
+        }, 1500);
+    })
+    .catch(error => {
+        showStatus('error', 'Registration failed: ' + error.message);
+        document.getElementById('registerBtn').disabled = false;
+        document.getElementById('registerBtn').innerHTML = '<i class="fas fa-user-plus mr-2"></i>Register';
+    });
+});
+
+function showStatus(type, message) {
+    const statusDiv = document.getElementById('registrationStatus');
+    statusDiv.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700', 'border-red-200', 'border-green-200');
+
+    if (type === 'error') {
+        statusDiv.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-200');
+        statusDiv.innerHTML = `<div class="flex items-center"><i class="fas fa-exclamation-circle mr-2"></i>${message}</div>`;
+    } else {
+        statusDiv.classList.add('bg-green-100', 'text-green-700', 'border', 'border-green-200');
+        statusDiv.innerHTML = `<div class="flex items-center"><i class="fas fa-check-circle mr-2"></i>${message}</div>`;
+    }
+
+    statusDiv.classList.remove('hidden');
+
+    // Scroll to see the status message
+    statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+    </script>
+</body>
+</html>

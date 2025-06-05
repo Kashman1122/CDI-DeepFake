@@ -1,0 +1,254 @@
+<!--{% load static %}-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Login - Deepfake Detector</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body class="bg-gray-100">-->
+<!--    <div class="min-h-screen flex items-center justify-center">-->
+<!--        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">-->
+<!--            <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Deepfake Detector</h2>-->
+
+<!--            <div id="login-error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"></div>-->
+
+<!--            <form id="login-form" method="post" action="{% url 'login' %}">-->
+<!--                {% csrf_token %}-->
+<!--                <div class="mb-4">-->
+<!--                    <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username</label>-->
+<!--                    <input type="text" id="username" name="username" required-->
+<!--                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">-->
+<!--                </div>-->
+
+<!--                <div class="mb-6">-->
+<!--                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>-->
+<!--                    <input type="password" id="password" name="password" required-->
+<!--                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">-->
+<!--                </div>-->
+
+<!--                <div class="flex items-center justify-between">-->
+<!--                    <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">-->
+<!--                        Login-->
+<!--                    </button>-->
+<!--                    <a href="{% url 'register' %}" class="text-blue-700 hover:text-blue-900 text-sm">-->
+<!--                        Don't have an account? Register-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <script>-->
+<!--        document.getElementById('login-form').addEventListener('submit', function(e) {-->
+<!--            e.preventDefault();-->
+
+<!--            const formData = new FormData(this);-->
+
+<!--            fetch('{% url "login" %}', {-->
+<!--                method: 'POST',-->
+<!--                body: formData,-->
+<!--                headers: {-->
+<!--                    'X-Requested-With': 'XMLHttpRequest',-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                if (data.status === 'success') {-->
+<!--                    window.location.href = data.redirect;-->
+<!--                } else {-->
+<!--                    const errorDiv = document.getElementById('login-error');-->
+<!--                    errorDiv.textContent = data.message;-->
+<!--                    errorDiv.classList.remove('hidden');-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error:', error);-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Deepfake Detector</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .bg-pattern {
+    background-image: url('https://www.chiplogictech.com/templates/yootheme/cache/frs-privacy2-059a5093.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 12px;
+            color: #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-blue-50">
+    <div class="min-h-screen flex flex-col md:flex-row">
+        <!-- Left panel with image and branding -->
+        <div class="hidden md:flex md:w-1/2 bg-pattern relative">
+<!--            <div class="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-blue-600/80 flex flex-col justify-center items-center p-10 text-white">-->
+<!--                <div class="w-20 h-20 mb-6 rounded-full bg-white flex items-center justify-center">-->
+<!--                    <i class="fas fa-shield-alt text-blue-600 text-4xl"></i>-->
+<!--                </div>-->
+<!--                <h1 class="text-4xl font-bold mb-2">Deepfake Detector</h1>-->
+<!--                <p class="text-xl mb-6 text-center">Advanced AI technology to detect manipulated media</p>-->
+<!--                <div class="space-y-4 max-w-md">-->
+<!--                    <div class="flex items-center">-->
+<!--                        <div class="bg-blue-500 rounded-full p-2 mr-3">-->
+<!--                            <i class="fas fa-check text-white"></i>-->
+<!--                        </div>-->
+<!--                        <p>High accuracy detection algorithms</p>-->
+<!--                    </div>-->
+<!--                    <div class="flex items-center">-->
+<!--                        <div class="bg-blue-500 rounded-full p-2 mr-3">-->
+<!--                            <i class="fas fa-check text-white"></i>-->
+<!--                        </div>-->
+<!--                        <p>Real-time video analysis</p>-->
+<!--                    </div>-->
+<!--                    <div class="flex items-center">-->
+<!--                        <div class="bg-blue-500 rounded-full p-2 mr-3">-->
+<!--                            <i class="fas fa-check text-white"></i>-->
+<!--                        </div>-->
+<!--                        <p>Secure and confidential processing</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+
+        <!-- Right panel with login form -->
+        <div class="w-full md:w-1/2 flex items-center justify-center p-6">
+            <div class="glassmorphism shadow-2xl rounded-xl p-8 w-full max-w-md">
+                <div class="text-center mb-8">
+                    <div class="md:hidden w-16 h-16 mx-auto mb-4 rounded-full bg-blue-600 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white text-3xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-blue-800">Welcome Back</h2>
+                    <p class="text-gray-600 mt-2">Sign in to access your dashboard</p>
+                </div>
+
+                <div id="login-error" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="ml-3"></div>
+                    </div>
+                </div>
+
+                <form id="login-form" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-6 relative">
+                        <label for="username" class="block text-gray-700 text-sm font-semibold mb-2">Username</label>
+                        <div class="relative">
+                            <span class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" id="username" name="username" required
+                                class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        </div>
+                    </div>
+
+                    <div class="mb-6 relative">
+                        <div class="flex justify-between mb-2">
+                            <label for="password" class="block text-gray-700 text-sm font-semibold">Password</label>
+                            <a href="#" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Forgot password?</a>
+                        </div>
+                        <div class="relative">
+                            <span class="input-icon">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input type="password" id="password" name="password" required
+                                class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        </div>
+                    </div>
+
+                    <div class="mb-6 flex items-center">
+                        <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="remember" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-md transform hover:-translate-y-0.5">
+                        Sign In
+                    </button>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-600">Don't have an account?
+                            <a href="{% url 'register' %}" class="text-blue-700 hover:text-blue-900 font-medium">
+                                Register now
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing in...';
+            submitButton.disabled = true;
+
+            fetch('{% url "login" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = data.redirect;
+                } else {
+                    const errorDiv = document.getElementById('login-error');
+                    errorDiv.querySelector('.ml-3').textContent = data.message;
+                    errorDiv.classList.remove('hidden');
+
+                    // Reset button
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+                // Reset button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+
+                // Show generic error
+                const errorDiv = document.getElementById('login-error');
+                errorDiv.querySelector('.ml-3').textContent = "An error occurred. Please try again.";
+                errorDiv.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
