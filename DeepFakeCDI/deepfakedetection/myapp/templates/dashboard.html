@@ -4,6 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deepfake Detection Dashboard</title>
+    {% if latest_analysis %}
+    <script>
+        // Set up the dashboard with the latest analysis data
+        document.addEventListener('DOMContentLoaded', function() {
+            const result = {
+                prediction: "{{ latest_analysis.prediction }}",
+                confidence: "{{ latest_analysis.confidence }}",
+                fake_percentage: {{ latest_analysis.fake_percentage }},
+                real_percentage: {{ latest_analysis.real_percentage }},
+                avg_fake_frames: {{ latest_analysis.avg_fake_frames }},
+                avg_real_frames: {{ latest_analysis.avg_real_frames }},
+                frame_count: {{ latest_analysis.frame_count }},
+
+                // Add other fields you need
+            };
+
+            displayResults(result);
+        });
+    </script>
+{% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {% load static %}
   <link rel="stylesheet" href="{% static 'dashboard.css' %}">
@@ -43,11 +63,11 @@
         <header>
             <h4>Protect your identity with CDI</h4>
             <div style="display: flex; align-items: center;">
-                <button class="pro-button">
+                <button class="pro-button" onclick="window.location.href='http://127.0.0.1:8000/pricing/'">
                     <i class="fas fa-crown" style="margin-right: 5px;"></i> Get Pro
                 </button>
                 <div class="user-profile" style="margin-left: 20px;">
-                    <div class="profile-icon" id="userIcon">J</div>
+                    <div class="profile-icon" id="userIcon">K</div>
                     <div class="profile-dropdown" id="profileDropdown">
                         <div class="profile-dropdown-item">
                             <i class="fas fa-user"></i> My Profile
@@ -80,6 +100,8 @@
             <input type="file" id="videoInput" accept="video/*">
         </div>
     </div>
+
+
 
     <!-- Video Preview Section - Initially Hidden -->
     <div id="video-preview-container" style="display: none; margin-top: 25px; margin-bottom: 25px; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
@@ -115,15 +137,15 @@
                 </div>
 
                 <!-- Video Preview -->
-                <div class="video-preview">
-                    <h3>Video Preview</h3>
-                    <div class="video-container">
-                        <video id="videoPreview" controls width="100%">
-                            <source src="" type="video/mp4">
-                            Your browser does not support video playback.
-                        </video>
-                    </div>
-                </div>
+<!--                <div class="video-preview">-->
+<!--                    <h3>Video Preview</h3>-->
+<!--                    <div class="video-container">-->
+<!--                        <video id="videoPreview" controls width="100%">-->
+<!--                            <source src="" type="video/mp4">-->
+<!--                            Your browser does not support video playback.-->
+<!--                        </video>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <!-- Stats Grid -->
                 <div class="stats-grid">
@@ -195,4 +217,98 @@ document.getElementById('videoInput').addEventListener('change', function(e) {
 });
 
 // Make sure to remove or replace any existing event listener for videoInput if you already have one
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.raven2025_contact_form');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const query = document.getElementById('query').value;
+
+        // Show loading state
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+
+        // Send data via fetch API
+        fetch('/api/contact/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                query: query
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Reset form
+            form.reset();
+
+            // Show success message on the same page
+            const formContainer = document.querySelector('.raven2025_contact_formContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = data.status === 'success' ? 'success-message' : 'error-message';
+            messageDiv.textContent = data.message;
+
+            // Insert message before the form
+            formContainer.insertBefore(messageDiv, form);
+
+            // Remove message after 5 seconds
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+
+            // Reset button
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+
+            // Show error message
+            const formContainer = document.querySelector('.raven2025_contact_formContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'error-message';
+            messageDiv.textContent = 'An error occurred. Please try again.';
+
+            // Insert message before the form
+            formContainer.insertBefore(messageDiv, form);
+
+            // Remove message after 5 seconds
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+
+            // Reset button
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+        });
+    });
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
 </script>
